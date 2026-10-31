@@ -90,11 +90,7 @@
   padding: 0 var(--gutter) clamp(32px, 6vh, 64px);
   display: flex;
   flex-direction: column;
-  gap: clamp(32px, 6vh, 56px);
-}
-
-.copy {
-  max-width: 960px;
+  gap: 28px;
 }
 
 .title {
@@ -106,25 +102,28 @@
 }
 
 .sub {
-  margin: 28px 0 0;
+  margin: 0;
   font-size: clamp(16px, 1.4vw, 20px);
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.88);
 }
 
-.footerRow {
+.detailRow {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   align-items: flex-end;
-  gap: 32px 48px;
+  gap: 24px 64px;
+}
+
+.scrollCue {
+  align-self: flex-end;
 }
 
 .stats {
   margin: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 24px clamp(40px, 7vw, 104px);
+  gap: 24px clamp(28px, 3.4vw, 48px);
 }
 
 .stat {

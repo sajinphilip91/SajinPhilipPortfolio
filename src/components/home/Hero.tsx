@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { hero, site } from "@/content/home";
-import { ArrowCircle, Logo } from "@/components/Logo";
+import { Logo } from "@/components/Logo";
 import styles from "./Hero.module.css";
 
 type Props = { onNavigate: (target: "builds" | "work" | "approach") => void };
@@ -53,23 +53,17 @@ export function Hero({ onNavigate }: Props) {
       </header>
 
       <div className={styles.content}>
-        <div className={styles.copy}>
-          <h1 className={styles.title}>
-            {hero.title[0]}
-            <br />
-            {hero.title[1]}
-          </h1>
+        <h1 className={styles.title}>
+          {hero.title[0]}
+          <br />
+          {hero.title[1]}
+        </h1>
+        <div className={styles.detailRow}>
           <p className={styles.sub}>
             {hero.sub[0]}
             <br />
             {hero.sub[1]}
           </p>
-        </div>
-        <div className={styles.footerRow}>
-          <button type="button" className="arrow-link" onClick={() => onNavigate("builds")}>
-            See what I build
-            <ArrowCircle direction="down" />
-          </button>
           <dl className={styles.stats}>
             {hero.stats.map((s) => (
               <div key={s.label} className={styles.stat}>
@@ -79,6 +73,9 @@ export function Hero({ onNavigate }: Props) {
             ))}
           </dl>
         </div>
+        <button type="button" className={`arrow-link ${styles.scrollCue}`} onClick={() => onNavigate("builds")}>
+          Scroll down
+        </button>
       </div>
     </section>
   );
