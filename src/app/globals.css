@@ -1,0 +1,123 @@
+@import "@fontsource-variable/source-serif-4/opsz.css";
+@import "@fontsource-variable/source-sans-3/index.css";
+@import "@fontsource-variable/inter-tight/index.css";
+
+:root {
+  /* Colour */
+  --ink: #111111;
+  --ink-muted: #5c5c5c;
+  --ink-soft: #333333;
+  --paper: #ffffff;
+  --line: #e6e6e6;
+  --night: #0e1316;
+  --on-night: #ffffff;
+  --on-night-muted: rgba(255, 255, 255, 0.8);
+  --on-night-line: rgba(255, 255, 255, 0.22);
+
+  /* Type */
+  --font-serif: "Source Serif 4 Variable", Georgia, serif;
+  --font-sans: "Source Sans 3 Variable", system-ui, sans-serif;
+  --font-display: "Inter Tight Variable", "Source Sans 3 Variable", sans-serif;
+
+  /* Layout */
+  --gutter: clamp(24px, 6vw, 88px);
+  --content-max: 1440px;
+  --radius: 6px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--night);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid #2b4bff;
+  outline-offset: 3px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Shared "label + circled arrow" link used across sections */
+.arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.arrow-link:hover {
+  opacity: 0.75;
+}
+.arrow-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+}

@@ -1,0 +1,262 @@
+.builds {
+  position: relative;
+  height: 100svh;
+  min-height: 640px;
+  overflow: hidden;
+  background: var(--night);
+  color: var(--on-night);
+  display: flex;
+  flex-direction: column;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  transition: opacity 900ms ease;
+}
+
+.bgImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: 65% 50%;
+}
+
+.scrimImage,
+.scrimPlain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.scrimImage {
+  background:
+    linear-gradient(0deg, rgba(6, 6, 8, 0.92) 0%, rgba(6, 6, 8, 0.6) 30%, rgba(6, 6, 8, 0) 58%),
+    linear-gradient(90deg, rgba(6, 6, 8, 0.5) 0%, rgba(6, 6, 8, 0) 45%);
+}
+
+.scrimPlain {
+  background: linear-gradient(90deg, rgba(10, 14, 18, 0.7) 0%, rgba(10, 14, 18, 0.25) 60%, rgba(10, 14, 18, 0.1) 100%);
+}
+
+.inner {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 40px var(--gutter) 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  color: var(--on-night-muted);
+}
+
+.stage {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: flex-end;
+}
+
+.copy {
+  max-width: 600px;
+  animation: rise 700ms ease both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.question {
+  margin: 0 0 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.headline {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(34px, 4.2vw, 64px);
+  line-height: 1.18;
+}
+
+.body {
+  margin: 22px 0 0;
+  max-width: 480px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.actions {
+  margin-top: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.primary {
+  background: #ffffff;
+  color: var(--night);
+}
+
+.secondary {
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+}
+
+.primary:hover,
+.secondary:hover {
+  opacity: 0.85;
+}
+
+.tabs {
+  position: relative;
+  border-top: 1px solid var(--on-night-line);
+  padding: 0 var(--gutter);
+  overflow-x: auto;
+}
+
+.tabRow {
+  display: flex;
+  min-width: max-content;
+}
+
+.tab {
+  position: relative;
+  flex: 1 0 240px;
+  min-width: 240px;
+  min-height: 96px;
+  padding: 22px 32px 24px 0;
+  border: 0;
+  background: transparent;
+  color: var(--on-night);
+  text-align: left;
+  cursor: pointer;
+  transition: opacity 300ms ease;
+}
+
+.track,
+.bar {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 32px;
+  height: 2px;
+}
+
+.track {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.bar {
+  background: #ffffff;
+  transform-origin: left center;
+}
+
+.tabMeta {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.tabName {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 500;
+}
+
+/* Intro: overlay in paged mode, its own block in flow mode */
+.overlay,
+.introBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 var(--gutter);
+  color: var(--on-night);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: rgba(10, 14, 18, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: opacity 800ms ease;
+}
+
+.introBlock {
+  position: relative;
+  min-height: 100svh;
+  background: var(--night);
+  padding-top: 96px;
+  padding-bottom: 120px;
+}
+
+.introCopy {
+  max-width: 1240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 800ms ease;
+}
+
+.introKicker {
+  margin-bottom: 28px;
+  color: var(--on-night-muted);
+}
+
+.introTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(44px, 7.2vw, 132px);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+.introSub {
+  margin: 36px 0 0;
+  max-width: 640px;
+  font-size: clamp(16px, 1.3vw, 20px);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.overlayCta {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: clamp(32px, 6vh, 64px);
+}

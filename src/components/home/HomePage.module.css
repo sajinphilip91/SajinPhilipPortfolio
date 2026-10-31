@@ -1,0 +1,53 @@
+.flow {
+  position: relative;
+}
+
+.paged {
+  position: fixed;
+  inset: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.paged .track {
+  transition: transform 950ms cubic-bezier(0.7, 0, 0.2, 1);
+  will-change: transform;
+}
+
+/* In paged mode every screen is exactly one viewport tall. */
+.paged .track > section {
+  height: 100svh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.dots {
+  position: fixed;
+  right: clamp(16px, 2.4vw, 36px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dot {
+  width: 44px;
+  height: 32px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.dot span {
+  display: block;
+  height: 2px;
+  transition:
+    width 400ms ease,
+    background 400ms ease;
+}
