@@ -54,7 +54,6 @@ export function Hero({ onNavigate }: Props) {
 
       <div className={styles.content}>
         <div className={styles.copy}>
-          <p className={styles.kicker}>{hero.kicker}</p>
           <h1 className={styles.title}>
             {hero.title[0]}
             <br />

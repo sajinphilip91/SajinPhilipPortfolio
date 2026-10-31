@@ -24,6 +24,7 @@ export function Builds({ mode, active = false, introVisible = false, onShowcase 
   const [stopped, setStopped] = useState(false);
   const [inView, setInView] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const progressRef = useRef(0);
 
   // In flow mode, only run the slider while the section is on screen.
   useEffect(() => {
@@ -40,20 +41,23 @@ export function Builds({ mode, active = false, introVisible = false, onShowcase 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
     const t = setInterval(() => {
-      setProgress((p) => {
-        const next = p + 0.1 / SLIDE_SECONDS;
-        if (next >= 1) {
-          setIndex((i) => (i + 1) % builds.length);
-          return 0;
-        }
-        return next;
-      });
+      // Advance outside any state updater: React runs updaters twice in dev, which skipped a slide.
+      const next = progressRef.current + 0.1 / SLIDE_SECONDS;
+      if (next >= 1) {
+        progressRef.current = 0;
+        setProgress(0);
+        setIndex((i) => (i + 1) % builds.length);
+      } else {
+        progressRef.current = next;
+        setProgress(next);
+      }
     }, 100);
     return () => clearInterval(t);
   }, [running]);
 
   const pick = (i: number) => {
     setIndex(i);
+    progressRef.current = 0;
     setProgress(0);
     setStopped(true);
   };
@@ -104,10 +108,6 @@ export function Builds({ mode, active = false, introVisible = false, onShowcase 
                     {b.secondary.label}
                   </a>
                 )}
-                <a href={b.caseHref} className="arrow-link">
-                  Case study
-                  <ArrowCircle />
-                </a>
               </div>
             </div>
           </div>
@@ -143,7 +143,13 @@ export function Builds({ mode, active = false, introVisible = false, onShowcase 
           <div
             aria-hidden={!introVisible}
             className={styles.overlay}
-            style={{ opacity: introVisible ? 1 : 0, pointerEvents: introVisible ? "auto" : "none" }}
+            // Blur is inline because the CSS build drops backdrop-filter from the module.
+            style={{
+              opacity: introVisible ? 1 : 0,
+              pointerEvents: introVisible ? "auto" : "none",
+              backdropFilter: "blur(32px)",
+              WebkitBackdropFilter: "blur(32px)",
+            }}
           >
             <IntroCopy shift={introVisible ? 0 : -40} />
             <button type="button" className={`arrow-link ${styles.overlayCta}`} onClick={onShowcase} tabIndex={introVisible ? 0 : -1}>

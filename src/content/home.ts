@@ -14,7 +14,6 @@ export const site = {
 };
 
 export const hero = {
-  kicker: "Bengaluru, India",
   title: ["Designing for the", "Present and Future"],
   sub: ["Fifteen years of product design.", "Now building for humans and agents."],
   stats: [
@@ -40,7 +39,6 @@ export type Build = {
   tone: string;
   primary: { label: string; href: string };
   secondary?: { label: string; href: string };
-  caseHref: string;
 };
 
 export const builds: Build[] = [
@@ -54,7 +52,6 @@ export const builds: Build[] = [
     tone: "#08080A",
     primary: { label: "App Store", href: "https://apps.apple.com/in/app/matchbrain-predict-football/id6777493741" },
     secondary: { label: "Google Play", href: "https://play.google.com/store/apps/details?id=com.matchbrain.matchbrain" },
-    caseHref: "/builds/matchbrain",
   },
   {
     name: "GlassScore",
@@ -65,7 +62,6 @@ export const builds: Build[] = [
     image: "/media/glassscore.jpg",
     tone: "#0C0D10",
     primary: { label: "Open the app", href: "https://meta-glass-scores.vercel.app" },
-    caseHref: "/builds/glassscore",
   },
   {
     name: "Breathe Easy",
@@ -73,9 +69,9 @@ export const builds: Build[] = [
     question: "What is Breathe Easy?",
     headline: "A working web app in twelve hours",
     body: "Built end to end with AI tools, to help people improve their lives one breath at a time.",
+    image: "/media/breathe-easy.jpg",
     tone: "#16303A",
     primary: { label: "Read the story", href: "/writing/i-just-built-a-fully-working-web-app-using-only-ai-tools-in-under-12-hours" },
-    caseHref: "/builds/breathe-easy",
   },
   {
     name: "The New Designer",
@@ -83,9 +79,9 @@ export const builds: Build[] = [
     question: "What is The New Designer?",
     headline: "Learning for designers in the AI era",
     body: "An interactive learning platform with AI-powered career and learning features.",
+    image: "/media/the-new-designer.jpg",
     tone: "#221D30",
     primary: { label: "Visit thenewdesigner.com", href: "https://www.thenewdesigner.com/" },
-    caseHref: "/builds/the-new-designer",
   },
 ];
 

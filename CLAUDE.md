@@ -36,7 +36,7 @@ Only the hero and builds are full width; content sections cap at 1440px.
 - Footer (next task).
 - Inner pages: `/work/*`, `/builds/*`, `/writing/*`, `/about`, `/for-agents` (+ `llms.txt`). Old Wix URLs already redirect to these in `next.config.ts`.
 - `public/resume.pdf` (current resume; an ATS/agentic-focused rewrite comes later).
-- Images: Breathe Easy and The New Designer backgrounds, case study covers, app screenshots.
+- Images: case study covers, app screenshots.
 - Content gaps: measured results for most case studies, WhatsApp Poll problem line, Dropshipping details (password-protected on Wix).
 - GlassScore image shows Premier League, Arsenal, Man City and Meta marks — flagged as a trademark risk; consider fictional teams.
 - Deploy: Vercel (Sajin will import the repo), then move the domain off Wix.
