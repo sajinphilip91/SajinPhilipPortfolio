@@ -2,10 +2,10 @@
 
 import { useRef } from "react";
 import { BuildsIntro } from "@/components/home/Builds";
-import { workBuilds } from "@/content/home";
+import { workBuilds, type Build } from "@/content/home";
 import styles from "./Work.module.css";
 
-export function WorkBuilds() {
+export function WorkBuilds({ items = workBuilds }: { items?: Build[] }) {
   const gridRef = useRef<HTMLElement>(null);
 
   return (
@@ -14,7 +14,7 @@ export function WorkBuilds() {
         <BuildsIntro onShowcase={() => gridRef.current?.scrollIntoView({ behavior: "smooth" })} />
       </div>
       <section ref={gridRef} aria-label="AI builds" className={styles.bento}>
-        {workBuilds.map((b) => (
+        {items.map((b) => (
           <article key={b.name} className={styles.tile} style={{ background: b.tone }}>
             {b.image && (
               // eslint-disable-next-line @next/next/no-img-element

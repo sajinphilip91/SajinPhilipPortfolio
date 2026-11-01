@@ -8,6 +8,8 @@ import { CaseStudies } from "./CaseStudies";
 import { Approach } from "./Approach";
 import { Writing } from "./Writing";
 import { Closing } from "./Closing";
+import { WorkBuilds } from "@/components/work/WorkBuilds";
+import { builds } from "@/content/home";
 import styles from "./HomePage.module.css";
 
 /**
@@ -214,6 +216,9 @@ export function HomePage() {
           introVisible={paged && step === 1}
           onShowcase={() => goTo(2)}
         />
+        <div className={styles.phoneBuilds}>
+          <WorkBuilds items={builds} />
+        </div>
         <CaseStudies />
         <Approach />
         <Writing />

@@ -270,3 +270,24 @@
     padding-top: 48px;
   }
 }
+
+@media (max-width: 900px) {
+  .builds,
+  .flowIntro {
+    display: none;
+  }
+
+  .introBlock {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .introCopy {
+    align-items: flex-start;
+  }
+
+  .overlayCta {
+    left: var(--gutter);
+    transform: none;
+  }
+}

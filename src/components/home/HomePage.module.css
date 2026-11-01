@@ -2,6 +2,17 @@
   position: relative;
 }
 
+/* Phones get the Work page's cards instead of the slider. */
+.phoneBuilds {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .phoneBuilds {
+    display: block;
+  }
+}
+
 /* Anchored sections stop below the fixed header. */
 .flow .track > section,
 .flow .track > div {

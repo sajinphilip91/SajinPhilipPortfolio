@@ -66,7 +66,11 @@ export function Builds({ mode, active = false, introVisible = false, onShowcase 
 
   return (
     <>
-      {mode === "flow" && <BuildsIntro onShowcase={() => sectionRef.current?.scrollIntoView({ behavior: "smooth" })} />}
+      {mode === "flow" && (
+        <div className={styles.flowIntro}>
+          <BuildsIntro onShowcase={() => sectionRef.current?.scrollIntoView({ behavior: "smooth" })} />
+        </div>
+      )}
 
       <section
         ref={sectionRef}
@@ -83,7 +87,7 @@ export function Builds({ mode, active = false, introVisible = false, onShowcase 
           >
             {item.image && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={item.image} alt="" className={styles.bgImage} />
+              <img src={item.image} alt="" className={styles.bgImage} loading={mode === "flow" ? "lazy" : undefined} />
             )}
           </div>
         ))}
