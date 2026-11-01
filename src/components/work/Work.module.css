@@ -1,0 +1,238 @@
+.inner {
+  width: 100%;
+  max-width: calc(1360px + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.hero {
+  min-height: 72svh;
+  display: flex;
+  align-items: flex-end;
+  background: var(--night);
+  color: var(--on-night);
+  padding: calc(var(--header-h) + 48px) 0 clamp(48px, 9vh, 96px);
+}
+
+.kicker {
+  margin-bottom: 28px;
+  color: var(--on-night-muted);
+}
+
+.title {
+  margin: 0;
+  max-width: 1180px;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(44px, 6.6vw, 104px);
+  line-height: 1.06;
+}
+
+.paper {
+  background: var(--paper);
+  color: var(--ink);
+  padding: clamp(56px, 10vh, 112px) 0 clamp(72px, 12vh, 136px);
+}
+
+.grid {
+  list-style: none;
+  display: grid;
+  gap: clamp(48px, 8vh, 88px);
+}
+
+.card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: center;
+}
+
+.frame {
+  display: block;
+  overflow: hidden;
+  border-radius: 14px;
+  aspect-ratio: 16 / 9;
+}
+
+.cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 500ms ease;
+}
+
+.card:hover .cover {
+  transform: scale(1.02);
+}
+
+.industry {
+  display: block;
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+
+.name {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(28px, 2.8vw, 40px);
+  line-height: 1.15;
+}
+
+.problem {
+  display: block;
+  margin-top: 12px;
+  max-width: 640px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.cta {
+  margin-top: 24px;
+}
+
+/* The intro stays pinned while the grid slides up over it. */
+.stage {
+  position: relative;
+}
+
+.pinned {
+  position: sticky;
+  top: 0;
+}
+
+.bento {
+  position: relative;
+  z-index: 1;
+  height: 100svh;
+  min-height: 640px;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: calc(var(--header-h) + 8px) var(--gutter) var(--gutter);
+  background: var(--night);
+  color: var(--on-night);
+}
+
+.tile {
+  position: relative;
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.tile:nth-child(1),
+.tile:nth-child(6) {
+  grid-column: span 5;
+}
+
+.tile:nth-child(3),
+.tile:nth-child(4) {
+  grid-column: span 3;
+}
+
+.tileImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  transition: transform 500ms ease;
+}
+
+.tile:hover .tileImage {
+  transform: scale(1.03);
+}
+
+.tileScrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(0deg, rgba(6, 6, 8, 0.9) 0%, rgba(6, 6, 8, 0.55) 40%, rgba(6, 6, 8, 0) 72%);
+}
+
+.tileCopy {
+  position: relative;
+}
+
+.tileMeta {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.tileName {
+  margin: 8px 0 0;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(24px, 2.2vw, 32px);
+  line-height: 1.15;
+}
+
+.tileLine {
+  margin: 6px 0 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.tileLinks {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* The first link covers the whole tile; the second sits above it. */
+.tileLinks a:first-child::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.tileLinks a:nth-child(2) {
+  position: relative;
+  z-index: 1;
+}
+
+.tileLinks a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 960px) {
+  .bento {
+    height: auto;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+  }
+
+  .tile,
+  .tile:nth-child(1),
+  .tile:nth-child(3),
+  .tile:nth-child(4),
+  .tile:nth-child(6) {
+    grid-column: auto;
+    aspect-ratio: 4 / 3;
+  }
+}
+
+@media (max-width: 720px) {
+  .card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

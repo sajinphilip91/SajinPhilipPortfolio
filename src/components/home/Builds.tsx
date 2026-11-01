@@ -100,9 +100,11 @@ export function Builds({ mode, active = false, introVisible = false, onShowcase 
               <h2 className={styles.headline}>{b.headline}</h2>
               <p className={styles.body}>{b.body}</p>
               <div className={styles.actions}>
-                <a href={b.primary.href} className={styles.primary}>
-                  {b.primary.label}
-                </a>
+                {b.primary && (
+                  <a href={b.primary.href} className={styles.primary}>
+                    {b.primary.label}
+                  </a>
+                )}
                 {b.secondary && (
                   <a href={b.secondary.href} className={styles.secondary}>
                     {b.secondary.label}
@@ -173,7 +175,7 @@ function IntroCopy({ shift = 0 }: { shift?: number }) {
   );
 }
 
-function BuildsIntro({ onShowcase }: { onShowcase: () => void }) {
+export function BuildsIntro({ onShowcase }: { onShowcase: () => void }) {
   return (
     <section aria-label="Built with AI" className={styles.introBlock}>
       <IntroCopy />

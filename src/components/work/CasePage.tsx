@@ -14,7 +14,7 @@ export function CasePage({ slug }: { slug: string }) {
       <main>
         <section aria-label="Case study summary" className={styles.hero}>
           <div className={styles.inner}>
-            <Link href="/#work" className={styles.back}>
+            <Link href="/work" className={styles.back}>
               All work
             </Link>
             {cover && (

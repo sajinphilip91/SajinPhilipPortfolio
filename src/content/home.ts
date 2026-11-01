@@ -17,7 +17,7 @@ export const site = {
 export const menu: { label: string; href: string; target?: "top" | "work" }[] = [
   { label: "Home", href: "/", target: "top" },
   { label: "Leadership", href: "/leadership" },
-  { label: "Work", href: "/#work", target: "work" },
+  { label: "Work", href: "/work" },
   { label: "Write", href: "/writing" },
 ];
 
@@ -56,7 +56,7 @@ export type Build = {
   body: string;
   image?: string;
   tone: string;
-  primary: { label: string; href: string };
+  primary?: { label: string; href: string };
   secondary?: { label: string; href: string };
 };
 
@@ -113,6 +113,25 @@ export const builds: Build[] = [
     primary: { label: "Read the story", href: "/writing/i-just-built-a-fully-working-web-app-using-only-ai-tools-in-under-12-hours" },
   },
 ];
+
+// The Work page grid shows the homepage builds plus these.
+export const workBuilds: Build[] = [
+  ...builds,
+  {
+    name: "Better Word",
+    meta: "[Platform]",
+    question: "What is Better Word?",
+    headline: "[One-line headline]",
+    body: "[One or two lines about Better Word]",
+    tone: "#1C2350",
+  },
+];
+
+export const workPage = {
+  kicker: "Case studies",
+  cta: "View case study",
+  title: "I solve hard problems so millions of people can have an easier, happier day.",
+};
 
 export type CaseStudy = {
   title: string;
@@ -182,7 +201,7 @@ export const caseStudies: CaseStudy[] = [
     tone: "#24463A",
     cover: "/media/covers/whatsapp-poll.webp",
     badge: "Concept",
-    problem: "[One-line problem: why groups needed polls inside WhatsApp]",
+    problem: "Deciding anything in a WhatsApp group is hard: answers get buried and people mute the group. Polls bring the decision into the chat.",
     facts: [
       { label: "Role", value: "Research, UX & visual design" },
       { label: "Timeframe", value: "2 weeks" },
@@ -197,7 +216,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Commerce",
     tone: "#3B2F45",
     cover: "/media/covers/dropshipping.webp",
-    problem: "Aligning the user experience with company goals. [One-line problem]",
+    problem: "Spocket's retailers struggled to track orders, narrow down searches and reach support. New filters, order cards and human support fixed the journey.",
     facts: [
       { label: "Role", value: "[Role]" },
       { label: "Timeframe", value: "[Timeframe]" },
@@ -212,8 +231,28 @@ export const caseStudies: CaseStudy[] = [
 type LinkItem = { title: string; body?: string; href: string };
 
 export const approach = {
-  title: "How I am building digital products and services with AI and agents",
+  kicker: "How I work",
+  title: "How I use AI, from problem to launch",
+  sub: "Problem first, always. Speed only matters when it points the right way.",
+  stages: [
+    { name: "Problem", body: "Frame the real problem first, and use AI to pressure-test it." },
+    { name: "Research", body: "Research the people and the business, with AI helping me synthesise faster." },
+    { name: "Design", body: "Explore more directions, then prototype and validate the strongest." },
+    { name: "Build", body: "Agents work from my rules and design system. I review everything." },
+    { name: "Launch", body: "Ideas reach real users in days, not quarters." },
+    { name: "Iterate", body: "Learn from real use, improve the product and go again." },
+  ],
+  governance: {
+    title: "Trust, Safety and AI Governance",
+    body: "Runs through every stage, taking care of trust, safety and data protection.",
+  },
+};
+
+export const writing = {
+  kicker: "My writing",
+  title: "What I write about AI and design",
   sub: "Practical insights on AI, UX leadership, accessibility and emerging technology, helping designers and product teams prepare for what’s next.",
+  more: { title: "All writing", href: "/writing" },
   columns: [
     {
       label: "AI building",
@@ -248,18 +287,18 @@ export const approach = {
       ] as LinkItem[],
     },
   ],
-  leadership: {
-    label: "Leadership",
-    title: "How my day works",
-    split: [
-      { value: "70%", label: "Leadership" },
-      { value: "30%", label: "Designer" },
-    ],
-    body: "Most of my time goes to leadership: guiding teams, shaping strategy and building design cultures. The rest keeps me hands-on as a designer, close to the craft and connected to the people we design for.",
-    links: [
-      { title: "Leadership profile", href: "/leadership" },
-      { title: "Mentoring on ADPList", href: "https://adplist.org/mentors/sajin-philip" },
-      { title: "Invite me to speak", href: "https://www.linkedin.com/in/sajin-philip-65350534/" },
-    ] as LinkItem[],
-  },
+};
+
+export const closing = {
+  title: "How my day works",
+  split: [
+    { value: 70, label: "Leader" },
+    { value: 30, label: "Designer" },
+  ],
+  body: "Most of my time goes to leadership: guiding teams, shaping strategy and building design cultures. The rest keeps me hands-on as a designer, close to the craft and connected to the people we design for.",
+  links: [
+    { title: "Leadership profile", href: "/leadership" },
+    { title: "Mentoring on ADPList", href: "https://adplist.org/mentors/sajin-philip" },
+    { title: "Invite me to speak", href: "https://www.linkedin.com/in/sajin-philip-65350534/" },
+  ] as LinkItem[],
 };

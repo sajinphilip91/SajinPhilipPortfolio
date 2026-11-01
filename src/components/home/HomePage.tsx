@@ -6,19 +6,23 @@ import { Hero } from "./Hero";
 import { Builds } from "./Builds";
 import { CaseStudies } from "./CaseStudies";
 import { Approach } from "./Approach";
+import { Writing } from "./Writing";
+import { Closing } from "./Closing";
 import styles from "./HomePage.module.css";
 
 /**
  * Steps of the desktop full-page experience. "intro" and "builds" share one screen:
  * the intro is an overlay that lifts on the next scroll.
  */
-const STEPS = ["hero", "intro", "builds", "work", "approach"] as const;
-const STEP_SCREEN = [0, 1, 1, 2, 3];
+const STEPS = ["hero", "intro", "builds", "work", "approach", "writing", "closing"] as const;
+const STEP_SCREEN = [0, 1, 1, 2, 3, 4, 5];
 const SCREENS = [
   { label: "Introduction", step: 0 },
   { label: "AI builds", step: 1 },
   { label: "Case studies", step: 3 },
   { label: "How I work", step: 4 },
+  { label: "Writing", step: 5 },
+  { label: "Leadership and contact", step: 6 },
 ];
 const PAGED_QUERY = "(min-width: 901px) and (min-height: 640px)";
 const LOCK_MS = 1000;
@@ -27,7 +31,7 @@ const FLOW_PROBE = 80;
 /** Height of the menu text: while a page slides, it changes colour as the section edge crosses it. */
 const PAGED_PROBE = 38;
 const SLIDE_MS = 1100;
-const SCREEN_IDS = ["top", "builds", "work", "approach"];
+const SCREEN_IDS = ["top", "builds", "work", "approach", "writing", "closing"];
 
 function themeAt(y: number): HeaderTheme {
   const covers = (id: string) => {
@@ -35,7 +39,7 @@ function themeAt(y: number): HeaderTheme {
     return !!r && r.top <= y && r.bottom > y;
   };
   if (covers("top")) return "clear";
-  return covers("work") ? "light" : "dark";
+  return covers("work") || covers("writing") ? "light" : "dark";
 }
 
 /** On short windows a screen can be taller than the viewport; it scrolls before the page moves on. */
@@ -206,6 +210,8 @@ export function HomePage() {
         />
         <CaseStudies />
         <Approach />
+        <Writing />
+        <Closing />
       </div>
 
       {paged && (
