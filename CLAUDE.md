@@ -18,7 +18,7 @@ Desktop (≥901px wide, ≥640px tall) is full-page: one wheel/swipe/key = one s
 
 1. **Hero** — full-bleed looping muted video (`public/media/hero-loop.mp4`, Gemini watermark removed, 720p — a 1080p export is wanted). Serif headline bottom-left, stats bottom-right. Static, no slider.
 2. **Built with AI intro** — overlay on the builds screen, centred, Inter Tight display type: "I design, build and ship live products with AI." Next scroll lifts the overlay.
-3. **AI builds showcase** — full-bleed image per build, text pinned bottom-left, tabs along the bottom, auto-advance 8s (only when on screen; pause on hover; stops after a tab click). Builds: MatchBrain (real store links), GlassScore, Breathe Easy, The New Designer.
+3. **AI builds showcase** — full-bleed image per build, text pinned bottom-left, tabs along the bottom, auto-advance 8s (only when on screen; pause on hover; stops after a tab click). Builds: MatchBrain (real store links), GlassScore, Breathe Easy, The New Designer, StayAlt.
 4. **Case studies** — white section, one screen: list of 5 on the left, selected case on the right with a 16:9 cover. Max width 1440px.
 5. **How I work** — dark section, max width 1440px. Header "How I am building digital products and services with AI and agents". Three equal cards; links bottom-aligned; no top/bottom rule on link lists. AI building + Product thinking cards carry the links from the old homepage. Leadership card is white, shows a static 70% Leadership / 30% Designer figure (not clickable) with one paragraph and three links (Leadership profile, Mentoring on ADPList, Invite me to speak).
 

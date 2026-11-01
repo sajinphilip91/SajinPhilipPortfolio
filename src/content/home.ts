@@ -83,6 +83,16 @@ export const builds: Build[] = [
     tone: "#221D30",
     primary: { label: "Visit thenewdesigner.com", href: "https://www.thenewdesigner.com/" },
   },
+  {
+    name: "StayAlt",
+    meta: "Web app",
+    question: "What is StayAlt?",
+    headline: "Experience the stay, not just the walls",
+    body: "A booking site for unique stays: treehouses, domes, glamping tents, caves, cliffside rooms and castles.",
+    image: "/media/stayalt.jpg",
+    tone: "#0F1A12",
+    primary: { label: "Visit stayalt.com", href: "https://stayalt.com/" },
+  },
 ];
 
 export type CaseStudy = {
