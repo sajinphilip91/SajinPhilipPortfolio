@@ -40,18 +40,21 @@ export function LeadershipPage() {
                 </div>
               ))}
             </dl>
-            <div className={styles.teams}>
-              <h2 className={styles.title}>{teams.title}</h2>
-              <p className={styles.lead}>{teams.body}</p>
-              <ul className={styles.companies}>
-                {teams.companies.map((c) => (
-                  <li key={c.name}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={c.logo} alt={c.name} className={styles.companyLogo} />
-                  </li>
-                ))}
-              </ul>
-            </div>
+          </div>
+        </section>
+
+        <section aria-label="Design teams and companies" className={styles.teams}>
+          <div className={styles.inner}>
+            <h2 className={styles.title}>{teams.title}</h2>
+            <p className={styles.lead}>{teams.body}</p>
+            <ul className={styles.companies}>
+              {teams.companies.map((c) => (
+                <li key={c.name}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={c.logo} alt={c.name} className={styles.companyLogo} />
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 

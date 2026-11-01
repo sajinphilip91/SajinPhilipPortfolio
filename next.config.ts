@@ -10,6 +10,8 @@ const nextConfig: NextConfig = {
       { source: "/uxai", destination: "/writing", permanent: true },
       { source: "/post/:slug", destination: "/writing/:slug", permanent: true },
       { source: "/agenticai", destination: "/for-agents", permanent: true },
+      { source: "/ai", destination: "/for-agents", permanent: true },
+      { source: "/work", destination: "/#work", permanent: true },
       { source: "/yoyo-case-study", destination: "/work/yoyo-test", permanent: true },
       { source: "/depression-aid", destination: "/work/depression-aid", permanent: true },
       { source: "/whatsapp-poll", destination: "/work/whatsapp-poll", permanent: true },

@@ -33,6 +33,8 @@
 }
 
 .content {
+  --detail-size: clamp(16px, 1.4vw, 20px);
+  --detail-line: calc(var(--detail-size) * 1.6);
   position: absolute;
   left: 0;
   right: 0;
@@ -54,15 +56,16 @@
 
 .sub {
   margin: 0;
-  font-size: clamp(16px, 1.4vw, 20px);
-  line-height: 1.6;
+  font-size: var(--detail-size);
+  line-height: var(--detail-line);
   color: rgba(255, 255, 255, 0.88);
 }
 
+/* Values sit on the sub's first line and labels on its second. */
 .detailRow {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 24px 64px;
 }
 
@@ -80,7 +83,17 @@
 .stat {
   display: flex;
   flex-direction: column-reverse;
-  gap: 6px;
+}
+
+.stat dt,
+.stat dd {
+  line-height: var(--detail-line);
+}
+
+/* A strut at the sub's size puts the small label on the sub's baseline. */
+.stat dt::before {
+  content: "\200b";
+  font-size: var(--detail-size);
 }
 
 .stat dt {
@@ -93,6 +106,6 @@
 
 .stat dd {
   margin: 0;
-  font-size: 20px;
+  font-size: var(--detail-size);
   font-weight: 700;
 }

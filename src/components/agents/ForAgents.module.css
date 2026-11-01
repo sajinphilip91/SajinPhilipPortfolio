@@ -1,0 +1,58 @@
+.page {
+  min-height: 100vh;
+  background: var(--night);
+  color: var(--on-night);
+  padding: calc(var(--header-h) + clamp(24px, 5vh, 56px)) 0 clamp(72px, 12vh, 128px);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.inner {
+  width: 100%;
+  max-width: calc(800px + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.note {
+  padding: clamp(20px, 3vw, 32px);
+  border-radius: var(--radius);
+  background: #f2f1e9;
+  color: #33322a;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.note p {
+  margin: 0 0 16px;
+}
+
+/* The darker orange keeps the contrast on the cream note box. */
+.note a {
+  color: #b84a0e;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.files {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+}
+
+.text {
+  margin: clamp(40px, 7vh, 64px) 0 0;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.text a {
+  color: #ff8a3d;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

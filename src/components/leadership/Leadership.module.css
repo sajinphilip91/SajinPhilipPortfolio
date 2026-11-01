@@ -48,7 +48,8 @@
 }
 
 .night .lead,
-.hero .lead {
+.hero .lead,
+.teams .lead {
   color: var(--on-night-muted);
 }
 
@@ -89,8 +90,6 @@
 
 .stats {
   margin: clamp(48px, 8vh, 72px) 0 0;
-  padding-bottom: clamp(40px, 7vh, 64px);
-  border-bottom: 1px solid var(--on-night-line);
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 24px 32px;
@@ -185,8 +184,12 @@
   margin-top: clamp(64px, 11vh, 104px);
 }
 
+/* Its own band: the top border carries on from the stats, edge to edge. */
 .teams {
-  margin-top: clamp(56px, 10vh, 96px);
+  padding: clamp(64px, 11vh, 104px) 0;
+  border-top: 1px solid var(--on-night-line);
+  background: var(--night-soft);
+  color: var(--on-night);
 }
 
 .companies {
