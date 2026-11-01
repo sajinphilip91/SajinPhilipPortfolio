@@ -108,6 +108,20 @@ export function SiteHeader({ theme, solid, onNavigate }: Props) {
                 </li>
               ))}
             </ul>
+            <ul className={styles.socials}>
+              <li>
+                <a href={site.social.instagram}>
+                  <InstagramIcon />
+                  Instagram
+                </a>
+              </li>
+              <li>
+                <a href={site.social.linkedin}>
+                  <LinkedInIcon />
+                  LinkedIn
+                </a>
+              </li>
+            </ul>
           </nav>
           <div className={styles.aside}>
             <figure className={styles.quote}>
@@ -117,14 +131,6 @@ export function SiteHeader({ theme, solid, onNavigate }: Props) {
               <blockquote>{menuQuote.text}</blockquote>
               <figcaption>— {menuQuote.by}</figcaption>
             </figure>
-            <div className={styles.socials}>
-              <a href={site.social.instagram} aria-label="Instagram">
-                <InstagramIcon />
-              </a>
-              <a href={site.social.linkedin} aria-label="LinkedIn">
-                <LinkedInIcon />
-              </a>
-            </div>
           </div>
         </div>
       </dialog>

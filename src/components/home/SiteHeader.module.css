@@ -151,7 +151,18 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-right: clamp(0px, 7vw, 120px);
+  padding: 0 clamp(0px, 7vw, 120px) 0 clamp(32px, 5vw, 80px);
+}
+
+/* Runs past the bar above and the dialog's bottom padding, so it meets both screen edges. */
+.menu::before {
+  content: "";
+  position: absolute;
+  top: calc(-1 * var(--header-h));
+  bottom: -40px;
+  left: 0;
+  width: 1px;
+  background: rgba(75, 74, 63, 0.28);
 }
 
 .menu ul {
@@ -173,33 +184,53 @@
   text-transform: uppercase;
 }
 
-.menu .menuSecondary {
-  position: absolute;
-  left: 0;
-  bottom: 8px;
-  display: flex;
-  gap: 28px;
-}
-
-.menuSecondary a {
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: 0.14em;
-}
-
 .menu a:hover,
 .menu a[aria-current="page"] {
   color: #33322a;
 }
 
+.menu .menuSecondary {
+  margin-top: clamp(16px, 4vh, 40px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 clamp(24px, 3vw, 40px);
+}
+
+.menu .menuSecondary a {
+  gap: 12px;
+  min-height: 44px;
+  font-weight: 560;
+  font-size: clamp(20px, 2.9vh, 26px);
+  letter-spacing: 0.08em;
+}
+
+.menu .socials {
+  position: absolute;
+  left: clamp(32px, 5vw, 80px);
+  bottom: 0;
+  display: flex;
+  gap: 28px;
+}
+
+.menu .socials a {
+  gap: 8px;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+
+.socials svg {
+  width: 18px;
+  height: 18px;
+}
+
 .aside {
   order: 1;
   align-self: stretch;
-  padding-bottom: 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  position: relative;
+  align-items: center;
 }
 
 .quote {
@@ -229,44 +260,29 @@
   font-size: clamp(22px, 2vw, 28px);
 }
 
-.socials {
-  position: absolute;
-  left: -10px;
-  bottom: 0;
-  display: flex;
-  gap: 4px;
-}
-
-.socials a {
-  width: 44px;
-  height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: inherit;
-}
-
-.socials a:hover {
-  color: #33322a;
-}
-
 @media (max-width: 760px) {
   .dialogBody {
     grid-template-columns: minmax(0, 1fr);
     align-items: start;
-    align-content: space-between;
+    align-content: start;
   }
   .menu,
   .aside {
     order: 0;
-    padding-right: 0;
   }
-  .menu .menuSecondary {
-    position: static;
-    margin-top: 16px;
+  .menu {
+    padding: 0;
   }
-  .socials {
+  .menu::before {
+    display: none;
+  }
+  .menu .socials {
     position: static;
-    margin: 16px 0 0 -10px;
+    margin-top: 12px;
+  }
+  .aside {
+    align-items: flex-start;
+    padding-top: 28px;
+    border-top: 1px solid rgba(75, 74, 63, 0.28);
   }
 }
