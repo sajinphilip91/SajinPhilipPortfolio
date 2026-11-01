@@ -3,7 +3,7 @@
 import { useEffect, useRef, type MouseEvent } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { menu, menuQuote, site } from "@/content/home";
+import { menu, menuQuote, menuSecondary, site } from "@/content/home";
 import { Logo } from "@/components/Logo";
 import styles from "./SiteHeader.module.css";
 
@@ -94,6 +94,15 @@ export function SiteHeader({ theme, solid, onNavigate }: Props) {
                     aria-current={pathname === item.href ? "page" : undefined}
                     onClick={(e) => follow(e, item.target)}
                   >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <ul className={styles.menuSecondary}>
+              {menuSecondary.map((item) => (
+                <li key={item.label}>
+                  <Link href={item.href} onClick={(e) => follow(e)}>
                     {item.label}
                   </Link>
                 </li>

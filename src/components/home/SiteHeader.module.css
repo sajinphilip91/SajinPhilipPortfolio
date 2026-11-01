@@ -146,6 +146,11 @@
 /* Right on screen, first for reading order and on phones. */
 .menu {
   order: 2;
+  align-self: stretch;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding-right: clamp(0px, 7vw, 120px);
 }
 
@@ -165,6 +170,21 @@
   font-size: clamp(34px, min(9.4vh, 6.2vw), 80px);
   line-height: 1.1;
   letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.menu .menuSecondary {
+  position: absolute;
+  left: 0;
+  bottom: 8px;
+  display: flex;
+  gap: 28px;
+}
+
+.menuSecondary a {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.14em;
 }
 
 .menu a:hover,
@@ -240,6 +260,10 @@
   .aside {
     order: 0;
     padding-right: 0;
+  }
+  .menu .menuSecondary {
+    position: static;
+    margin-top: 16px;
   }
   .socials {
     position: static;

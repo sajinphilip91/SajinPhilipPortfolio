@@ -1,0 +1,138 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body><section class="glassscore-tryit">
+  <style>
+    .glassscore-tryit {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 720px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background: #fafafa;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+    .glassscore-tryit h2 {
+      font-size: 1.5rem;
+      margin: 0 0 0.5rem;
+      color: #1a1a1a;
+    }
+    .glassscore-tryit .gs-sub {
+      color: #555;
+      margin: 0 0 1.5rem;
+      font-size: 0.95rem;
+    }
+    .glassscore-tryit .gs-link-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 0.85rem 1.1rem;
+      margin-bottom: 1.75rem;
+    }
+    .glassscore-tryit .gs-link-box code {
+      font-size: 0.92rem;
+      word-break: break-all;
+      color: #1a1a1a;
+    }
+    .glassscore-tryit .gs-link-box a {
+      flex-shrink: 0;
+      background: #1a1a1a;
+      color: #fff;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .glassscore-tryit ol.gs-steps {
+      counter-reset: gs-step;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .glassscore-tryit ol.gs-steps li {
+      counter-increment: gs-step;
+      position: relative;
+      padding: 0 0 1.4rem 2.6rem;
+      margin: 0;
+    }
+    .glassscore-tryit ol.gs-steps li:last-child {
+      padding-bottom: 0;
+    }
+    .glassscore-tryit ol.gs-steps li::before {
+      content: counter(gs-step);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1.8rem;
+      height: 1.8rem;
+      border-radius: 50%;
+      background: #1a1a1a;
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .glassscore-tryit ol.gs-steps li strong {
+      display: block;
+      margin-bottom: 0.2rem;
+      font-size: 1rem;
+      color: #1a1a1a;
+    }
+    .glassscore-tryit ol.gs-steps li p {
+      margin: 0;
+      color: #444;
+      font-size: 0.95rem;
+    }
+    .glassscore-tryit .gs-note {
+      margin-top: 1.75rem;
+      padding: 0.9rem 1.1rem;
+      background: #f0f0f0;
+      border-left: 3px solid #999;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.9rem;
+      color: #444;
+    }
+    .glassscore-tryit .gs-note strong {
+      color: #1a1a1a;
+    }
+  </style>
+
+  <h2>Try GlassScore on your Meta glasses</h2>
+  <p class="gs-sub">GlassScore is built as a Web App for Meta Ray-Ban Display, so you can load it directly onto your glasses in a couple of minutes &mdash; no app store required.</p>
+
+  <div class="gs-link-box">
+    <code>meta-glass-scores.vercel.app</code>
+    <a href="https://meta-glass-scores.vercel.app/" target="_blank" rel="noopener">Open Link</a>
+  </div>
+
+  <ol class="gs-steps">
+    <li>
+      <strong>Check your glasses are compatible</strong>
+      <p>Web Apps currently run only on Meta Ray-Ban Display, with the in-lens screen. Make sure your glasses software is on v125 or newer (Meta AI app &rarr; Devices &rarr; gear icon &rarr; General &rarr; About).</p>
+    </li>
+    <li>
+      <strong>Update the Meta AI app</strong>
+      <p>You'll need version v272 or later. Check this under Meta AI app &rarr; Settings &rarr; App Info, and update from the App Store or Play Store if needed.</p>
+    </li>
+    <li>
+      <strong>Turn on Developer Mode</strong>
+      <p>In the Meta AI app, go to Settings &rarr; App Info, then tap the App version number five times. A pop-up will appear &mdash; tap Enable. This only needs to be done once.</p>
+    </li>
+    <li>
+      <strong>Add GlassScore as a Web App</strong>
+      <p>Go to App Settings &rarr; App Connections &rarr; Web Apps &rarr; Add a Web App. Give it a name (e.g. "GlassScore"), paste in <strong>meta-glass-scores.vercel.app</strong>, and tap Connect.</p>
+    </li>
+    <li>
+      <strong>Launch it on your glasses</strong>
+      <p>GlassScore will appear in your Meta Ray-Ban Display app grid right away. Select it to open the live football and cricket scores on your lens, and pin it for quick access next time.</p>
+    </li>
+  </ol>
+
+  <p class="gs-note"><strong>Tip:</strong> Once inside GlassScore, use up/down/left/right swipes and a pinch or tap to navigate. A middle pinch brings up the menu to restart, resume, or manage permissions &mdash; useful if you want to re-enable voice control.</p>
+</section></body></html>

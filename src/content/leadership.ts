@@ -95,7 +95,7 @@ export const humanAi = {
     },
   ],
   closing: "Great leadership is still human, rooted in empathy, ethics and intuition. AI simply amplifies it.",
-  link: { title: "My UX and AI page", href: "/uxai" },
+  link: { title: "My writing on UX and AI", href: "/writing" },
 };
 
 export const designer = {

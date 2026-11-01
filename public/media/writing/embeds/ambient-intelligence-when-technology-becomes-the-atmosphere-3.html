@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AmI Ecosystem Layers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #FAFAF8;
+      color: #1A1A18;
+      padding: 2rem 1.5rem;
+      margin: 0;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .layer {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .layer-verb {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      width: 48px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .layer-card {
+      flex: 1;
+      border-radius: 12px;
+      padding: 14px 20px;
+      border: 1px solid transparent;
+      transition: transform 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .layer-card:hover { transform: translateY(-1px); }
+
+    .card-left { flex: 1; min-width: 0; }
+
+    .layer-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .layer-title {
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .layer-sub {
+      font-size: 12px;
+      font-weight: 300;
+    }
+
+    .layer-badge {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .connector {
+      display: flex;
+      justify-content: center;
+      height: 32px;
+      width: 100%;
+      padding-left: 64px;
+    }
+
+    .connector-line {
+      width: 1px;
+      height: 100%;
+      background: repeating-linear-gradient(
+        to bottom,
+        #D3D1C7 0px,
+        #D3D1C7 4px,
+        transparent 4px,
+        transparent 8px
+      );
+      position: relative;
+    }
+
+    .connector-arrow {
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid #D3D1C7;
+    }
+
+    .l-coral  { background: #FAECE7; border-color: #F5C4B3; }
+    .l-purple { background: #EEEDFE; border-color: #CECBF6; }
+    .l-teal   { background: #E1F5EE; border-color: #9FE1CB; }
+    .l-blue   { background: #E6F1FB; border-color: #B5D4F4; }
+    .l-gray   { background: #F1EFE8; border-color: #D3D1C7; border-width: 1.5px; }
+
+    .t-coral  { color: #712B13; }
+    .t-purple { color: #3C3489; }
+    .t-teal   { color: #085041; }
+    .t-blue   { color: #0C447C; }
+    .t-gray   { color: #2C2C2A; }
+
+    .s-coral  { color: #993C1D; }
+    .s-purple { color: #534AB7; }
+    .s-teal   { color: #0F6E56; }
+    .s-blue   { color: #185FA5; }
+    .s-gray   { color: #888780; }
+
+    .badge-coral  { background: #F5C4B3; color: #712B13; }
+    .badge-purple { background: #CECBF6; color: #3C3489; }
+    .badge-teal   { background: #9FE1CB; color: #085041; }
+    .badge-blue   { background: #B5D4F4; color: #0C447C; }
+    .badge-gray   { background: #D3D1C7; color: #2C2C2A; }
+
+    .verb-coral  { color: #993C1D; }
+    .verb-purple { color: #534AB7; }
+    .verb-teal   { color: #0F6E56; }
+    .verb-blue   { color: #185FA5; }
+    .verb-gray   { color: #888780; }
+
+    .caption {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 300;
+      color: #9E9E9A;
+      margin-top: 1.5rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .layer { opacity: 0; animation: fadeUp 0.35s ease forwards; }
+    .layer:nth-child(1) { animation-delay: 0.05s; }
+    .layer:nth-child(3) { animation-delay: 0.12s; }
+    .layer:nth-child(5) { animation-delay: 0.19s; }
+    .layer:nth-child(7) { animation-delay: 0.26s; }
+    .layer:nth-child(9) { animation-delay: 0.33s; }
+  </style>
+</head>
+<body>
+
+  <div class="stack">
+
+    <div class="layer">
+      <span class="layer-verb verb-coral">Acts</span>
+      <div class="layer-card l-coral">
+        <div class="card-left">
+          <div class="layer-label s-coral">Layer 4</div>
+          <div class="layer-title t-coral">Agentic AI</div>
+          <div class="layer-sub s-coral">Reasons · predicts · acts on all layers</div>
+        </div>
+        <span class="layer-badge badge-coral">Outer ring</span>
+      </div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-line"><div class="connector-arrow"></div></div>
+    </div>
+
+    <div class="layer">
+      <span class="layer-verb verb-purple">Learns</span>
+      <div class="layer-card l-purple">
+        <div class="card-left">
+          <div class="layer-label s-purple">Layer 3</div>
+          <div class="layer-title t-purple">Temporal layer</div>
+          <div class="layer-sub s-purple">Time · routine · daily patterns</div>
+        </div>
+        <span class="layer-badge badge-purple">Patterns</span>
+      </div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-line"><div class="connector-arrow"></div></div>
+    </div>
+
+    <div class="layer">
+      <span class="layer-verb verb-teal">Maps</span>
+      <div class="layer-card l-teal">
+        <div class="card-left">
+          <div class="layer-label s-teal">Layer 2</div>
+          <div class="layer-title t-teal">Spatial layer</div>
+          <div class="layer-sub s-teal">Location · proximity · objects nearby</div>
+        </div>
+        <span class="layer-badge badge-teal">Environment</span>
+      </div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-line"><div class="connector-arrow"></div></div>
+    </div>
+
+    <div class="layer">
+      <span class="layer-verb verb-blue">Reads</span>
+      <div class="layer-card l-blue">
+        <div class="card-left">
+          <div class="layer-label s-blue">Layer 1</div>
+          <div class="layer-title t-blue">Physiological layer</div>
+          <div class="layer-sub s-blue">Heart rate · stress · focus state</div>
+        </div>
+        <span class="layer-badge badge-blue">Body</span>
+      </div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-line"><div class="connector-arrow"></div></div>
+    </div>
+
+    <div class="layer">
+      <span class="layer-verb verb-gray">Core</span>
+      <div class="layer-card l-gray">
+        <div class="card-left">
+          <div class="layer-label s-gray">Center</div>
+          <div class="layer-title t-gray">User</div>
+          <div class="layer-sub s-gray">Intent · behaviour · context</div>
+        </div>
+        <span class="layer-badge badge-gray">You</span>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="caption">Each layer wraps and feeds the one above it</p>
+
+</body>
+</html>

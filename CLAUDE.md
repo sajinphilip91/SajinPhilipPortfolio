@@ -24,7 +24,7 @@ Desktop (≥901px wide, ≥640px tall) is full-page: one wheel/swipe/key = one s
 
 Only the hero and builds are full width; content sections cap at 1440px.
 
-Navigation: fixed logo + menu icon on every page; the icon opens a full-screen menu with the old site's items (`menu` in `src/content/home.ts`). `/leadership` is built and also holds the old About content (`/about` redirects to it); inner pages scroll normally and white sections carry `data-light` so the header follows them.
+Navigation: fixed logo + menu icon on every page; the icon opens a full-screen menu with the old site's items (`menu` in `src/content/home.ts`). `/leadership` is built and also holds the old About content (`/about` redirects to it). `/writing` lists every Markdown file in `src/content/posts` (39 posts copied from Wix; add a file to publish, no database) and replaces UX + AI. Resume and For agents sit small at the bottom of the menu; inner pages scroll normally and white sections carry `data-light` so the header follows them.
 
 ## Design system
 
@@ -36,7 +36,7 @@ Navigation: fixed logo + menu icon on every page; the icon opens a full-screen m
 ## Open items
 
 - Footer (next task).
-- Inner pages: `/work/*`, `/writing/*`, `/for-agents` (+ `llms.txt`). Old Wix URLs already redirect to these in `next.config.ts`.
+- Inner pages: `/work/*`, `/for-agents` (+ `llms.txt`). Old Wix URLs already redirect to these in `next.config.ts`.
 - `public/resume.pdf` is the current Wix resume; an ATS/agentic-focused rewrite comes later.
 - Images: case study covers, app screenshots.
 - Content gaps: measured results for most case studies, WhatsApp Poll problem line, Dropshipping details (password-protected on Wix).

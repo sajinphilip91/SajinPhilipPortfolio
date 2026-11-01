@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cognitive Switching Cost: Phone vs Smart Glasses</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #ffffff;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 940px;
+    padding: 48px 48px 40px;
+    border: 1.5px solid #EBEBEB;
+    border-radius: 20px;
+  }
+
+  .label-top {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #AAAAAA;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: #888;
+    font-weight: 400;
+    margin-bottom: 48px;
+    line-height: 1.6;
+    max-width: 560px;
+  }
+
+  /* ── Two-column comparison layout ── */
+  .comparison {
+    display: flex;
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Column header with dot on spine */
+  .col-header-wrap {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .col-spine {
+    position: absolute;
+    top: 5px;
+    left: 12%;
+    right: 12%;
+    height: 2px;
+    z-index: 0;
+  }
+
+  .col-dot-row {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 14px;
+  }
+
+  .col-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2.5px solid #fff;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 2px currentColor;
+  }
+
+  .col-label {
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .col-sublabel {
+    font-size: 11.5px;
+    color: #AAA;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.03em;
+  }
+
+  /* Steps list */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .step {
+    border-radius: 10px;
+    padding: 14px 16px;
+    border: 1.5px solid transparent;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: fadeUp 0.4s ease forwards;
+  }
+
+  /* stagger all steps */
+  .phone-col .step:nth-child(1) { animation-delay: 0.05s; }
+  .phone-col .step:nth-child(2) { animation-delay: 0.12s; }
+  .phone-col .step:nth-child(3) { animation-delay: 0.19s; }
+  .phone-col .step:nth-child(4) { animation-delay: 0.26s; }
+  .phone-col .step:nth-child(5) { animation-delay: 0.33s; }
+  .glasses-col .step:nth-child(1) { animation-delay: 0.10s; }
+  .glasses-col .step:nth-child(2) { animation-delay: 0.17s; }
+  .glasses-col .step:nth-child(3) { animation-delay: 0.24s; }
+  .glasses-col .step:nth-child(4) { animation-delay: 0.31s; }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .step-text {
+    flex: 1;
+  }
+
+  .step-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    line-height: 1.3;
+  }
+
+  .step-desc {
+    font-size: 11.5px;
+    font-weight: 400;
+    line-height: 1.5;
+    opacity: 0.7;
+  }
+
+  /* Phone column — coral/red tones for friction */
+  .phone-col .col-dot   { color: #E87B5A; background: #E87B5A; }
+  .phone-col .col-spine { background: linear-gradient(to right, #F5C4B3, #E87B5A); }
+  .phone-col .col-label { color: #8A2E08; }
+
+  .phone-col .step.neutral { background: #F5F4F0; border-color: #E0DED8; }
+  .phone-col .step.neutral .step-num { background: #E0DED8; color: #666; }
+  .phone-col .step.neutral .step-title { color: #444; }
+
+  .phone-col .step.friction { background: #FEF0EB; border-color: #FBCFB8; }
+  .phone-col .step.friction .step-num { background: #FBCFB8; color: #8A2E08; }
+  .phone-col .step.friction .step-title { color: #8A2E08; }
+  .phone-col .step.friction .step-desc  { color: #B8501C; }
+
+  /* Glasses column — teal tones for flow */
+  .glasses-col .col-dot   { color: #5DCAA5; background: #5DCAA5; }
+  .glasses-col .col-spine { background: linear-gradient(to right, #9FE1CB, #5DCAA5); }
+  .glasses-col .col-label { color: #0D5C40; }
+
+  .glasses-col .step.neutral { background: #F5F4F0; border-color: #E0DED8; }
+  .glasses-col .step.neutral .step-num { background: #E0DED8; color: #666; }
+  .glasses-col .step.neutral .step-title { color: #444; }
+
+  .glasses-col .step.flow { background: #EDF8F3; border-color: #C5EADB; }
+  .glasses-col .step.flow .step-num { background: #C5EADB; color: #0D5C40; }
+  .glasses-col .step.flow .step-title { color: #0D5C40; }
+  .glasses-col .step.flow .step-desc  { color: #3A8A68; }
+
+  /* Verdict row — same height filler for glasses col */
+  .col-verdict {
+    margin-top: 16px;
+    border-radius: 10px;
+    padding: 14px 16px;
+    border: 1.5px solid transparent;
+  }
+
+  .phone-col .col-verdict {
+    background: #FEF0EB;
+    border-color: #FBCFB8;
+  }
+
+  .glasses-col .col-verdict {
+    background: #EDF8F3;
+    border-color: #C5EADB;
+  }
+
+  .verdict-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .verdict-unit {
+    font-size: 13px;
+    font-weight: 400;
+    opacity: 0.6;
+  }
+
+  .verdict-label {
+    font-size: 11.5px;
+    font-weight: 400;
+    line-height: 1.5;
+    opacity: 0.7;
+  }
+
+  .phone-col .verdict-num   { color: #C84A18; }
+  .phone-col .verdict-label { color: #B8501C; }
+  .glasses-col .verdict-num   { color: #1A8A62; }
+  .glasses-col .verdict-label { color: #3A8A68; }
+
+  /* Divider between columns */
+  .divider {
+    width: 1px;
+    background: #F0EEE8;
+    flex-shrink: 0;
+    align-self: stretch;
+  }
+
+  /* Stats row — same as diagram 1 */
+  .stats {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid #F0EEE8;
+    display: flex;
+  }
+
+  .stat {
+    flex: 1;
+    padding: 0 20px;
+    border-right: 1px solid #F0EEE8;
+  }
+
+  .stat:first-child { padding-left: 0; }
+  .stat:last-child  { border-right: none; }
+
+  .stat-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: #111;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+
+  .stat-val span {
+    font-size: 12px;
+    font-weight: 400;
+    color: #AAA;
+    margin-left: 2px;
+  }
+
+  .stat-label {
+    font-size: 11.5px;
+    color: #999;
+    line-height: 1.4;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 620px) {
+    .card    { padding: 32px 20px 28px; }
+    h2       { font-size: 20px; }
+    .subtitle { font-size: 13px; margin-bottom: 32px; }
+
+    .comparison {
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .divider { display: none; }
+
+    .col-spine { left: 44%; right: 44%; }
+
+    .step { padding: 12px 14px; }
+    .step-title { font-size: 12.5px; }
+
+    .verdict-num { font-size: 22px; }
+
+    .stats { flex-wrap: wrap; }
+
+    .stat {
+      flex: 0 0 50%;
+      padding: 14px 0 0 0;
+      border-right: none;
+      border-top: 1px solid #F0EEE8;
+    }
+
+    .stat:nth-child(1),
+    .stat:nth-child(2) { border-top: none; padding-top: 0; }
+
+    .stat:nth-child(odd)  { padding-right: 14px; }
+    .stat:nth-child(even) { padding-left: 14px; border-left: 1px solid #F0EEE8; }
+
+    .stat-val { font-size: 19px; }
+  }
+
+  @media (max-width: 360px) {
+    .card { padding: 20px 14px; }
+    .stat { flex: 0 0 100%; border-left: none !important; padding: 12px 0 0 0 !important; border-top: 1px solid #F0EEE8 !important; }
+    .stat:first-child { border-top: none !important; padding-top: 0 !important; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="label-top">Attention & Interaction Design</div>
+  <h2>The cost of looking away</h2>
+  <p class="subtitle">Every time you reach for your phone, you pay an attention tax. Smart glasses reduce that cost to near zero.</p>
+
+  <div class="comparison">
+
+    <!-- Phone column -->
+    <div class="col phone-col">
+      <div class="col-header-wrap">
+        <div class="col-spine"></div>
+        <div class="col-dot-row">
+          <div class="col-dot"></div>
+        </div>
+        <div class="col-label">Smartphone</div>
+        <div class="col-sublabel">4 context switches</div>
+      </div>
+
+      <div class="steps">
+        <div class="step neutral">
+          <div class="step-num">–</div>
+          <div class="step-text">
+            <div class="step-title">In conversation</div>
+            <div class="step-desc">Present, engaged, eye contact maintained.</div>
+          </div>
+        </div>
+        <div class="step friction">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <div class="step-title">Reach for phone</div>
+            <div class="step-desc">Physical action breaks the moment.</div>
+          </div>
+        </div>
+        <div class="step friction">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <div class="step-title">Look down, break eye contact</div>
+            <div class="step-desc">Social signal lost. You appear distracted.</div>
+          </div>
+        </div>
+        <div class="step friction">
+          <div class="step-num">3</div>
+          <div class="step-text">
+            <div class="step-title">Unlock, navigate, read</div>
+            <div class="step-desc">Cognitive focus fully shifts to screen.</div>
+          </div>
+        </div>
+        <div class="step friction">
+          <div class="step-num">4</div>
+          <div class="step-text">
+            <div class="step-title">Re-enter conversation</div>
+            <div class="step-desc">Reconnect and re-establish context.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-verdict">
+        <div class="verdict-num">
+          4
+          <span class="verdict-unit">interruptions</span>
+        </div>
+        <div class="verdict-label">Presence is broken. Attention is taxed. The other person noticed.</div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Glasses column -->
+    <div class="col glasses-col">
+      <div class="col-header-wrap">
+        <div class="col-spine"></div>
+        <div class="col-dot-row">
+          <div class="col-dot"></div>
+        </div>
+        <div class="col-label">Smart glasses</div>
+        <div class="col-sublabel">1 ambient signal</div>
+      </div>
+
+      <div class="steps">
+        <div class="step neutral">
+          <div class="step-num">–</div>
+          <div class="step-text">
+            <div class="step-title">In conversation</div>
+            <div class="step-desc">Present, engaged, eye contact maintained.</div>
+          </div>
+        </div>
+        <div class="step flow">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <div class="step-title">Peripheral glance</div>
+            <div class="step-desc">Information surfaces at the edge of vision.</div>
+          </div>
+        </div>
+        <div class="step flow">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <div class="step-title">Information received</div>
+            <div class="step-desc">Read in under 2 seconds. Gaze stays forward.</div>
+          </div>
+        </div>
+        <div class="step neutral">
+          <div class="step-num">–</div>
+          <div class="step-text">
+            <div class="step-title">Conversation continues</div>
+            <div class="step-desc">No pause. No signal lost. Nobody noticed.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-verdict">
+        <div class="verdict-num">
+          0
+          <span class="verdict-unit">interruptions</span>
+        </div>
+        <div class="verdict-label">Presence maintained. Attention intact. The interaction never stopped.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Stats row -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-val">4×<span>fewer</span></div>
+      <div class="stat-label">Context switches per interaction</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">&lt;2s<span>read time</span></div>
+      <div class="stat-label">Glanceability target for ambient UI</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">0</div>
+      <div class="stat-label">Eye contact breaks with glasses</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">100%<span>present</span></div>
+      <div class="stat-label">The goal of ambient interaction design</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

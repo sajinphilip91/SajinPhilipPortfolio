@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psychology of Smart Glasses Adoption</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #ffffff;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 940px;
+    padding: 48px 48px 40px;
+    border: 1.5px solid #EBEBEB;
+    border-radius: 20px;
+  }
+
+  .label-top {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #AAAAAA;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: #888;
+    font-weight: 400;
+    margin-bottom: 48px;
+    line-height: 1.6;
+    max-width: 560px;
+  }
+
+  /* ── Diagram area ── */
+  .diagram-wrap {
+    width: 100%;
+    position: relative;
+  }
+
+  svg.diagram {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ── Stats row — identical to diagrams 1 & 2 ── */
+  .stats {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid #F0EEE8;
+    display: flex;
+  }
+
+  .stat {
+    flex: 1;
+    padding: 0 20px;
+    border-right: 1px solid #F0EEE8;
+  }
+
+  .stat:first-child { padding-left: 0; }
+  .stat:last-child  { border-right: none; }
+
+  .stat-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: #111;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+
+  .stat-val span {
+    font-size: 12px;
+    font-weight: 400;
+    color: #AAA;
+    margin-left: 2px;
+  }
+
+  .stat-label {
+    font-size: 11.5px;
+    color: #999;
+    line-height: 1.4;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 620px) {
+    .card     { padding: 32px 20px 28px; }
+    h2        { font-size: 20px; }
+    .subtitle { font-size: 13px; margin-bottom: 32px; }
+
+    .stats { flex-wrap: wrap; }
+
+    .stat {
+      flex: 0 0 50%;
+      padding: 14px 0 0 0;
+      border-right: none;
+      border-top: 1px solid #F0EEE8;
+    }
+
+    .stat:nth-child(1),
+    .stat:nth-child(2) { border-top: none; padding-top: 0; }
+
+    .stat:nth-child(odd)  { padding-right: 14px; }
+    .stat:nth-child(even) { padding-left: 14px; border-left: 1px solid #F0EEE8; }
+
+    .stat-val { font-size: 19px; }
+  }
+
+  @media (max-width: 360px) {
+    .card { padding: 20px 14px; }
+    .stat { flex: 0 0 100%; border-left: none !important; padding: 12px 0 0 0 !important; border-top: 1px solid #F0EEE8 !important; }
+    .stat:first-child { border-top: none !important; padding-top: 0 !important; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="label-top">Adoption Psychology</div>
+  <h2>Why people wear — or don't</h2>
+  <p class="subtitle">Four forces shape whether smart glasses become part of someone's life. Designers need to understand all of them.</p>
+
+  <div class="diagram-wrap">
+    <svg class="diagram" viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- Connector lines from centre to each outer box -->
+      <!-- Top: Identity -->
+      <line x1="340" y1="178" x2="340" y2="130" stroke="#DDDBD5" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <!-- Bottom: Presence -->
+      <line x1="340" y1="242" x2="340" y2="290" stroke="#DDDBD5" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <!-- Left: Habit -->
+      <line x1="270" y1="210" x2="196" y2="210" stroke="#DDDBD5" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <!-- Right: Privacy -->
+      <line x1="410" y1="210" x2="484" y2="210" stroke="#DDDBD5" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+      <!-- Centre node — Adoption -->
+      <rect x="270" y="178" width="140" height="64" rx="12" fill="#F5F4F0" stroke="#DDDBD5" stroke-width="1.5"/>
+      <text font-family="'DM Sans', sans-serif" font-size="15" font-weight="600" fill="#222" text-anchor="middle" x="340" y="206" dominant-baseline="central">Adoption</text>
+      <text font-family="'DM Mono', monospace" font-size="11" font-weight="400" fill="#AAAAAA" text-anchor="middle" x="340" y="226" dominant-baseline="central">Smart glasses</text>
+
+      <!-- TOP: Identity — purple -->
+      <rect x="210" y="40" width="260" height="84" rx="12" fill="#F3F1FD" stroke="#DDD9F6" stroke-width="1.5"/>
+      <text font-family="'DM Mono', monospace" font-size="11" font-weight="500" fill="#6C60C8" text-anchor="middle" x="340" y="62" dominant-baseline="central" letter-spacing="0.06">DRIVES ADOPTION</text>
+      <text font-family="'DM Sans', sans-serif" font-size="14" font-weight="600" fill="#3D3580" text-anchor="middle" x="340" y="84" dominant-baseline="central">Identity</text>
+      <text font-family="'DM Sans', sans-serif" font-size="12" font-weight="400" fill="#6B63A8" text-anchor="middle" x="340" y="104" dominant-baseline="central">Fashion + tech = fashnology</text>
+
+      <!-- BOTTOM: Presence — teal -->
+      <rect x="210" y="296" width="260" height="84" rx="12" fill="#EDF8F3" stroke="#C5EADB" stroke-width="1.5"/>
+      <text font-family="'DM Mono', monospace" font-size="11" font-weight="500" fill="#1A8A62" text-anchor="middle" x="340" y="318" dominant-baseline="central" letter-spacing="0.06">DEFINES QUALITY</text>
+      <text font-family="'DM Sans', sans-serif" font-size="14" font-weight="600" fill="#0D5C40" text-anchor="middle" x="340" y="340" dominant-baseline="central">Presence</text>
+      <text font-family="'DM Sans', sans-serif" font-size="12" font-weight="400" fill="#3A8A68" text-anchor="middle" x="340" y="360" dominant-baseline="central">Stay in the moment</text>
+
+      <!-- LEFT: Habit — amber -->
+      <rect x="20" y="162" width="170" height="96" rx="12" fill="#FDF8EC" stroke="#F5DFA0" stroke-width="1.5"/>
+      <text font-family="'DM Mono', monospace" font-size="11" font-weight="500" fill="#B07A10" text-anchor="middle" x="105" y="184" dominant-baseline="central" letter-spacing="0.06">ENABLES</text>
+      <text font-family="'DM Sans', sans-serif" font-size="14" font-weight="600" fill="#7A5200" text-anchor="middle" x="105" y="206" dominant-baseline="central">Habit</text>
+      <text font-family="'DM Sans', sans-serif" font-size="12" font-weight="400" fill="#A07020" text-anchor="middle" x="105" y="224" dominant-baseline="central">Anchors to</text>
+      <text font-family="'DM Sans', sans-serif" font-size="12" font-weight="400" fill="#A07020" text-anchor="middle" x="105" y="240" dominant-baseline="central">existing routines</text>
+
+      <!-- RIGHT: Privacy — coral -->
+      <rect x="490" y="162" width="170" height="96" rx="12" fill="#FEF3EE" stroke="#FBCFB8" stroke-width="1.5"/>
+      <text font-family="'DM Mono', monospace" font-size="11" font-weight="500" fill="#C84A18" text-anchor="middle" x="575" y="184" dominant-baseline="central" letter-spacing="0.06">RESISTS</text>
+      <text font-family="'DM Sans', sans-serif" font-size="14" font-weight="600" fill="#8A2E08" text-anchor="middle" x="575" y="206" dominant-baseline="central">Privacy</text>
+      <text font-family="'DM Sans', sans-serif" font-size="12" font-weight="400" fill="#B8501C" text-anchor="middle" x="575" y="224" dominant-baseline="central">~50% public</text>
+      <text font-family="'DM Sans', sans-serif" font-size="12" font-weight="400" fill="#B8501C" text-anchor="middle" x="575" y="240" dominant-baseline="central">discomfort</text>
+
+      <!-- Relationship labels on connectors -->
+      <text font-family="'DM Sans', sans-serif" font-size="11" fill="#CCCCCC" text-anchor="middle" x="340" y="148" dominant-baseline="central">drives</text>
+      <text font-family="'DM Sans', sans-serif" font-size="11" fill="#CCCCCC" text-anchor="middle" x="340" y="276" dominant-baseline="central">determines quality</text>
+      <text font-family="'DM Sans', sans-serif" font-size="11" fill="#CCCCCC" text-anchor="middle" x="233" y="200" dominant-baseline="central">enables</text>
+      <text font-family="'DM Sans', sans-serif" font-size="11" fill="#CCCCCC" text-anchor="middle" x="447" y="200" dominant-baseline="central">resists</text>
+
+    </svg>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-val">~50%<span>public</span></div>
+      <div class="stat-label">Uncomfortable with wearable cameras</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">Style<span>first</span></div>
+      <div class="stat-label">Fashion credibility drives early adoption</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">Habit<span>anchor</span></div>
+      <div class="stat-label">Glasses already worn daily by millions</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">Present<span>= win</span></div>
+      <div class="stat-label">Staying in the moment is the UX goal</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

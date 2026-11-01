@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Now agents build for agents</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #FFFFFF; --surface: #F8F7F4; --border: #E4E0D8;
+    --text: #1A1A1A; --muted: #5A5A5A; --dim: #909090;
+    --purple: #534AB7; --purple-l: #EEEDFE; --purple-m: #CECBF6;
+    --teal: #0F6E56;   --teal-l: #E1F5EE;   --teal-m: #9FE1CB;
+    --amber: #854F0B;  --amber-l: #FAEEDA;  --amber-m: #FAC775;
+    --green: #3B6D11;  --green-l: #EAF3DE;
+    --red: #A32D2D;    --red-l: #FCEBEB;
+    --sans: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+    --r: 10px; --rs: 6px;
+  }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.75; font-size: 17px; }
+  .article { max-width: 780px; margin: 0 auto; padding: 20px 24px 100px; }
+
+  /* Typography */
+  .eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--purple); margin-bottom: 20px; }
+  h1 { font-size: clamp(30px, 5vw, 46px); font-weight: 600; line-height: 1.15; letter-spacing: -0.025em; margin-bottom: 16px; }
+  .header-sub { font-size: 19px; color: var(--muted); line-height: 1.6; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--border); }
+  h2 { font-size: 25px; font-weight: 600; letter-spacing: -0.015em; margin: 60px 0 14px; line-height: 1.25; }
+  h3 { font-size: 16px; font-weight: 600; margin: 32px 0 8px; }
+  p { margin-bottom: 18px; color: var(--muted); line-height: 1.8; }
+  p strong { color: var(--text); font-weight: 500; }
+  code { font-family: var(--mono); font-size: 13px; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; color: var(--purple); }
+  hr.br { border: none; border-top: 1px solid var(--border); margin: 56px 0; }
+
+  /* Pull quote */
+  .pq { border-left: 3px solid var(--purple); padding: 4px 0 4px 24px; margin: 36px 0; font-size: 20px; color: var(--text); line-height: 1.5; font-style: italic; }
+
+  /* Code block */
+  .cb { background: #1A1A2E; border-radius: var(--r); padding: 22px; margin: 20px 0; overflow-x: auto; }
+  .cb-label { font-family: var(--mono); font-size: 10px; color: #555; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+  .cb pre { font-family: var(--mono); font-size: 13px; line-height: 1.7; color: #C8D3F5; white-space: pre; }
+  .cm{color:#636DA6}.ck{color:#89DDFF}.cs{color:#C3E88D}.cn{color:#F78C6C}.cv{color:#82AAFF}
+
+  /* ── STAT ROW ── */
+  .stat-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 28px 0; }
+  @media(max-width:560px){.stat-row{grid-template-columns:1fr 1fr;}}
+  .stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 20px 16px; text-align: center; }
+  .stat-val { font-size: 28px; font-weight: 600; color: var(--purple); line-height: 1; margin-bottom: 6px; }
+  .stat-label { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+  /* ── BEFORE / AFTER SPLIT ── */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 28px 0; border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+  @media(max-width:540px){.split{grid-template-columns:1fr;}}
+  .split-head { padding: 12px 16px; font-size: 12px; font-weight: 600; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .split-head.bad  { color: var(--red);   border-right: 1px solid var(--border); }
+  .split-head.good { color: var(--green); }
+  .split-body { padding: 14px 16px; background: var(--surface); }
+  .split-body.left { border-right: 1px solid var(--border); }
+  .split-item { display: flex; gap: 8px; font-size: 13px; color: var(--muted); padding: 5px 0; border-bottom: 1px solid var(--border); line-height: 1.4; align-items: flex-start; }
+  .split-item:last-child { border: none; }
+  .si-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+  .si-dot.bad  { background: var(--red); }
+  .si-dot.good { background: var(--green); }
+
+  /* ── THREE LAYER VISUAL ── */
+  .three-layer { display: flex; flex-direction: column; gap: 0; margin: 28px 0; }
+  .layer { display: flex; align-items: stretch; gap: 0; border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; margin-bottom: 2px; }
+  .layer-num { width: 48px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600; flex-shrink: 0; background: var(--surface); }
+  .layer-num.amber  { color: var(--amber);  background: var(--amber-l);  border-right: 1px solid var(--amber-m); }
+  .layer-num.teal   { color: var(--teal);   background: var(--teal-l);   border-right: 1px solid var(--teal-m); }
+  .layer-num.purple { color: var(--purple); background: var(--purple-l); border-right: 1px solid var(--purple-m); }
+  .layer-content { flex: 1; padding: 14px 18px; background: var(--surface); border-left: 1px solid var(--border); }
+  .layer-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .layer-file  { font-family: var(--mono); font-size: 11px; color: var(--purple); margin-bottom: 4px; }
+  .layer-desc  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .layer-arrow { text-align: center; font-size: 16px; color: var(--border); padding: 2px 0; margin-bottom: 2px; }
+
+  /* ── LEADERSHIP VISUAL ── */
+  .leadership { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; margin: 24px 0; }
+  @media(max-width:540px){.leadership{grid-template-columns:1fr;}}
+  .lc { background: var(--surface); padding: 18px; }
+  .lc-icon { font-size: 13px; font-weight: 600; font-family: var(--mono); color: var(--purple); margin-bottom: 6px; }
+  .lc-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+  .lc-desc { font-size: 12px; color: var(--muted); line-height: 1.55; margin: 0; }
+
+  /* ── ARCHITECTURE ZONES ── */
+  .arch-visual { margin: 24px 0; }
+  .arch-zone { border-radius: var(--r); padding: 16px 18px; margin-bottom: 8px; }
+  .arch-zone.agent-zone  { background: var(--purple-l); border: 1px solid var(--purple-m); }
+  .arch-zone.src-zone    { background: var(--teal-l);   border: 1px solid var(--teal-m); }
+  .arch-zone.public-zone { background: var(--green-l);  border: 1px solid #C0DD97; }
+  .arch-zone-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .arch-zone-label { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; }
+  .arch-zone-label.purple { color: #3C3489; }
+  .arch-zone-label.teal   { color: #085041; }
+  .arch-zone-label.green  { color: var(--green); }
+  .arch-zone-sub { font-size: 11px; color: var(--muted); }
+  .arch-files { display: flex; flex-wrap: wrap; gap: 6px; }
+  .af { font-family: var(--mono); font-size: 11px; padding: 4px 9px; border-radius: var(--rs); display: inline-flex; align-items: center; gap: 5px; }
+  .af.purple { background: rgba(83,74,183,0.1); color: #3C3489; }
+  .af.teal   { background: rgba(15,110,86,0.1); color: #085041; }
+  .af.amber  { background: rgba(133,79,11,0.1); color: #633806; }
+  .af.green  { background: rgba(59,109,17,0.1); color: var(--green); }
+  .af.gray   { background: rgba(0,0,0,0.05); color: var(--muted); }
+  .af-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .af-dot.purple{background:var(--purple)}.af-dot.teal{background:var(--teal)}.af-dot.amber{background:var(--amber)}.af-dot.green{background:var(--green)}.af-dot.gray{background:var(--dim)}
+  .arch-arrow { text-align: center; font-size: 18px; color: var(--border); padding: 2px 0; margin-bottom: 6px; }
+
+  /* ── AGENT FLOW HORIZONTAL ── */
+  .agent-flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 0; margin: 24px 0; }
+  @media(max-width:580px){.agent-flow{grid-template-columns:1fr;}}
+  .af-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; text-align: center; }
+  .af-box.purple { border-color: var(--purple-m); }
+  .af-box.teal   { border-color: var(--teal-m); }
+  .af-box-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .af-box-desc  { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .af-arrow { text-align: center; font-size: 18px; color: var(--border); padding: 0 8px; }
+  @media(max-width:580px){.af-arrow{transform:rotate(90deg);padding:6px 0;}}
+
+  /* ── TASK FLOW TIMELINE ── */
+  .timeline { margin: 24px 0; }
+  .tl-item { display: flex; gap: 0; margin-bottom: 0; }
+  .tl-left { display: flex; flex-direction: column; align-items: center; width: 36px; flex-shrink: 0; }
+  .tl-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+  .tl-dot.purple { background: var(--purple); }
+  .tl-dot.teal   { background: var(--teal); }
+  .tl-dot.amber  { background: var(--amber); }
+  .tl-dot.green  { background: var(--green); }
+  .tl-line { width: 2px; background: var(--border); flex: 1; margin: 4px 0; min-height: 20px; }
+  .tl-content { flex: 1; padding-bottom: 20px; padding-left: 8px; }
+  .tl-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .tl-desc  { font-size: 12px; color: var(--muted); line-height: 1.5; margin: 0; }
+  .tl-item:last-child .tl-line { display: none; }
+  .tl-item:last-child .tl-content { padding-bottom: 0; }
+
+  /* ── STEPS ── */
+  .steps { display: flex; flex-direction: column; gap: 10px; margin: 24px 0; }
+  .step { display: flex; gap: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px 18px; align-items: flex-start; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--purple); color: white; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .step-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .step-sub { font-size: 12px; color: var(--muted); line-height: 1.55; margin: 0; }
+  .step-file { font-family: var(--mono); font-size: 11px; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 2px 7px; color: var(--purple); margin-top: 5px; display: inline-block; }
+
+  .prereq {
+    background: #1A1A2E;
+    border-radius: var(--r);
+    padding: 28px;
+    margin: 32px 0;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .prereq-icon { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+  .prereq-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #636DA6; margin-bottom: 6px; }
+  .prereq-title { font-size: 16px; font-weight: 600; color: #FFFFFF; margin-bottom: 6px; line-height: 1.3; }
+  .prereq-desc { font-size: 13px; color: #8892B0; line-height: 1.65; margin-bottom: 0; }
+  .prereq-link { display: inline-flex; align-items: center; gap: 6px; background: #0036FD; color: white; font-size: 13px; font-weight: 500; padding: 10px 20px; border-radius: var(--rs); text-decoration: none; margin-top: 20px; }
+  .prereq-link:hover { background: #0029CC; }
+
+  /* ── SUBDOMAIN ── */
+  .subdomain { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; margin: 24px 0; }
+  .subdomain-top { background: #1A1A2E; padding: 14px 20px; display: flex; align-items: center; gap: 10px; }
+  .sd-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .subdomain-url { font-family: var(--mono); font-size: 13px; color: #C3E88D; }
+  .subdomain-body { padding: 18px 20px; }
+  .subdomain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media(max-width:500px){.subdomain-grid{grid-template-columns:1fr;}}
+  .sd-item { display: flex; gap: 8px; font-size: 13px; color: var(--muted); align-items: flex-start; line-height: 1.4; }
+  .sd-check { color: var(--green); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── CALLOUT ── */
+  .callout { background: var(--purple-l); border: 1px solid var(--purple-m); border-radius: var(--r); padding: 18px 22px; margin: 28px 0; }
+  .callout-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--purple); margin-bottom: 6px; }
+  .callout p { font-size: 14px; color: #3C3489; line-height: 1.65; margin: 0; }
+
+  .callout-teal { background: var(--teal-l); border: 1px solid var(--teal-m); border-radius: var(--r); padding: 18px 22px; margin: 28px 0; }
+  .callout-teal .callout-label { color: var(--teal); }
+  .callout-teal p { font-size: 14px; color: #085041; line-height: 1.65; margin: 0; }
+
+  /* ── FUTURE ── */
+  .future { background: #1A1A2E; border-radius: var(--r); padding: 36px 32px; margin: 32px 0; }
+  .future h3 { color: #FFFFFF; font-size: 20px; margin: 0 0 16px; font-weight: 500; }
+  .future p { color: #8892B0; margin-bottom: 14px; font-size: 15px; line-height: 1.75; }
+  .future p:last-child { margin: 0; }
+  .future em { color: #C8D3F5; font-style: normal; }
+  .future-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .fs { background: rgba(255,255,255,0.05); border-radius: var(--rs); padding: 14px; text-align: center; }
+  .fs-val { font-size: 22px; font-weight: 600; color: #C8D3F5; margin-bottom: 4px; }
+  .fs-label { font-size: 11px; color: #636DA6; line-height: 1.4; }
+
+  /* diagram wrapper */
+  .diagram { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 28px 20px; margin: 28px 0; }
+  .diagram-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); margin-bottom: 20px; text-align: center; }
+
+  /* observation */
+  .obs { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 20px 24px; margin: 24px 0; }
+  .obs-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .obs-label::before { content: ''; display: inline-block; width: 20px; height: 2px; background: var(--teal); border-radius: 2px; }
+  .obs p { font-size: 13px; color: var(--muted); line-height: 1.65; margin: 0; }
+
+  /* future */
+  .future { border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; margin: 32px 0; }
+  .future-head { background: var(--purple-l); border-bottom: 1px solid var(--purple-m); padding: 20px 28px; }
+  .future-head h3 { color: #3C3489; font-size: 18px; font-weight: 600; margin: 0; }
+  .future-body { background: var(--surface); padding: 28px; }
+  .future-body p { color: var(--muted); margin-bottom: 16px; font-size: 15px; line-height: 1.8; }
+  .future-body p:last-child { margin: 0; color: var(--text); font-weight: 500; }
+  .future-body em { color: var(--purple); font-style: normal; font-weight: 500; }
+  .future-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 0 0 24px; }
+  .fs { background: var(--bg); border: 1px solid var(--border); border-radius: var(--rs); padding: 14px 16px; text-align: center; }
+  .fs-val { font-size: 16px; font-weight: 600; color: var(--purple); margin-bottom: 4px; }
+  .fs-label { font-size: 11px; color: var(--muted); line-height: 1.4; }
+</style>
+</head>
+<body>
+<article class="article">
+
+  <!-- Header added manually in Wix -->
+
+  <!-- ══ CONSUMER EVOLUTION ══ -->
+  <div style="border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:32px;">
+    <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;">
+      <!-- Column 1 -->
+      <div style="padding:20px 18px;background:var(--surface);text-align:center;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;">Then</div>
+        <div style="display:inline-flex;align-items:center;gap:6px;background:var(--purple-l);border:1px solid var(--purple-m);border-radius:99px;padding:6px 14px;font-size:13px;font-weight:600;color:#3C3489;margin-bottom:10px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--purple);"></span>Human
+        </div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.5;">Design systems built for human reference — designers, developers</div>
+      </div>
+      <!-- Arrow -->
+      <div style="display:flex;align-items:center;padding:0 4px;background:var(--bg);border-left:1px solid var(--border);border-right:1px solid var(--border);">
+        <span style="font-size:18px;color:var(--border);">→</span>
+      </div>
+      <!-- Column 2 -->
+      <div style="padding:20px 18px;background:var(--surface);text-align:center;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;">Now</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:10px;">
+          <div style="display:inline-flex;align-items:center;gap:6px;background:var(--purple-l);border:1px solid var(--purple-m);border-radius:99px;padding:5px 13px;font-size:12px;font-weight:600;color:#3C3489;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--purple);"></span>Human
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:var(--teal-l);border:1px solid var(--teal-m);border-radius:99px;padding:5px 13px;font-size:12px;font-weight:600;color:#085041;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--teal);"></span>AI Agent
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.5;">Two consumers — but most design systems still built for one</div>
+      </div>
+      <!-- Arrow -->
+      <div style="display:flex;align-items:center;padding:0 4px;background:var(--bg);border-left:1px solid var(--border);border-right:1px solid var(--border);">
+        <span style="font-size:18px;color:var(--border);">→</span>
+      </div>
+      <!-- Column 3 -->
+      <div style="padding:20px 18px;background:var(--purple-l);text-align:center;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:10px;">The shift</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:10px;">
+          <div style="display:inline-flex;align-items:center;gap:6px;background:white;border:1px solid var(--purple-m);border-radius:99px;padding:5px 13px;font-size:12px;font-weight:600;color:#3C3489;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--purple);"></span>Human
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:white;border:1px solid var(--teal-m);border-radius:99px;padding:5px 13px;font-size:12px;font-weight:600;color:#085041;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--teal);"></span>AI Agent
+          </div>
+        </div>
+        <div style="font-size:12px;color:#3C3489;line-height:1.5;font-weight:500;">Design systems built to serve both — natively</div>
+      </div>
+    </div>
+  </div>
+
+  <p>For the past decade, design systems were built for humans. Designers browsed them in Figma. Developers referenced them in documentation. That model worked well — until AI agents became a meaningful part of how products are built.</p>
+
+  <p>AI agents now write UI code, build screens, generate components. They consume your design system. But they were never designed for. The system lives in an external tool. The agent has to be told about it each time, has to interpret it, has to guess how visual decisions translate to code. The result is familiar: inconsistency that compounds with every generated screen.</p>
+
+  <div class="pq">"Design systems were built for humans to reference. The AI era requires design systems that agents can actually use."</div>
+
+  <p>This is not an argument against Figma or hosted design systems — those tools remain valuable for human collaboration and visual design. The argument is simpler: <strong>modern design systems need to support both humans and AI agents.</strong> Right now, most don't support agents at all.</p>
+
+  <hr class="br">
+
+  <!-- ══ BEFORE / AFTER ══ -->
+  <h2>The problem — and what changes</h2>
+
+  <div class="split">
+    <div>
+      <div class="split-head bad">Without an agent-consumable system</div>
+      <div class="split-body left">
+        <div class="split-item"><span class="si-dot bad"></span>Agent invents components from scratch every task</div>
+        <div class="split-item"><span class="si-dot bad"></span>Tokens inconsistent across generated screens</div>
+        <div class="split-item"><span class="si-dot bad"></span>Design drift compounds with every build</div>
+        <div class="split-item"><span class="si-dot bad"></span>Manual correction required after each task</div>
+        <div class="split-item"><span class="si-dot bad"></span>Figma and code diverge over time</div>
+      </div>
+    </div>
+    <div>
+      <div class="split-head good">With an agent-consumable system</div>
+      <div class="split-body">
+        <div class="split-item"><span class="si-dot good"></span>Agent reads the library before every task</div>
+        <div class="split-item"><span class="si-dot good"></span>Tokens applied consistently — system enforces it</div>
+        <div class="split-item"><span class="si-dot good"></span>Screens become more consistent over time</div>
+        <div class="split-item"><span class="si-dot good"></span>Correction work reduces considerably</div>
+        <div class="split-item"><span class="si-dot good"></span>Code is the source of truth — always current</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="br">
+
+  <!-- ══ THREE LAYERS ══ -->
+  <h2>What it looks like — the three-layer model</h2>
+
+  <p>Three structured files do most of the work. Each layer has a distinct role — and the agent reads all three before touching any UI.</p>
+
+  <div class="three-layer">
+    <div class="layer">
+      <div class="layer-num amber">1</div>
+      <div class="layer-content">
+        <div class="layer-title">Design tokens</div>
+        <div class="layer-file">src/styles/tokens.css</div>
+        <div class="layer-desc">Every color, font, spacing value, and radius as CSS custom properties. Imported once. Available to every component in the project. No hardcoded values anywhere else.</div>
+      </div>
+    </div>
+    <div class="layer-arrow">↓</div>
+    <div class="layer">
+      <div class="layer-num teal">2</div>
+      <div class="layer-content">
+        <div class="layer-title">Component map</div>
+        <div class="layer-file">.agent/skills/ui/component-library.md</div>
+        <div class="layer-desc">A structured index of every component: exact file path, all props with types and defaults, usage examples. This is what the agent reads before every UI task — the map of what already exists.</div>
+      </div>
+    </div>
+    <div class="layer-arrow">↓</div>
+    <div class="layer">
+      <div class="layer-num purple">3</div>
+      <div class="layer-content">
+        <div class="layer-title">Real component code</div>
+        <div class="layer-file">src/components/ui/</div>
+        <div class="layer-desc">The actual working components — what every screen imports from. The single source of truth. Built once. Reused everywhere. Updated by the design system agent when the product evolves.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="obs">
+    <div class="obs-label">What I noticed in practice</div>
+    <p>Before structuring things this way, agents would regularly create variations of components that already existed — slightly different button styles, custom spacing that didn't match the system. After implementing the component map, reuse improved considerably. The output felt more like work from someone who knew the codebase.</p>
+  </div>
+
+  <hr class="br">
+
+  <!-- ══ WHY IT MATTERS FOR LEADERS ══ -->
+  <h2>Why this matters for design leaders</h2>
+
+  <p>This is fundamentally a question of <strong>design governance in an AI-native environment.</strong> The implications extend well beyond technical architecture.</p>
+
+  <div class="leadership">
+    <div class="lc">
+      <div class="lc-icon">01 — Consistency</div>
+      <div class="lc-title">Consistency at scale</div>
+      <p class="lc-desc">When agents build from a shared component map, consistency improves — not because anyone enforced it manually, but because the system itself guided the output.</p>
+    </div>
+    <div class="lc">
+      <div class="lc-icon">02 — Debt</div>
+      <div class="lc-title">Reducing design debt</div>
+      <p class="lc-desc">A large source of design debt in AI-assisted development is components generated rather than reused. The component map creates structural pressure to reuse.</p>
+    </div>
+    <div class="lc">
+      <div class="lc-icon">03 — Onboarding</div>
+      <div class="lc-title">Faster onboarding</div>
+      <p class="lc-desc">New developers, new agents, new team members — all can understand the design system through a single file. The component map becomes onboarding documentation.</p>
+    </div>
+    <div class="lc">
+      <div class="lc-icon">04 — Governance</div>
+      <div class="lc-title">Design governance</div>
+      <p class="lc-desc">When the design system lives inside the codebase, changes are tracked through version control. You can see when a component changed, why, and what screens were affected.</p>
+    </div>
+    <div class="lc">
+      <div class="lc-icon">05 — Language</div>
+      <div class="lc-title">Shared understanding</div>
+      <p class="lc-desc">The component map creates a common language between designers, developers, and AI agents. Same component names, same prop vocabulary — communication improves across the team.</p>
+    </div>
+    <div class="lc">
+      <div class="lc-icon">06 — Speed</div>
+      <div class="lc-title">Quality at speed</div>
+      <p class="lc-desc">The promise of agentic development is speed. The risk is quality degradation. The design system is the structural mechanism that lets you increase speed without proportional inconsistency.</p>
+    </div>
+  </div>
+
+  <div class="callout-teal">
+    <div class="callout-label">The strategic shift</div>
+    <p>Design leaders have always been responsible for maintaining the design system. In an AI-native team, that responsibility evolves — the system itself needs to be maintained in a format that agents can consume. That's a design leadership decision, not a technical one.</p>
+  </div>
+
+  <hr class="br">
+
+  <!-- ══ PREREQUISITE — ARCHITECTURE ARTICLE ══ -->
+  <h2>Before the architecture — the thinking</h2>
+
+  <p>Everything you're about to see came from a deliberate architectural decision made before any code was written. Most teams skip this step. With agentic development, that compounds quickly — agents inherit whatever structure exists, good or bad.</p>
+
+  <div class="prereq">
+    <div>
+      <div class="prereq-label">Read first — prerequisite</div>
+      <div class="prereq-title">How to architect an agentic project before you start building</div>
+      <p class="prereq-desc">Before defining a design system, you need the agent architecture itself — what agents exist, what they own, how they communicate, what they're never allowed to touch. That thinking shapes everything downstream, including how a design system fits into the project.</p>
+      <a class="prereq-link" href="https://www.sajinphilip.com/post/agentic-development-setup-architecture" target="_blank">Read the architecture article →</a>
+    </div>
+  </div>
+
+  <hr class="br">
+
+  <!-- ══ ARCHITECTURE ══ -->
+  <h2>The reference architecture</h2>
+
+  <p>This structure works inside Claude Code, Cursor, Windsurf, or any agentic IDE that reads project context. The file names and folder conventions map directly across tools.</p>
+
+  <div class="arch-visual">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:8px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--dim);">.agent/</div>
+        <div style="font-size:11px;color:var(--muted);">what the agent reads before every task</div>
+      </div>
+      <div class="arch-files">
+        <span class="af purple"><span class="af-dot purple"></span>AGENT.md</span>
+        <span class="af purple"><span class="af-dot purple"></span>agents/design-system-agent.md</span>
+        <span class="af purple"><span class="af-dot purple"></span>agents/ui-developer.md</span>
+        <span class="af teal"><span class="af-dot teal"></span>skills/ui/component-library.md</span>
+        <span class="af amber"><span class="af-dot amber"></span>rules/design-system.md</span>
+        <span class="af gray"><span class="af-dot gray"></span>hooks/protect-files.sh</span>
+      </div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:8px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--dim);">src/</div>
+        <div style="font-size:11px;color:var(--muted);">real code the agent writes and imports</div>
+      </div>
+      <div class="arch-files">
+        <span class="af amber"><span class="af-dot amber"></span>styles/tokens.css</span>
+        <span class="af teal"><span class="af-dot teal"></span>components/ui/Button.jsx</span>
+        <span class="af teal"><span class="af-dot teal"></span>components/ui/InputField.jsx</span>
+        <span class="af teal"><span class="af-dot teal"></span>components/ui/Card.jsx</span>
+        <span class="af teal"><span class="af-dot teal"></span>components/ui/Badge.jsx</span>
+        <span class="af teal"><span class="af-dot teal"></span>components/ui/Modal.jsx</span>
+        <span class="af teal"><span class="af-dot teal"></span>components/ui/CountdownTimer.jsx</span>
+        <span class="af gray"><span class="af-dot gray"></span>lib/tokens.js</span>
+        <span class="af gray"><span class="af-dot gray"></span>pages/LoginPage.jsx</span>
+        <span class="af green"><span class="af-dot green"></span>component-preview.jsx</span>
+      </div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--dim);">Public</div>
+        <div style="font-size:11px;color:var(--muted);">what humans see — same codebase, two surfaces</div>
+      </div>
+      <div class="arch-files">
+        <span class="af green"><span class="af-dot green"></span>yourdomain.com</span>
+        <span class="af green"><span class="af-dot green"></span>designsystem.yourdomain.com</span>
+        <span class="af gray"><span class="af-dot gray"></span>localhost:3000/preview (dev only)</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="br">
+
+  <!-- ══ TWO AGENTS ══ -->
+  <h2>Two agents. Separate responsibilities.</h2>
+
+  <p>The most important structural decision: split UI work between two distinct agent roles.</p>
+
+  <div class="agent-flow">
+    <div class="af-box purple">
+      <div class="af-box-title">Design system agent</div>
+      <div class="af-box-desc">Owns components · builds new ones · maintains the library · never builds screens</div>
+    </div>
+    <div class="af-arrow">→</div>
+    <div class="af-box teal">
+      <div class="af-box-title">component-library.md</div>
+      <div class="af-box-desc">The shared map both agents read and the design system agent keeps current</div>
+    </div>
+    <div class="af-arrow">→</div>
+    <div class="af-box">
+      <div class="af-box-title">UI developer agent</div>
+      <div class="af-box-desc">Builds screens · only consumes components · never creates them</div>
+    </div>
+  </div>
+
+  <p>This separation is what makes governance work. The design system agent is the gatekeeper — new components don't appear in the product without going through it. Every component that enters gets documented. The library stays accurate.</p>
+
+  <hr class="br">
+
+  <!-- ══ TASK FLOW TIMELINE ══ -->
+  <h2>What happens when you give a task</h2>
+
+  <p>A new component request — a countdown timer for session expiry — from task to production-ready.</p>
+
+  <!-- ══ TASK FLOW PROCESS ══ -->
+  <div style="margin:28px 0;">
+
+    <!-- Step 1 -->
+    <div style="display:flex;gap:0;margin-bottom:2px;">
+      <div style="width:28px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding-top:16px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--purple);flex-shrink:0;"></div>
+        <div style="width:2px;flex:1;background:var(--border);margin-top:4px;min-height:16px;"></div>
+      </div>
+      <div style="flex:1;background:var(--purple-l);border:1px solid var(--purple-m);border-radius:var(--r);padding:14px 18px;margin-left:10px;margin-bottom:4px;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--purple);margin-bottom:4px;">01 — Task</div>
+        <div style="font-size:14px;font-weight:600;color:#26215C;margin-bottom:4px;">Task arrives</div>
+        <div style="font-family:var(--mono);font-size:12px;color:#534AB7;background:white;border:1px solid var(--purple-m);border-radius:4px;padding:6px 10px;display:inline-block;">"Add a countdown timer — session expiry, three variants"</div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div style="display:flex;gap:0;margin-bottom:2px;">
+      <div style="width:28px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding-top:16px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--teal);flex-shrink:0;"></div>
+        <div style="width:2px;flex:1;background:var(--border);margin-top:4px;min-height:16px;"></div>
+      </div>
+      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;margin-left:10px;margin-bottom:4px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;">02 — Read</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;">Reads component-library.md</div>
+          <div style="font-size:12px;color:var(--muted);">CountdownTimer doesn't exist — proceeds to build</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;">03 — Read</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;">Reads tokens.css</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--muted);">--color-warning<br>--color-danger<br>--font-mono</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div style="display:flex;gap:0;margin-bottom:2px;">
+      <div style="width:28px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding-top:16px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--amber);flex-shrink:0;"></div>
+        <div style="width:2px;flex:1;background:var(--border);margin-top:4px;min-height:16px;"></div>
+      </div>
+      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;margin-left:10px;margin-bottom:4px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--amber);margin-bottom:4px;">04 — Build</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;">Builds CountdownTimer.jsx</div>
+          <div style="font-size:12px;color:var(--muted);">Same radius, same token usage, same prop patterns as Badge and Modal</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--amber);margin-bottom:4px;">05 — Document</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;">Updates component-library.md</div>
+          <div style="font-size:12px;color:var(--muted);">Path, all props, variants, usage example — library is richer</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 — Final -->
+    <div style="display:flex;gap:0;">
+      <div style="width:28px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding-top:16px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>
+      </div>
+      <div style="flex:1;background:var(--green-l);border:1px solid #C0DD97;border-radius:var(--r);padding:14px 18px;margin-left:10px;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--green);margin-bottom:4px;">06 — Ready</div>
+        <div style="font-size:14px;font-weight:600;color:#27500A;margin-bottom:4px;">Component available to the whole product</div>
+        <div style="font-size:12px;color:var(--green);">UI developer agent can use it on any screen immediately — no duplication, no drift</div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="br">
+
+  <!-- ══ SETUP ══ -->
+  <h2>How to set it up</h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Create the folder structure</div>
+        <p class="step-sub">Create <code>.agent/skills/ui/</code>, <code>.agent/rules/</code>, <code>.agent/agents/</code>, <code>src/styles/</code>, and <code>src/components/ui/</code>. The separation between agent-readable and real code is the most important decision.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Define your design tokens</div>
+        <p class="step-sub">Create <code>tokens.css</code> with every color, font, spacing, and radius. Import once in <code>main.jsx</code>. From that point every component uses <code>var(--token-name)</code> — no hardcoded values anywhere else.</p>
+        <span class="step-file">src/styles/tokens.css</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Create the component map</div>
+        <p class="step-sub">Start with five components. Each entry: name, exact file path, props with types and defaults, one usage example. This is what the agent reads before every UI task.</p>
+        <span class="step-file">.agent/skills/ui/component-library.md</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">Write the design system rules</div>
+        <p class="step-sub">The most important rule: read the component library before writing any UI code. Secondary rules cover token usage, file locations, and what to do when a component is missing.</p>
+        <span class="step-file">.agent/rules/design-system.md</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-title">Create the design system agent</div>
+        <p class="step-sub">A dedicated agent file that owns all component creation and maintenance. Defines responsibilities, workflow, what it must read before starting, and what it must never do.</p>
+        <span class="step-file">.agent/agents/design-system-agent.md</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <div class="step-title">Build core components through the agent</div>
+        <p class="step-sub">Ask the design system agent to build each component against the token system. Button, InputField, Card, Badge, Modal — each added to the component map immediately after being built.</p>
+        <span class="step-file">src/components/ui/</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-content">
+        <div class="step-title">Add a live preview route</div>
+        <p class="step-sub">A single page rendering every component, every variant, every state — visible in the browser during development only. Agent updates it automatically when new components are added.</p>
+        <span class="step-file">src/component-preview.jsx</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">8</div>
+      <div class="step-content">
+        <div class="step-title">Expose it for stakeholders</div>
+        <p class="step-sub">Point a subdomain at the preview route — behind authentication if needed. Stakeholders browse real rendered components. Same codebase, same deploy, no separate maintenance.</p>
+        <span class="step-file">designsystem.yourdomain.com</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="br">
+
+  <!-- ══ CODE ══ -->
+  <h2>What the key files look like</h2>
+
+  <h3>tokens.css</h3>
+  <div class="cb">
+    <div class="cb-label">src/styles/tokens.css</div>
+    <pre><span class="ck">:root</span> {
+  <span class="cn">--color-primary</span>:        <span class="cs">#1E6FCC</span>;
+  <span class="cn">--color-danger</span>:         <span class="cs">#CC3B3B</span>;
+  <span class="cn">--color-warning</span>:        <span class="cs">#E5900A</span>;
+  <span class="cn">--color-success</span>:        <span class="cs">#2A8A4A</span>;
+  <span class="cn">--color-text-primary</span>:   <span class="cs">#1A1F2E</span>;
+  <span class="cn">--color-text-secondary</span>: <span class="cs">#5A6478</span>;
+  <span class="cn">--font-sans</span>: <span class="cs">'Inter'</span>, sans-serif;
+  <span class="cn">--font-mono</span>: <span class="cs">'JetBrains Mono'</span>, monospace;
+  <span class="cn">--space-4</span>: <span class="cs">16px</span>;  <span class="cn">--space-6</span>: <span class="cs">24px</span>;  <span class="cn">--space-8</span>: <span class="cs">32px</span>;
+  <span class="cn">--radius-md</span>: <span class="cs">8px</span>;   <span class="cn">--radius-lg</span>: <span class="cs">12px</span>;
+}</pre>
+  </div>
+
+  <h3>component-library.md — what the agent reads</h3>
+  <div class="cb">
+    <div class="cb-label">.agent/skills/ui/component-library.md</div>
+    <pre><span class="cm">## Button</span>
+<span class="cv">Path:</span>     <span class="cs">src/components/ui/Button.jsx</span>
+<span class="cv">Variants:</span> primary | secondary | ghost | danger
+<span class="cv">Props:</span>    label, onClick, disabled, loading, size
+
+<span class="cv">Usage:</span>
+<span class="ck">&lt;Button</span> <span class="cn">variant</span>=<span class="cs">"primary"</span> <span class="cn">label</span>=<span class="cs">"Submit"</span> <span class="cn">onClick</span>={<span class="cv">handleSubmit</span>} <span class="ck">/&gt;</span>
+
+<span class="cm">---</span>
+
+<span class="cm">## CountdownTimer</span>
+<span class="cv">Path:</span>     <span class="cs">src/components/ui/CountdownTimer.jsx</span>
+<span class="cv">Variants:</span> compact | full | banner
+<span class="cv">Props:</span>    duration (ms), onComplete, variant, warningThreshold (ms)
+
+<span class="cv">Usage:</span>
+<span class="ck">&lt;CountdownTimer</span>
+  <span class="cn">duration</span>={<span class="cv">300000</span>}
+  <span class="cn">onComplete</span>={<span class="cv">handleExpiry</span>}
+  <span class="cn">variant</span>=<span class="cs">"banner"</span>
+<span class="ck">/&gt;</span></pre>
+  </div>
+
+  <h3>A screen using the library</h3>
+  <div class="cb">
+    <div class="cb-label">src/pages/LoginPage.jsx</div>
+    <pre><span class="ck">import</span> { <span class="cv">Card</span> }       <span class="ck">from</span> <span class="cs">'@/components/ui/Card'</span>
+<span class="ck">import</span> { <span class="cv">InputField</span> } <span class="ck">from</span> <span class="cs">'@/components/ui/InputField'</span>
+<span class="ck">import</span> { <span class="cv">Button</span> }     <span class="ck">from</span> <span class="cs">'@/components/ui/Button'</span>
+
+<span class="ck">export default function</span> <span class="cv">LoginPage</span>() {
+  <span class="ck">return</span> (
+    <span class="ck">&lt;Card</span> <span class="cn">variant</span>=<span class="cs">"flat"</span> <span class="cn">padding</span>=<span class="cs">"lg"</span><span class="ck">&gt;</span>
+      <span class="ck">&lt;InputField</span> <span class="cn">label</span>=<span class="cs">"Email"</span>    <span class="cn">type</span>=<span class="cs">"email"</span>    <span class="cn">required</span> <span class="ck">/&gt;</span>
+      <span class="ck">&lt;InputField</span> <span class="cn">label</span>=<span class="cs">"Password"</span> <span class="cn">type</span>=<span class="cs">"password"</span> <span class="cn">required</span> <span class="ck">/&gt;</span>
+      <span class="ck">&lt;Button</span> <span class="cn">variant</span>=<span class="cs">"primary"</span> <span class="cn">label</span>=<span class="cs">"Sign in"</span> <span class="cn">onClick</span>={<span class="cv">handleLogin</span>} <span class="ck">/&gt;</span>
+    <span class="ck">&lt;/Card&gt;</span>
+  )
+}</pre>
+  </div>
+
+  <hr class="br">
+
+  <!-- ══ STAKEHOLDER SUBDOMAIN ══ -->
+  <h2>Making it visible — the stakeholder subdomain</h2>
+
+  <div class="subdomain">
+    <div class="subdomain-top">
+      <div class="sd-dot" style="background:#FF5F57"></div>
+      <div class="sd-dot" style="background:#FEBC2E;margin:0 4px"></div>
+      <div class="sd-dot" style="background:#28C840"></div>
+      <div class="subdomain-url" style="margin-left:8px">designsystem.yourdomain.com</div>
+    </div>
+    <div class="subdomain-body">
+      <div class="subdomain-grid">
+        <div class="sd-item"><span class="sd-check">✓</span>Real rendered components — not Figma screenshots</div>
+        <div class="sd-item"><span class="sd-check">✓</span>Same codebase — no separate build process</div>
+        <div class="sd-item"><span class="sd-check">✓</span>Stays current as the agent adds components</div>
+        <div class="sd-item"><span class="sd-check">✓</span>PMs see what exists before requesting new work</div>
+        <div class="sd-item"><span class="sd-check">✓</span>New developers onboard through it</div>
+        <div class="sd-item"><span class="sd-check">✓</span>Auth-gated if needed — one route config</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="br">
+
+  <!-- ══ FUTURE ══ -->
+  <h2>Where design systems are heading</h2>
+
+  <p>The challenge is no longer <em>creating</em> a design system. The challenge is creating one that both humans and AI agents can actually use.</p>
+
+  <!-- Timeline evolution -->
+  <div style="border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin:28px 0;">
+
+    <!-- Header -->
+    <div style="background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;gap:10px;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--dim);">The evolution of design systems</div>
+    </div>
+
+    <!-- Three era columns -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--border);gap:1px;">
+
+      <!-- Era 1 -->
+      <div style="background:var(--surface);padding:24px 20px;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;">Past decade</div>
+        <div style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:8px;line-height:1.3;">Built for humans</div>
+        <div style="width:32px;height:3px;background:var(--border);border-radius:2px;margin-bottom:14px;"></div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--dim);flex-shrink:0;"></div>Figma as source of truth
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--dim);flex-shrink:0;"></div>Tokens for designers
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--dim);flex-shrink:0;"></div>Docs for developers
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--dim);flex-shrink:0;"></div>Maintained manually
+          </div>
+        </div>
+        <div style="margin-top:16px;display:inline-flex;align-items:center;gap:5px;background:var(--bg);border:1px solid var(--border);border-radius:99px;padding:4px 10px;font-size:11px;font-weight:500;color:var(--muted);">
+          <div style="width:5px;height:5px;border-radius:50%;background:var(--dim);"></div>1 consumer
+        </div>
+      </div>
+
+      <!-- Era 2 -->
+      <div style="background:var(--surface);padding:24px 20px;position:relative;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--amber);margin-bottom:12px;">Now</div>
+        <div style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:8px;line-height:1.3;">Transitioning</div>
+        <div style="width:32px;height:3px;background:var(--amber-m);border-radius:2px;margin-bottom:14px;"></div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--amber);flex-shrink:0;"></div>AI writing UI code
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--amber);flex-shrink:0;"></div>Agents guess at tokens
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--amber);flex-shrink:0;"></div>Inconsistency compounds
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--amber);flex-shrink:0;"></div>Gap between tools and agents
+          </div>
+        </div>
+        <div style="margin-top:16px;display:inline-flex;align-items:center;gap:5px;background:var(--amber-l);border:1px solid var(--amber-m);border-radius:99px;padding:4px 10px;font-size:11px;font-weight:500;color:var(--amber);">
+          <div style="width:5px;height:5px;border-radius:50%;background:var(--amber);"></div>2 consumers, 1 served
+        </div>
+      </div>
+
+      <!-- Era 3 -->
+      <div style="background:var(--purple-l);padding:24px 20px;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple);margin-bottom:12px;">Next decade</div>
+        <div style="font-size:15px;font-weight:600;color:#26215C;margin-bottom:8px;line-height:1.3;">Built for both</div>
+        <div style="width:32px;height:3px;background:var(--purple-m);border-radius:2px;margin-bottom:14px;"></div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:#3C3489;">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--purple);flex-shrink:0;"></div>Code as source of truth
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:#3C3489;">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--purple);flex-shrink:0;"></div>Agents read the system natively
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:#3C3489;">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--purple);flex-shrink:0;"></div>System maintains itself
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:#3C3489;">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--purple);flex-shrink:0;"></div>Compounds with every build
+          </div>
+        </div>
+        <div style="margin-top:16px;display:inline-flex;align-items:center;gap:5px;background:white;border:1px solid var(--purple-m);border-radius:99px;padding:4px 10px;font-size:11px;font-weight:500;color:var(--purple);">
+          <div style="width:5px;height:5px;border-radius:50%;background:var(--purple);"></div>2 consumers, both served
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Compounding insight -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;">
+      <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;">The old model</div>
+      <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:8px;">Design system degrades over time</div>
+      <div style="display:flex;align-items:flex-end;gap:6px;height:40px;margin-bottom:8px;">
+        <div style="width:14px;background:var(--border);border-radius:3px 3px 0 0;height:100%;"></div>
+        <div style="width:14px;background:var(--border);border-radius:3px 3px 0 0;height:85%;"></div>
+        <div style="width:14px;background:var(--border);border-radius:3px 3px 0 0;height:70%;"></div>
+        <div style="width:14px;background:var(--border);border-radius:3px 3px 0 0;height:55%;"></div>
+        <div style="width:14px;background:var(--border);border-radius:3px 3px 0 0;height:40%;"></div>
+        <div style="width:14px;background:var(--border);border-radius:3px 3px 0 0;height:30%;"></div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.5;">Manual maintenance. Drift accumulates. Agents ignore it.</div>
+    </div>
+    <div style="background:var(--purple-l);border:1px solid var(--purple-m);border-radius:var(--r);padding:20px 22px;">
+      <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--purple);margin-bottom:10px;">The agentic model</div>
+      <div style="font-size:14px;font-weight:500;color:#26215C;margin-bottom:8px;">Design system compounds over time</div>
+      <div style="display:flex;align-items:flex-end;gap:6px;height:40px;margin-bottom:8px;">
+        <div style="width:14px;background:var(--purple-m);border-radius:3px 3px 0 0;height:20%;"></div>
+        <div style="width:14px;background:var(--purple-m);border-radius:3px 3px 0 0;height:35%;"></div>
+        <div style="width:14px;background:var(--purple-m);border-radius:3px 3px 0 0;height:52%;"></div>
+        <div style="width:14px;background:var(--purple);border-radius:3px 3px 0 0;height:68%;"></div>
+        <div style="width:14px;background:var(--purple);border-radius:3px 3px 0 0;height:82%;"></div>
+        <div style="width:14px;background:var(--purple);border-radius:3px 3px 0 0;height:100%;"></div>
+      </div>
+      <div style="font-size:12px;color:#3C3489;line-height:1.5;">Agent maintains it. Every build makes it richer. Compounds automatically.</div>
+    </div>
+  </div>
+
+  <!-- Closing line -->
+  <div style="border:1px solid var(--purple-m);border-radius:var(--r);padding:20px 24px;background:var(--surface);text-align:center;margin:24px 0;">
+    <div style="font-size:16px;font-weight:500;color:var(--text);line-height:1.6;">The teams that build their design system for agents today<br>will ship more consistent products, faster, tomorrow.</div>
+    <div style="margin-top:10px;font-size:13px;color:var(--purple);font-weight:500;">That's the shift worth preparing for.</div>
+  </div>
+
+</article>
+</body>
+</html>
