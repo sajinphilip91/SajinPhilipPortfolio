@@ -43,6 +43,8 @@ export function SiteHeader({ theme, solid, onNavigate }: Props) {
 
   const open = () => {
     dialogRef.current?.showModal();
+    // Focus the menu itself, or the browser rings its first link (the logo) on open.
+    dialogRef.current?.focus();
     document.documentElement.dataset.menu = "open";
   };
   const close = () => dialogRef.current?.close();
@@ -73,6 +75,7 @@ export function SiteHeader({ theme, solid, onNavigate }: Props) {
       <dialog
         ref={dialogRef}
         className={styles.dialog}
+        tabIndex={-1}
         aria-label="Menu"
         onClose={() => delete document.documentElement.dataset.menu}
       >

@@ -109,3 +109,22 @@
   font-size: var(--detail-size);
   font-weight: 700;
 }
+
+/* Phones held sideways are shorter than the hero's content, so the screen grows to fit it. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero {
+    height: auto;
+    min-height: 100svh;
+  }
+
+  .content {
+    position: relative;
+    padding-top: calc(var(--header-h) + 12px);
+    padding-bottom: 24px;
+    gap: 16px;
+  }
+
+  .title {
+    font-size: 34px;
+  }
+}

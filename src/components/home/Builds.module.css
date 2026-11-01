@@ -258,3 +258,15 @@
   transform: translateX(-50%);
   bottom: clamp(32px, 6vh, 64px);
 }
+
+/* Same for the builds screen on phones held sideways. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .builds {
+    height: auto;
+    min-height: 100svh;
+  }
+
+  .stage {
+    padding-top: 48px;
+  }
+}

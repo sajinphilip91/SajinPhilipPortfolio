@@ -110,6 +110,7 @@
   background: linear-gradient(115deg, #f2f1e9, #e2e0ce);
   color: #4b4a3f;
   overflow-y: auto;
+  outline: none;
 }
 
 .dialog[open] {
