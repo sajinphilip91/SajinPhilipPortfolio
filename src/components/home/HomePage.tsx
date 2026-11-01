@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { SiteHeader, type HeaderTheme, type NavTarget } from "./SiteHeader";
 import { Hero } from "./Hero";
 import { Builds } from "./Builds";
 import { CaseStudies } from "./CaseStudies";
@@ -19,15 +20,46 @@ const SCREENS = [
   { label: "Case studies", step: 3 },
   { label: "How I work", step: 4 },
 ];
-const LIGHT_SCREENS = new Set([2]);
 const PAGED_QUERY = "(min-width: 901px) and (min-height: 640px)";
 const LOCK_MS = 1000;
+const NAV_STEP: Record<NavTarget, number> = { top: 0, builds: 1, work: 3, approach: 4 };
+/** Just below the header: in normal scrolling, the section here decides the header colour. */
+const FLOW_PROBE = 80;
+/** Height of the menu text: while a page slides, it changes colour as the section edge crosses it. */
+const PAGED_PROBE = 38;
+const SLIDE_MS = 1100;
+const SCREEN_IDS = ["top", "builds", "work", "approach"];
+
+function themeAt(y: number): HeaderTheme {
+  const covers = (id: string) => {
+    const r = document.getElementById(id)?.getBoundingClientRect();
+    return !!r && r.top <= y && r.bottom > y;
+  };
+  if (covers("top")) return "clear";
+  return covers("work") ? "light" : "dark";
+}
+
+/** On short windows a screen can be taller than the viewport; it scrolls before the page moves on. */
+function scrollsInside(step: number, dir: 1 | -1) {
+  const el = document.getElementById(SCREEN_IDS[STEP_SCREEN[step]]);
+  if (!el || el.scrollHeight <= el.clientHeight + 1) return null;
+  const room = dir > 0 ? el.scrollTop + el.clientHeight < el.scrollHeight - 1 : el.scrollTop > 0;
+  return room ? el : null;
+}
 
 export function HomePage() {
   const [paged, setPaged] = useState(false);
   const [step, setStep] = useState(0);
+  const [theme, setTheme] = useState<HeaderTheme>("clear");
+  const [settled, setSettled] = useState(true);
+  const [dotsLight, setDotsLight] = useState(false);
   const lockUntil = useRef(0);
   const touchY = useRef<number | null>(null);
+  const stepRef = useRef(0);
+
+  useEffect(() => {
+    stepRef.current = step;
+  }, [step]);
 
   // Full-page scrolling only on large screens; phones and small windows scroll normally.
   useEffect(() => {
@@ -66,6 +98,10 @@ export function HomePage() {
   useEffect(() => {
     if (!paged) return;
     const onWheel = (e: WheelEvent) => {
+      if (scrollsInside(stepRef.current, e.deltaY > 0 ? 1 : -1)) {
+        lockUntil.current = Date.now() + 200;
+        return;
+      }
       e.preventDefault();
       if (Math.abs(e.deltaY) < 12) return;
       go(e.deltaY > 0 ? 1 : -1);
@@ -73,12 +109,14 @@ export function HomePage() {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement | null;
       if (t && (t.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(t.tagName))) return;
-      if (["ArrowDown", "PageDown"].includes(e.key) || (e.key === " " && !e.shiftKey)) {
+      const down = ["ArrowDown", "PageDown"].includes(e.key) || (e.key === " " && !e.shiftKey);
+      const up = ["ArrowUp", "PageUp"].includes(e.key) || (e.key === " " && e.shiftKey);
+      if (down || up) {
         e.preventDefault();
-        go(1);
-      } else if (["ArrowUp", "PageUp"].includes(e.key) || (e.key === " " && e.shiftKey)) {
-        e.preventDefault();
-        go(-1);
+        const dir = down ? 1 : -1;
+        const inside = scrollsInside(stepRef.current, dir);
+        if (inside) inside.scrollBy({ top: dir * inside.clientHeight * 0.8, behavior: "smooth" });
+        else go(dir);
       } else if (e.key === "Home") {
         goTo(0);
       } else if (e.key === "End") {
@@ -92,7 +130,7 @@ export function HomePage() {
       if (touchY.current === null) return;
       const d = touchY.current - (e.changedTouches[0]?.clientY ?? touchY.current);
       touchY.current = null;
-      if (Math.abs(d) > 50) go(d > 0 ? 1 : -1);
+      if (Math.abs(d) > 50 && !scrollsInside(stepRef.current, d > 0 ? 1 : -1)) go(d > 0 ? 1 : -1);
     };
     window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("keydown", onKey);
@@ -106,19 +144,47 @@ export function HomePage() {
     };
   }, [paged, go, goTo]);
 
-  const navigate = (target: "builds" | "work" | "approach") => {
+  // In normal scrolling the header takes its colour from the section beneath it.
+  useEffect(() => {
+    if (paged) return;
+    const update = () => setTheme(themeAt(FLOW_PROBE));
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, [paged]);
+
+  // While a page slides, follow it frame by frame so the menu changes with the page, not before it.
+  useEffect(() => {
+    if (!paged) return;
+    const end = performance.now() + SLIDE_MS;
+    let frame = 0;
+    const tick = () => {
+      setTheme(themeAt(PAGED_PROBE));
+      setDotsLight(themeAt(window.innerHeight / 2) === "light");
+      const sliding = performance.now() < end;
+      setSettled(!sliding);
+      if (sliding) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [paged, step]);
+
+  const navigate = (target: NavTarget) => {
     if (paged) {
-      goTo(target === "builds" ? 1 : target === "work" ? 3 : 4);
+      goTo(NAV_STEP[target]);
+    } else if (target === "top") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       document.getElementById(target === "builds" ? "builds-intro" : target)?.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   const screen = STEP_SCREEN[step];
-  const onLight = LIGHT_SCREENS.has(screen);
+  const paintBar = !paged || settled;
 
   return (
     <main className={paged ? styles.paged : styles.flow}>
+      <SiteHeader theme={theme === "dark" && screen === 1 ? "clear" : theme} solid={paintBar} onNavigate={navigate} />
       <div
         className={styles.track}
         style={paged ? { transform: `translateY(${-100 * screen}svh)` } : undefined}
@@ -150,7 +216,7 @@ export function HomePage() {
                 aria-hidden="true"
                 style={{
                   width: i === screen ? 28 : 12,
-                  background: onLight
+                  background: dotsLight
                     ? i === screen
                       ? "#111111"
                       : "rgba(17,17,17,0.35)"

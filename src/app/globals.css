@@ -21,6 +21,7 @@
 
   /* Layout */
   --gutter: clamp(24px, 6vw, 88px);
+  --header-h: 76px;
   --content-max: 1440px;
   --radius: 6px;
 }

@@ -1,0 +1,77 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  height: var(--header-h);
+  padding: 0 var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.clear,
+.dark {
+  color: var(--on-night);
+}
+
+.light {
+  color: var(--ink);
+}
+
+/* Solid only where content can pass underneath; it always matches the section below. */
+.solid.light {
+  background-color: var(--paper);
+}
+
+.solid.dark {
+  background-color: var(--night);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  min-height: 44px;
+  color: inherit;
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+}
+
+.nav button,
+.nav a {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.nav button:hover,
+.nav a:hover {
+  opacity: 0.75;
+}
+
+@media (max-width: 480px) {
+  .nav {
+    gap: 14px;
+  }
+  .nav button,
+  .nav a {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+}

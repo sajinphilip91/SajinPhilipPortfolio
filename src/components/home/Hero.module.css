@@ -32,55 +32,6 @@
   background: linear-gradient(0deg, rgba(10, 14, 18, 0.6), rgba(10, 14, 18, 0));
 }
 
-.header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 2;
-  padding: 36px var(--gutter);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-}
-
-.logo {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  color: var(--on-night);
-}
-
-.nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 32px;
-}
-
-.nav button,
-.nav a {
-  min-height: 44px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--on-night);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.nav button:hover,
-.nav a:hover {
-  opacity: 0.75;
-}
-
 .content {
   position: absolute;
   left: 0;

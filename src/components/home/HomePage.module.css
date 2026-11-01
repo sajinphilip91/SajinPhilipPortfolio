@@ -2,6 +2,12 @@
   position: relative;
 }
 
+/* Anchored sections stop below the fixed header. */
+.flow .track > section,
+.flow .track > div {
+  scroll-margin-top: var(--header-h);
+}
+
 .paged {
   position: fixed;
   inset: 0;
@@ -18,7 +24,7 @@
 .paged .track > section {
   height: 100svh;
   min-height: 0;
-  overflow: hidden;
+  overflow: hidden auto;
 }
 
 .dots {

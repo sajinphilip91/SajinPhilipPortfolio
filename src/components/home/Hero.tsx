@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { hero, site } from "@/content/home";
-import { Logo } from "@/components/Logo";
+import { hero } from "@/content/home";
 import styles from "./Hero.module.css";
 
-type Props = { onNavigate: (target: "builds" | "work" | "approach") => void };
+type Props = { onNavigate: (target: "builds") => void };
 
 export function Hero({ onNavigate }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -39,18 +38,6 @@ export function Hero({ onNavigate }: Props) {
       />
       <div className={styles.scrimSide} aria-hidden="true" />
       <div className={styles.scrimBottom} aria-hidden="true" />
-
-      <header className={styles.header}>
-        <a href="#top" className={styles.logo} aria-label={`${site.name}, home`}>
-          <Logo />
-        </a>
-        <nav aria-label="Primary" className={styles.nav}>
-          <button type="button" onClick={() => onNavigate("builds")}>Builds</button>
-          <button type="button" onClick={() => onNavigate("work")}>Work</button>
-          <button type="button" onClick={() => onNavigate("approach")}>Approach</button>
-          <a href={site.resume}>Resume</a>
-        </nav>
-      </header>
 
       <div className={styles.content}>
         <h1 className={styles.title}>
