@@ -14,7 +14,7 @@ export function CaseStudies() {
       <div className={styles.inner}>
         <div className={styles.side}>
           <p className={`eyebrow ${styles.label}`}>Case studies</p>
-          <h2 className={styles.title}>Research-led work, from problem to prototype</h2>
+          <h2 className={styles.title}>The problems I solve make people’s lives happier and more joyful</h2>
           <ol className={styles.list}>
             {caseStudies.map((item, i) => (
               <li key={item.title}>

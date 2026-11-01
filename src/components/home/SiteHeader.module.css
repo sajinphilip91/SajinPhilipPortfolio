@@ -200,7 +200,7 @@
   gap: 12px;
   min-height: 44px;
   font-weight: 560;
-  font-size: clamp(20px, 2.9vh, 26px);
+  font-size: clamp(14px, 2vh, 18px);
   letter-spacing: 0.08em;
 }
 
@@ -209,19 +209,32 @@
   left: clamp(32px, 5vw, 80px);
   bottom: 0;
   display: flex;
-  gap: 28px;
+  gap: 12px;
 }
 
 .menu .socials a {
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
+  min-height: 38px;
+  padding: 0 16px;
+  border: 1px solid rgba(75, 74, 63, 0.45);
+  border-radius: 999px;
   font-weight: 500;
   font-size: 13px;
+  line-height: 1;
   letter-spacing: 0.08em;
 }
 
+.menu .socials a:hover {
+  background: rgba(75, 74, 63, 0.1);
+}
+
 .socials svg {
-  width: 18px;
-  height: 18px;
+  display: block;
+  flex: none;
+  width: 16px;
+  height: 16px;
 }
 
 .aside {

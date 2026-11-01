@@ -18,11 +18,11 @@ Desktop (≥901px wide, ≥640px tall) is full-page: one wheel/swipe/key = one s
 
 1. **Hero** — full-bleed looping muted video (`public/media/hero-loop.mp4`, Gemini watermark removed, 720p — a 1080p export is wanted). Serif headline bottom-left, stats bottom-right. Static, no slider.
 2. **Built with AI intro** — overlay on the builds screen, centred, Inter Tight display type: "I design, build and ship live products with AI." Next scroll lifts the overlay.
-3. **AI builds showcase** — full-bleed image per build, text pinned bottom-left, tabs along the bottom, auto-advance 8s (only when on screen; pause on hover; stops after a tab click). Builds: MatchBrain (real store links), GlassScore, StayAlt, The New Designer, Breathe Easy.
+3. **AI builds showcase** — full-bleed image per build, text pinned bottom-left, tabs along the bottom, auto-advance 8s (only when on screen; pauses over the tabs only, because the section fills the screen; stops after a tab click). Builds: MatchBrain (real store links), GlassScore, StayAlt, The New Designer, Breathe Easy.
 4. **Case studies** — white section, one screen: list of 5 on the left, selected case on the right with a 16:9 cover. Max width 1440px.
-5. **How I work** — dark, a white Trust, Safety and AI Governance band above six boxed stages (Problem, Research, Design, Build, Launch, Iterate), one line each on how AI helps. Stage copy is a draft.
+5. **How I work** — dark, "How AI fits into my workflow": one box of six columns split by vertical lines (Problem, Research, Design, Build, Launch, Iterate), with a separate white Trust, Safety and AI Governance rectangle just below it, as the base under every stage. Column items come from Sajin's reference; Iterate and Governance items are drafts.
 6. **My writing** — white, the AI building and Product thinking link lists from the old How I work cards.
-7. **Closing** — dark, 70% Leader / 30% Designer bar, leadership copy and links, then email, socials and copyright.
+7. **Closing** — dark, 70% Leader / 30% Designer bar, leadership copy and links, then the footer. `Footer` shows on every page through `SiteFooter` in the layout; the homepage carries it inside this screen.
 
 Only the hero and builds are full width; content sections cap at 1440px.
 

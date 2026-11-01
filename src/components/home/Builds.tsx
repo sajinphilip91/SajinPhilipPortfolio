@@ -73,9 +73,6 @@ export function Builds({ mode, active = false, introVisible = false, onShowcase 
         id="builds"
         aria-label="AI builds"
         className={styles.builds}
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-        onFocus={() => setPaused(true)}
       >
         {builds.map((item, i) => (
           <div
@@ -115,7 +112,15 @@ export function Builds({ mode, active = false, introVisible = false, onShowcase 
           </div>
         </div>
 
-        <nav aria-label="Choose a build" className={styles.tabs}>
+        {/* Only the tabs pause it: the section fills the screen, so the pointer is always over it. */}
+        <nav
+          aria-label="Choose a build"
+          className={styles.tabs}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onFocus={() => setPaused(true)}
+          onBlur={() => setPaused(false)}
+        >
           <div className={styles.tabRow}>
             {builds.map((item, i) => (
               <button

@@ -25,7 +25,11 @@ const SCREENS = [
   { label: "Leadership and contact", step: 6 },
 ];
 const PAGED_QUERY = "(min-width: 901px) and (min-height: 640px)";
-const LOCK_MS = 1000;
+const LOCK_MS = 900;
+/** A pause this long between wheel events means a new gesture, not trackpad momentum. */
+const GESTURE_GAP_MS = 140;
+const MIN_WHEEL = 12;
+const SCROLL_ROOM = 48;
 /** Just below the header: in normal scrolling, the section here decides the header colour. */
 const FLOW_PROBE = 80;
 /** Height of the menu text: while a page slides, it changes colour as the section edge crosses it. */
@@ -45,7 +49,8 @@ function themeAt(y: number): HeaderTheme {
 /** On short windows a screen can be taller than the viewport; it scrolls before the page moves on. */
 function scrollsInside(step: number, dir: 1 | -1) {
   const el = document.getElementById(SCREEN_IDS[STEP_SCREEN[step]]);
-  if (!el || el.scrollHeight <= el.clientHeight + 1) return null;
+  // A few clipped pixels must not swallow a scroll, or the page seems stuck.
+  if (!el || el.scrollHeight <= el.clientHeight + SCROLL_ROOM) return null;
   const room = dir > 0 ? el.scrollTop + el.clientHeight < el.scrollHeight - 1 : el.scrollTop > 0;
   return room ? el : null;
 }
@@ -58,6 +63,7 @@ export function HomePage() {
   const [dotsLight, setDotsLight] = useState(false);
   const lockUntil = useRef(0);
   const touchY = useRef<number | null>(null);
+  const wheel = useRef({ time: 0, size: 0 });
   const stepRef = useRef(0);
 
   useEffect(() => {
@@ -84,11 +90,7 @@ export function HomePage() {
 
   const go = useCallback(
     (dir: 1 | -1) => {
-      if (Date.now() < lockUntil.current) {
-        // Swallow trackpad momentum: keep the lock alive while events keep coming.
-        lockUntil.current = Math.max(lockUntil.current, Date.now() + 150);
-        return;
-      }
+      if (Date.now() < lockUntil.current) return;
       setStep((cur) => {
         const n = Math.max(0, Math.min(STEPS.length - 1, cur + dir));
         if (n !== cur) lockUntil.current = Date.now() + LOCK_MS;
@@ -108,8 +110,12 @@ export function HomePage() {
         return;
       }
       e.preventDefault();
-      if (Math.abs(e.deltaY) < 12) return;
-      go(e.deltaY > 0 ? 1 : -1);
+      // Momentum fades steadily, so only a pause or a sudden push counts as a new scroll.
+      const now = Date.now();
+      const size = Math.abs(e.deltaY);
+      const fresh = now - wheel.current.time > GESTURE_GAP_MS || size > wheel.current.size * 1.6;
+      wheel.current = { time: now, size };
+      if (fresh && size >= MIN_WHEEL) go(e.deltaY > 0 ? 1 : -1);
     };
     const onKey = (e: KeyboardEvent) => {
       if (menuOpen()) return;

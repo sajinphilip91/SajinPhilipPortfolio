@@ -1,12 +1,6 @@
-import { closing, site } from "@/content/home";
+import { Footer } from "@/components/Footer";
+import { closing } from "@/content/home";
 import styles from "./Closing.module.css";
-
-const socials = [
-  { title: "LinkedIn", href: site.social.linkedin },
-  { title: "Dribbble", href: site.social.dribbble },
-  { title: "Instagram", href: site.social.instagram },
-  { title: "ADPList", href: site.social.adplist },
-];
 
 export function Closing() {
   return (
@@ -33,20 +27,8 @@ export function Closing() {
             ))}
           </ul>
         </div>
-        <footer className={styles.footer}>
-          <a href={`mailto:${site.email}`}>{site.email}</a>
-          <ul className={styles.socials}>
-            {socials.map((l) => (
-              <li key={l.title}>
-                <a href={l.href} target="_blank" rel="noopener noreferrer">
-                  {l.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <p>© {new Date().getFullYear()} {site.name}</p>
-        </footer>
       </div>
+      <Footer />
     </section>
   );
 }

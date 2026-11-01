@@ -4,6 +4,7 @@ export const site = {
   name: "Sajin Philip",
   location: "Bengaluru, India",
   email: "sajinphilip91@gmail.com",
+  phone: "+91 97466 48514",
   resume: "/resume.pdf",
   social: {
     linkedin: "https://www.linkedin.com/in/sajin-philip-65350534/",
@@ -130,7 +131,7 @@ export const workBuilds: Build[] = [
 export const workPage = {
   kicker: "Case studies",
   cta: "View case study",
-  title: "I solve hard problems so millions of people can have an easier, happier day.",
+  title: "I solve problems that make millions of people have an easier, happier day.",
 };
 
 export type CaseStudy = {
@@ -232,20 +233,21 @@ type LinkItem = { title: string; body?: string; href: string };
 
 export const approach = {
   kicker: "How I work",
-  title: "How I use AI, from problem to launch",
+  title: "How AI fits into my workflow",
   sub: "Problem first, always. Speed only matters when it points the right way.",
-  stages: [
-    { name: "Problem", body: "Frame the real problem first, and use AI to pressure-test it." },
-    { name: "Research", body: "Research the people and the business, with AI helping me synthesise faster." },
-    { name: "Design", body: "Explore more directions, then prototype and validate the strongest." },
-    { name: "Build", body: "Agents work from my rules and design system. I review everything." },
-    { name: "Launch", body: "Ideas reach real users in days, not quarters." },
-    { name: "Iterate", body: "Learn from real use, improve the product and go again." },
-  ],
   governance: {
     title: "Trust, Safety and AI Governance",
-    body: "Runs through every stage, taking care of trust, safety and data protection.",
+    line: "AI supports every stage. It never takes over: people make the decisions.",
+    items: ["Data protection", "Human review", "Safety checks", "Transparent AI use"],
   },
+  stages: [
+    { name: "Problem", items: ["Organise findings", "Build narratives", "Prioritise opportunities", "Define problem spaces"] },
+    { name: "Research", items: ["Research exploration", "Summarise interviews", "Analyse competitors", "Extract insights"] },
+    { name: "Design", items: ["Explore concepts", "Generate alternatives", "Challenge assumptions", "Discover edge cases"] },
+    { name: "Build", items: ["Rapid concepts", "Design variations", "Validation", "Faster iterations"] },
+    { name: "Launch", items: ["UX writing", "Design narratives", "Workshop preparation", "Stakeholder alignment"] },
+    { name: "Iterate", items: ["Analyse feedback", "Spot usage patterns", "Prioritise fixes", "Improve the product"] },
+  ],
 };
 
 export const writing = {
