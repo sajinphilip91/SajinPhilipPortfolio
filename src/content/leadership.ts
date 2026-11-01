@@ -14,8 +14,8 @@ export const leadershipHero = {
   ],
 };
 
-// Same five tabs as the old page.
-export const leadershipTabs = ["Leadership", "Impact", "AI & Sajin", "As a Designer", "Mentorship"];
+// The old page's five tabs, plus Career from the old About page.
+export const leadershipTabs = ["Leadership", "Impact", "AI & Sajin", "As a Designer", "Career", "Mentorship"];
 
 export const teams = {
   title: "Founded design teams from zero, led design across seven companies",
@@ -110,6 +110,115 @@ export const designer = {
     { value: "30%", label: "Designer" },
   ],
   link: { title: "View my work on Dribbble", href: "https://dribbble.com/sajinpappan" },
+};
+
+// Design philosophy, career and learning are carried over from the old About page unchanged.
+export const designPhilosophy = {
+  title: "Sajin Philip’s Design Philosophy",
+  body: [
+    "Sajin Philip’s design philosophy is rooted in the belief that good design speaks through impact. He is driven by solving real-world problems, aligning business goals with human needs, and creating experiences that are positive, memorable, and joyful.",
+    "For him, design is a form of “magic” — a blend of logic, empathy, and creativity that can solve both big and small user problems and make life easier through thoughtful, meaningful solutions. He believes design should be practical, inclusive, and purpose-driven.",
+    "Beyond his work, Sajin actively shares knowledge and encourages collaboration, reflecting his belief that design becomes truly powerful when ideas are turned into reality together.",
+  ],
+};
+
+export const career = {
+  title: "Career",
+  roles: [
+    {
+      period: "Apr 2025 - Present",
+      role: "Associate Director Design",
+      company: "MaterialPlus",
+      points: [
+        "Leading the Design team",
+        "Part of Design strategic decision",
+        "Part of building UX and CX vision across all product verticals, elevating design to a core strategic lever.",
+      ],
+    },
+    {
+      period: "Jan 2024 - Apr 2025",
+      role: "Strategic Design Lead",
+      company: "Dr Reddy's Lab",
+      points: ["Leading the Design team and other stakeholders", "Owning the Design strategic decision", "Building products from 0-1"],
+    },
+    {
+      period: "May 2023 - Aug 2023",
+      role: "Senior Product Designer",
+      company: "MPL",
+      points: [
+        "Designed a high impact solution for a business as an Individual Contributor & headed team of 2 designers",
+        "Led 2 major products and over 9 crore users active users",
+      ],
+    },
+    {
+      period: "Sep 2019 - Jun 2022",
+      role: "Principal UX Designer & Team lead",
+      company: "Altaire Insights",
+      points: [
+        "Built an 8 member team from scratch & Hired best and right talents to the team & Design strategy",
+        "Reimagined the complete user experience (CX &UX) for one of Asia's largest amusement parks, built a mobile app for one of the top automakers in the world",
+      ],
+    },
+    {
+      period: "May 2017 - Sep 2019",
+      role: "User Experience Specialist",
+      company: "Experion Technologies",
+      points: [
+        "Set-up a design driven company approach, Led 9 and 13 member design team",
+        "Delivered optimized solutions for a wide range of products",
+      ],
+    },
+    {
+      period: "May 2017 - Sep 2019",
+      role: "Team lead UI/UX Design",
+      company: "Reflections Info Systems",
+      points: ["Constructed a brand-new 6-member Design team from scratch", "Led a team & Re-designed a legacy Cardiac Monitoring platform"],
+    },
+    {
+      period: "Jul 2013 - May 2014",
+      role: "UI UX Designer",
+      company: "DeviceDriven",
+      points: [
+        "Part of building the initial native Healthcare mobile app",
+        "Developed information architectures, wireframes, UI, rapid prototyping, and user flows",
+      ],
+    },
+    {
+      period: "",
+      role: "UI/Web and Graphic Designer",
+      company: "Srishti Innovative Computer Systems",
+      points: ["Laid the foundation stone of Career", "Focused on HTML/CSS/HTML5/Jquery and JavaScript"],
+    },
+  ],
+};
+
+export const learning = {
+  title: "Learning is the Key",
+  body: "Constant learning increases my confidence in my ability to recognise and solve Users problems.",
+  badge: { src: "/media/learning/ibm-practitioner.png", alt: "Enterprise Design Thinking Practitioner badge" },
+  items: [
+    {
+      year: "2025",
+      title: "AI Governance",
+      from: "Saïd Business School, University of Oxford",
+      logo: "/media/learning/oxford.png",
+      logoAlt: "Saïd Business School, University of Oxford",
+    },
+    {
+      year: "2020",
+      title: "Design Thinking for Innovation",
+      logo: "/media/learning/virginia.png",
+      logoAlt: "University of Virginia",
+    },
+    { year: "2010", title: "Diploma in Multimedia", logo: "/media/learning/rutronix.png", logoAlt: "Rutronix" },
+    {
+      year: "2020",
+      title: "Enterprise Design Thinking Practitioner (IBM)",
+      logo: "/media/learning/ibm.jpg",
+      logoAlt: "IBM",
+    },
+    { year: "2020", title: "Usability Testing", logo: "/media/learning/udemy.png", logoAlt: "Udemy" },
+  ],
 };
 
 export const mentorship = {

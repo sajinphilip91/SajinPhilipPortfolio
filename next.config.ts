@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   // Keep old Wix URLs working after the switch so existing links and search rankings survive.
   async redirects() {
     return [
+      { source: "/about", destination: "/leadership", permanent: true },
       { source: "/copy-of-work-3", destination: "/#work", permanent: true },
       { source: "/blog", destination: "/writing", permanent: true },
       { source: "/uxai", destination: "/writing", permanent: true },

@@ -13,13 +13,12 @@ export const site = {
   },
 };
 
-// Same items as the old site's menu. `target` moves within the homepage when already on it.
+// The old site's menu, less About (now part of Leadership). `target` moves within the homepage when already on it.
 export const menu: { label: string; href: string; target?: "top" | "work" }[] = [
   { label: "Home", href: "/", target: "top" },
   { label: "Leadership", href: "/leadership" },
   { label: "Work", href: "/#work", target: "work" },
   { label: "UX + AI", href: "/uxai" },
-  { label: "About", href: "/about" },
   { label: "Write", href: "/writing" },
   { label: "Resume", href: site.resume },
   { label: "For agents", href: "/for-agents" },

@@ -3,16 +3,18 @@
 import Link from "next/link";
 import { useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import {
+  career,
   designer,
+  designPhilosophy,
   humanAi,
   impact,
   leadershipTabs as tabs,
   mentorship,
   philosophy,
   principles,
-  teams,
 } from "@/content/leadership";
 import { ArrowCircle } from "@/components/Logo";
+import { Learning } from "./Learning";
 import styles from "./Leadership.module.css";
 
 function Icon({ children }: { children: ReactNode }) {
@@ -125,31 +127,66 @@ function AiPanel() {
 
 function DesignerPanel() {
   return (
-    <div className={styles.split}>
-      <div>
-        <h2 className={styles.title}>{designer.title}</h2>
-        {designer.body.map((p) => (
+    <>
+      <div className={styles.split}>
+        <div>
+          <h2 className={styles.title}>{designer.title}</h2>
+          {designer.body.map((p) => (
+            <p key={p} className={styles.lead}>
+              {p}
+            </p>
+          ))}
+          <div className={styles.linkRow}>
+            <a href={designer.link.href} className="arrow-link">
+              {designer.link.title}
+              <ArrowCircle />
+            </a>
+          </div>
+        </div>
+        <div className={styles.splitBar}>
+          {designer.split.map((s) => (
+            <div key={s.label} className={styles.figure}>
+              <span className={styles.figureValue}>{s.value}</span>
+              <span aria-hidden="true" className={styles.figureBar} />
+              <span className={styles.figureLabel}>{s.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className={styles.block}>
+        <h3 className={styles.title}>{designPhilosophy.title}</h3>
+        {designPhilosophy.body.map((p) => (
           <p key={p} className={styles.lead}>
             {p}
           </p>
         ))}
-        <div className={styles.linkRow}>
-          <a href={designer.link.href} className="arrow-link">
-            {designer.link.title}
-            <ArrowCircle />
-          </a>
-        </div>
       </div>
-      <div className={styles.splitBar}>
-        {designer.split.map((s) => (
-          <div key={s.label} className={styles.figure}>
-            <span className={styles.figureValue}>{s.value}</span>
-            <span aria-hidden="true" className={styles.figureBar} />
-            <span className={styles.figureLabel}>{s.label}</span>
-          </div>
+    </>
+  );
+}
+
+function CareerPanel() {
+  return (
+    <>
+      <h2 className={styles.title}>{career.title}</h2>
+      <ol className={styles.timeline}>
+        {career.roles.map((r) => (
+          <li key={r.company} className={styles.timelineRow}>
+            <span className={styles.timelineDate}>{r.period}</span>
+            <div>
+              <h3 className={styles.timelineTitle}>
+                {r.role} | {r.company}
+              </h3>
+              <ul className={styles.timelinePoints}>
+                {r.points.map((p) => (
+                  <li key={p}>{p}</li>
+                ))}
+              </ul>
+            </div>
+          </li>
         ))}
-      </div>
-    </div>
+      </ol>
+    </>
   );
 }
 
@@ -170,7 +207,7 @@ function MentorshipPanel() {
   );
 }
 
-const PANELS = [LeadershipPanel, ImpactPanel, AiPanel, DesignerPanel, MentorshipPanel];
+const PANELS = [LeadershipPanel, ImpactPanel, AiPanel, DesignerPanel, CareerPanel, MentorshipPanel];
 
 export function LeadershipTabs() {
   const [index, setIndex] = useState(0);
@@ -209,18 +246,7 @@ export function LeadershipTabs() {
 
   return (
     <section data-light aria-label="Leadership profile" className={styles.tabbed}>
-      <div className={`${styles.inner} ${styles.teams}`}>
-        <h2 className={styles.title}>{teams.title}</h2>
-        <p className={styles.lead}>{teams.body}</p>
-        <ul className={styles.companies}>
-          {teams.companies.map((c) => (
-            <li key={c.name}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={c.logo} alt={c.name} className={styles.companyLogo} />
-            </li>
-          ))}
-        </ul>
-      </div>
+      <Learning />
       <div ref={barRef} className={styles.tabBar}>
         <div role="tablist" aria-label="Leadership profile" onKeyDown={onKeyDown} className={styles.tabRow}>
           {tabs.map((label, i) => (
