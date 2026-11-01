@@ -28,7 +28,7 @@ Navigation: fixed logo + menu icon on every page; the icon opens a full-screen m
 
 ## Design system
 
-- Type: Source Serif 4 (headlines), Source Sans 3 (UI/body), Inter Tight (builds intro only). Self-hosted via @fontsource — no Google Fonts network calls.
+- Type: Source Serif 4 (headlines), Source Sans 3 (UI/body), Inter Tight (builds intro only), Caveat (menu quote only). Self-hosted via @fontsource — no Google Fonts network calls.
 - Colour: night `#0E1316`, paper `#FFFFFF`, ink `#111111`, muted `#5C5C5C`, line `#E6E6E6`. No grey section backgrounds.
 - Tokens live in `src/app/globals.css`.
 - Logo: `src/components/Logo.tsx` is a vector trace of a 32px file — replace with the master when Sajin sends it.

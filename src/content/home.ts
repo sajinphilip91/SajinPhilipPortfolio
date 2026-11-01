@@ -25,6 +25,11 @@ export const menu: { label: string; href: string; target?: "top" | "work" }[] = 
   { label: "For agents", href: "/for-agents" },
 ];
 
+export const menuQuote = {
+  text: "Believe in yourself. Stay in your own lane. There’s only one you!",
+  by: "Queen Latifah",
+};
+
 export const hero = {
   title: ["Designing for the", "Present and Future"],
   sub: ["Fifteen years of product design.", "Now building for humans and agents."],

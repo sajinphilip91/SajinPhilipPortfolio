@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState, type KeyboardEvent } from "react";
+import { useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import {
   designer,
   humanAi,
@@ -15,6 +15,47 @@ import {
 import { ArrowCircle } from "@/components/Logo";
 import styles from "./Leadership.module.css";
 
+function Icon({ children }: { children: ReactNode }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="32"
+      height="32"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className={styles.cardIcon}
+    >
+      {children}
+    </svg>
+  );
+}
+
+// Same order as principles.items: people, culture, business impact, empathy.
+const PRINCIPLE_ICONS = [
+  <Icon key="people">
+    <circle cx="9" cy="8" r="3.5" />
+    <path d="M2.5 20c.5-3.6 3-5.5 6.5-5.5s6 1.9 6.5 5.5" />
+    <path d="M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.9c2 .7 3.2 2.5 3.5 5.1" />
+  </Icon>,
+  <Icon key="culture">
+    <circle cx="9" cy="9.5" r="6" />
+    <circle cx="15" cy="9.5" r="6" />
+    <circle cx="12" cy="14.5" r="6" />
+  </Icon>,
+  <Icon key="impact">
+    <path d="M3 20h18" />
+    <path d="M4 15.5l5-5 4 3.5 7-8" />
+    <path d="M15 6h5v5" />
+  </Icon>,
+  <Icon key="empathy">
+    <path d="M12 20.5S3 15.2 3 9a4.8 4.8 0 0 1 9-2.3A4.8 4.8 0 0 1 21 9c0 6.2-9 11.5-9 11.5z" />
+  </Icon>,
+];
+
 function LeadershipPanel() {
   return (
     <>
@@ -27,8 +68,9 @@ function LeadershipPanel() {
         <h3 className={styles.title}>{principles.title}</h3>
         <p className={styles.lead}>{principles.body}</p>
         <div className={styles.grid4}>
-          {principles.items.map((item) => (
+          {principles.items.map((item, i) => (
             <article key={item.title} className={styles.card}>
+              {PRINCIPLE_ICONS[i]}
               <h4 className={styles.cardTitle}>{item.title}</h4>
               <p className={styles.cardBody}>{item.body}</p>
             </article>

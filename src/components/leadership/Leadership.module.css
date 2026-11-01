@@ -186,7 +186,7 @@
 
 .teams {
   padding-top: clamp(72px, 12vh, 112px);
-  padding-bottom: clamp(56px, 10vh, 96px);
+  padding-bottom: clamp(88px, 15vh, 144px);
 }
 
 .companies {
@@ -238,6 +238,11 @@
   border-radius: var(--radius);
 }
 
+
+.cardIcon {
+  display: block;
+  margin-bottom: 18px;
+}
 
 .cardTitle {
   margin: 0;

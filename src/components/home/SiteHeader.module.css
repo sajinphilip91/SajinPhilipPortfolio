@@ -107,8 +107,8 @@
   margin: 0;
   padding: 0 var(--gutter) 40px;
   border: 0;
-  background: var(--night);
-  color: var(--on-night);
+  background: linear-gradient(115deg, #f2f1e9, #e2e0ce);
+  color: #4b4a3f;
   overflow-y: auto;
 }
 
@@ -135,49 +135,114 @@
   align-items: center;
 }
 
-.menu {
+.dialogBody {
   flex: 1 1 auto;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 32px clamp(40px, 8vw, 120px);
   align-items: center;
 }
 
+/* Right on screen, first for reading order and on phones. */
+.menu {
+  order: 2;
+  padding-right: clamp(0px, 7vw, 120px);
+}
+
 .menu ul {
-  width: 100%;
-  max-width: 1120px;
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
   list-style: none;
-  display: grid;
-  grid-template-rows: repeat(4, auto);
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
-  gap: clamp(8px, 2.6vh, 28px) clamp(32px, 6vw, 96px);
 }
 
 .menu a {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  color: inherit;
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: clamp(32px, min(5vw, 8vh), 72px);
-  line-height: 1.15;
+  color: #7d7a6c;
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: clamp(34px, min(9.4vh, 6.2vw), 80px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
 }
 
-.menu a:hover {
-  opacity: 0.75;
-}
-
+.menu a:hover,
 .menu a[aria-current="page"] {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.16em;
+  color: #33322a;
 }
 
-@media (max-width: 640px) {
-  .menu ul {
-    grid-template-rows: none;
-    grid-auto-flow: row;
+.aside {
+  order: 1;
+  align-self: stretch;
+  padding-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.quote {
+  margin: 0;
+  max-width: 420px;
+}
+
+.quoteMark {
+  display: block;
+  height: 0.5em;
+  font-family: var(--font-serif);
+  font-size: clamp(72px, 8vw, 120px);
+  line-height: 1;
+}
+
+.quote blockquote {
+  margin: 0;
+  font-family: var(--font-hand);
+  font-weight: 500;
+  font-size: clamp(30px, 3vw, 44px);
+  line-height: 1.2;
+}
+
+.quote figcaption {
+  margin-top: 16px;
+  font-family: var(--font-hand);
+  font-size: clamp(22px, 2vw, 28px);
+}
+
+.socials {
+  position: absolute;
+  left: -10px;
+  bottom: 0;
+  display: flex;
+  gap: 4px;
+}
+
+.socials a {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+.socials a:hover {
+  color: #33322a;
+}
+
+@media (max-width: 760px) {
+  .dialogBody {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    align-content: space-between;
+  }
+  .menu,
+  .aside {
+    order: 0;
+    padding-right: 0;
+  }
+  .socials {
+    position: static;
+    margin: 16px 0 0 -10px;
   }
 }
