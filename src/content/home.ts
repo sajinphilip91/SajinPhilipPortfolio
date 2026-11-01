@@ -13,6 +13,18 @@ export const site = {
   },
 };
 
+// Same items as the old site's menu. `target` moves within the homepage when already on it.
+export const menu: { label: string; href: string; target?: "top" | "work" }[] = [
+  { label: "Home", href: "/", target: "top" },
+  { label: "Leadership", href: "/leadership" },
+  { label: "Work", href: "/#work", target: "work" },
+  { label: "UX + AI", href: "/uxai" },
+  { label: "About", href: "/about" },
+  { label: "Write", href: "/writing" },
+  { label: "Resume", href: site.resume },
+  { label: "For agents", href: "/for-agents" },
+];
+
 export const hero = {
   title: ["Designing for the", "Present and Future"],
   sub: ["Fifteen years of product design.", "Now building for humans and agents."],
@@ -234,7 +246,7 @@ export const approach = {
     ],
     body: "Most of my time goes to leadership: guiding teams, shaping strategy and building design cultures. The rest keeps me hands-on as a designer, close to the craft and connected to the people we design for.",
     links: [
-      { title: "Leadership profile", href: "/about" },
+      { title: "Leadership profile", href: "/leadership" },
       { title: "Mentoring on ADPList", href: "https://adplist.org/mentors/sajin-philip" },
       { title: "Invite me to speak", href: "https://www.linkedin.com/in/sajin-philip-65350534/" },
     ] as LinkItem[],

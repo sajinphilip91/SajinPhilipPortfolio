@@ -22,7 +22,6 @@ const SCREENS = [
 ];
 const PAGED_QUERY = "(min-width: 901px) and (min-height: 640px)";
 const LOCK_MS = 1000;
-const NAV_STEP: Record<NavTarget, number> = { top: 0, builds: 1, work: 3, approach: 4 };
 /** Just below the header: in normal scrolling, the section here decides the header colour. */
 const FLOW_PROBE = 80;
 /** Height of the menu text: while a page slides, it changes colour as the section edge crosses it. */
@@ -97,7 +96,9 @@ export function HomePage() {
 
   useEffect(() => {
     if (!paged) return;
+    const menuOpen = () => document.documentElement.dataset.menu === "open";
     const onWheel = (e: WheelEvent) => {
+      if (menuOpen()) return;
       if (scrollsInside(stepRef.current, e.deltaY > 0 ? 1 : -1)) {
         lockUntil.current = Date.now() + 200;
         return;
@@ -107,6 +108,7 @@ export function HomePage() {
       go(e.deltaY > 0 ? 1 : -1);
     };
     const onKey = (e: KeyboardEvent) => {
+      if (menuOpen()) return;
       const t = e.target as HTMLElement | null;
       if (t && (t.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(t.tagName))) return;
       const down = ["ArrowDown", "PageDown"].includes(e.key) || (e.key === " " && !e.shiftKey);
@@ -127,7 +129,7 @@ export function HomePage() {
       touchY.current = e.touches[0]?.clientY ?? null;
     };
     const onTouchEnd = (e: TouchEvent) => {
-      if (touchY.current === null) return;
+      if (touchY.current === null || menuOpen()) return;
       const d = touchY.current - (e.changedTouches[0]?.clientY ?? touchY.current);
       touchY.current = null;
       if (Math.abs(d) > 50 && !scrollsInside(stepRef.current, d > 0 ? 1 : -1)) go(d > 0 ? 1 : -1);
@@ -169,9 +171,14 @@ export function HomePage() {
     return () => cancelAnimationFrame(frame);
   }, [paged, step]);
 
-  const navigate = (target: NavTarget) => {
+  // Arriving from another page via the Work link.
+  useEffect(() => {
+    if (paged && window.location.hash === "#work") goTo(3);
+  }, [paged, goTo]);
+
+  const navigate = (target: NavTarget | "builds") => {
     if (paged) {
-      goTo(NAV_STEP[target]);
+      goTo(target === "top" ? 0 : target === "builds" ? 1 : 3);
     } else if (target === "top") {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {

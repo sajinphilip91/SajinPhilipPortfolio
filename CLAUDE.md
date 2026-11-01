@@ -24,6 +24,8 @@ Desktop (≥901px wide, ≥640px tall) is full-page: one wheel/swipe/key = one s
 
 Only the hero and builds are full width; content sections cap at 1440px.
 
+Navigation: fixed logo + menu icon on every page; the icon opens a full-screen menu with the old site's items (`menu` in `src/content/home.ts`). `/leadership` is built; inner pages scroll normally and white sections carry `data-light` so the header follows them.
+
 ## Design system
 
 - Type: Source Serif 4 (headlines), Source Sans 3 (UI/body), Inter Tight (builds intro only). Self-hosted via @fontsource — no Google Fonts network calls.
@@ -34,7 +36,7 @@ Only the hero and builds are full width; content sections cap at 1440px.
 ## Open items
 
 - Footer (next task).
-- Inner pages: `/work/*`, `/builds/*`, `/writing/*`, `/about`, `/for-agents` (+ `llms.txt`). Old Wix URLs already redirect to these in `next.config.ts`.
+- Inner pages: `/work/*`, `/writing/*`, `/about`, `/for-agents` (+ `llms.txt`). Old Wix URLs already redirect to these in `next.config.ts`.
 - `public/resume.pdf` (current resume; an ATS/agentic-focused rewrite comes later).
 - Images: case study covers, app screenshots.
 - Content gaps: measured results for most case studies, WhatsApp Poll problem line, Dropshipping details (password-protected on Wix).
