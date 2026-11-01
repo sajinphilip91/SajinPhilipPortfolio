@@ -131,6 +131,7 @@ export const caseStudies: CaseStudy[] = [
     title: "Depression Decision Aid",
     industry: "Healthcare · Mental health",
     tone: "#2B3A55",
+    cover: "/media/covers/depression-aid.webp",
     problem:
       "Choosing an antidepressant is slow, and the paper card aid only works when physician and patient sit together. We turned it into an app they can use apart.",
     facts: [
@@ -146,6 +147,7 @@ export const caseStudies: CaseStudy[] = [
     title: "YOYO Test",
     industry: "Sports · Fitness",
     tone: "#3A4A3A",
+    cover: "/media/covers/yoyo-test.webp",
     problem:
       "Coaches recorded endurance tests on paper and retyped them later. The app lets them log results live while 15 athletes run at once.",
     facts: [
@@ -161,6 +163,7 @@ export const caseStudies: CaseStudy[] = [
     title: "Home Automation",
     industry: "Smart home",
     tone: "#4A3F33",
+    cover: "/media/covers/home-automation.webp",
     badge: "In progress",
     problem:
       "Smart-home setup is fragmented and hard to trust. One personalised app connects devices simply and suggests what to automate.",
@@ -177,6 +180,7 @@ export const caseStudies: CaseStudy[] = [
     title: "WhatsApp Poll",
     industry: "Messaging · 2021",
     tone: "#24463A",
+    cover: "/media/covers/whatsapp-poll.webp",
     badge: "Concept",
     problem: "[One-line problem: why groups needed polls inside WhatsApp]",
     facts: [
@@ -192,6 +196,7 @@ export const caseStudies: CaseStudy[] = [
     title: "Dropshipping",
     industry: "Commerce",
     tone: "#3B2F45",
+    cover: "/media/covers/dropshipping.webp",
     problem: "Aligning the user experience with company goals. [One-line problem]",
     facts: [
       { label: "Role", value: "[Role]" },

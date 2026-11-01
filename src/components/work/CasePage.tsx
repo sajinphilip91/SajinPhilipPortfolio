@@ -6,7 +6,7 @@ import { getCase, getNextCase } from "@/lib/work";
 import styles from "./Case.module.css";
 
 export function CasePage({ slug }: { slug: string }) {
-  const { meta, html } = getCase(slug);
+  const { meta, cover, html } = getCase(slug);
   const next = getNextCase(slug);
   return (
     <>
@@ -17,6 +17,10 @@ export function CasePage({ slug }: { slug: string }) {
             <Link href="/#work" className={styles.back}>
               All work
             </Link>
+            {cover && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={cover} alt="" className={styles.cover} />
+            )}
             <h1 className={styles.title}>{meta.title}</h1>
             <p className={styles.subtitle}>{meta.subtitle}</p>
             <dl className={styles.facts}>

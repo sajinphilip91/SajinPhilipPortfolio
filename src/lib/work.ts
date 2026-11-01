@@ -23,7 +23,8 @@ export const getCaseSlugs = () =>
 
 export function getCase(slug: string) {
   const { meta, body } = readMarkdown<CaseMeta>(WORK_DIR, slug);
-  return { meta, html: marked.parse(body, { async: false }) };
+  const cover = caseStudies.find((c) => c.href === `/work/${slug}`)?.cover;
+  return { meta, cover, html: marked.parse(body, { async: false }) };
 }
 
 /** The next case study in homepage order, wrapping round. */
