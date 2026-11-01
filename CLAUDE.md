@@ -29,16 +29,16 @@ Navigation: fixed logo + menu icon on every page; the icon opens a full-screen m
 ## Design system
 
 - Type: Source Serif 4 (headlines), Source Sans 3 (UI/body), Inter Tight (builds intro only), Caveat (menu quote only). Self-hosted via @fontsource — no Google Fonts network calls.
-- Colour: night `#0E1316`, paper `#FFFFFF`, ink `#111111`, muted `#5C5C5C`, line `#E6E6E6`. No grey section backgrounds.
+- Colour: night `#0E1316`, paper `#FFFFFF`, ink `#111111`, muted `#5C5C5C`, line `#E6E6E6`. No grey section backgrounds, except `--night-soft` `#1A2227` for the Leadership team band.
 - Tokens live in `src/app/globals.css`.
 - Logo: `src/components/Logo.tsx` is a vector trace of a 32px file — replace with the master when Sajin sends it.
 
 ## Open items
 
 - Footer (next task).
-- Inner pages: `/work/*`, `/for-agents` (+ `llms.txt`). Old Wix URLs already redirect to these in `next.config.ts`.
+- `/work/*` shows the Markdown files in `src/content/work`, each an end-to-end case study in six chapters: Understand, Define, Ideate, Design, Validate, Outcome. Generated artefacts must come from real project data and say so; proposed measures are labelled as proposed.
 - `public/resume.pdf` is the current Wix resume; an ATS/agentic-focused rewrite comes later.
 - Images: case study covers, app screenshots.
-- Content gaps: measured results for most case studies, WhatsApp Poll problem line, Dropshipping details (password-protected on Wix).
+- Content gaps: measured results for most case studies, WhatsApp Poll problem line.
 - GlassScore image shows Premier League, Arsenal, Man City and Meta marks — flagged as a trademark risk; consider fictional teams.
 - Deploy: Vercel (Sajin will import the repo), then move the domain off Wix.

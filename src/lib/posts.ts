@@ -14,16 +14,19 @@ export type PostMeta = {
   cover?: string;
 };
 
-function read(slug: string) {
-  const raw = fs.readFileSync(path.join(POSTS_DIR, `${slug}.md`), "utf8");
+/** Splits a Markdown file into its JSON-valued front matter and body. */
+export function readMarkdown<T>(dir: string, slug: string) {
+  const raw = fs.readFileSync(path.join(dir, `${slug}.md`), "utf8");
   const [, head, body] = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/) ?? [];
   const fields: Record<string, unknown> = {};
   for (const line of head.split("\n")) {
     const colon = line.indexOf(":");
     fields[line.slice(0, colon)] = JSON.parse(line.slice(colon + 1));
   }
-  return { meta: { slug, ...fields } as PostMeta, body };
+  return { meta: { slug, ...fields } as T, body };
 }
+
+const read = (slug: string) => readMarkdown<PostMeta>(POSTS_DIR, slug);
 
 export function getPosts(): PostMeta[] {
   return fs

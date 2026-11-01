@@ -192,7 +192,6 @@ export const caseStudies: CaseStudy[] = [
     title: "Dropshipping",
     industry: "Commerce",
     tone: "#3B2F45",
-    badge: "Private",
     problem: "Aligning the user experience with company goals. [One-line problem]",
     facts: [
       { label: "Role", value: "[Role]" },
@@ -200,8 +199,8 @@ export const caseStudies: CaseStudy[] = [
       { label: "Scope", value: "[Scope]" },
       { label: "Result", value: "[One result]" },
     ],
-    cta: "Request access",
-    href: "mailto:sajinphilip91@gmail.com?subject=Dropshipping%20case%20study",
+    cta: "Read case study",
+    href: "/work/dropshipping",
   },
 ];
 
