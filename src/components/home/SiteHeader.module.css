@@ -184,6 +184,11 @@
   text-transform: uppercase;
 }
 
+/* H and L carry extra space on their left at this size, so Home and Leadership sit visibly inset. */
+.menu ul:first-child li:nth-child(-n + 2) a {
+  margin-left: -0.06em;
+}
+
 .menu a:hover,
 .menu a[aria-current="page"] {
   color: #33322a;
