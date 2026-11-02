@@ -34,7 +34,7 @@ export const menuQuote = {
 };
 
 export const hero = {
-  title: ["Designing for the", "Present and Future"],
+  title: ["Designing for", "Present and Future"],
   sub: ["Fifteen years of product design.", "Now building for humans and agents."],
   stats: [
     { label: "Experience", value: "15+ yrs" },
