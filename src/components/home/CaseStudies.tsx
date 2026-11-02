@@ -39,7 +39,7 @@ export function CaseStudies() {
           <div className={styles.cover} style={{ background: c.tone }}>
             {c.cover ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={c.cover} alt={`${c.title} case study cover`} className={styles.coverImage} />
+              <img src={c.cover} alt={`${c.title} case study cover`} className={styles.coverImage} loading="lazy" />
             ) : (
               <span className={styles.coverNote}>Cover image coming soon</span>
             )}

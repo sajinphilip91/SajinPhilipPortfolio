@@ -18,7 +18,7 @@ export function WorkBuilds({ items = workBuilds }: { items?: Build[] }) {
           <article key={b.name} className={styles.tile} style={{ background: b.tone }}>
             {b.image && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={b.image} alt={`${b.name}: ${b.headline}`} className={styles.tileImage} />
+              <img src={b.image} alt={`${b.name}: ${b.headline}`} className={styles.tileImage} loading="lazy" />
             )}
             <div aria-hidden="true" className={styles.tileScrim} />
             <div className={styles.tileCopy}>
