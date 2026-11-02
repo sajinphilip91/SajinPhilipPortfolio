@@ -66,6 +66,7 @@ export function HomePage() {
   const lockUntil = useRef(0);
   const touchY = useRef<number | null>(null);
   const wheel = useRef({ time: 0, size: 0 });
+  const queued = useRef<number | undefined>(undefined);
   const stepRef = useRef(0);
 
   useEffect(() => {
@@ -82,6 +83,7 @@ export function HomePage() {
   }, []);
 
   const goTo = useCallback((next: number) => {
+    clearTimeout(queued.current);
     const n = Math.max(0, Math.min(STEPS.length - 1, next));
     setStep((cur) => {
       if (n === cur) return cur;
@@ -102,6 +104,17 @@ export function HomePage() {
     [],
   );
 
+  /** A scroll made while a page is still sliding runs when the slide ends, so it is never lost. */
+  const goOrQueue = useCallback(
+    (dir: 1 | -1) => {
+      clearTimeout(queued.current);
+      const wait = lockUntil.current - Date.now();
+      if (wait > 0) queued.current = window.setTimeout(() => go(dir), wait);
+      else go(dir);
+    },
+    [go],
+  );
+
   useEffect(() => {
     if (!paged) return;
     const menuOpen = () => document.documentElement.dataset.menu === "open";
@@ -117,7 +130,7 @@ export function HomePage() {
       const size = Math.abs(e.deltaY);
       const fresh = now - wheel.current.time > GESTURE_GAP_MS || size > wheel.current.size * 1.6;
       wheel.current = { time: now, size };
-      if (fresh && size >= MIN_WHEEL) go(e.deltaY > 0 ? 1 : -1);
+      if (fresh && size >= MIN_WHEEL) goOrQueue(e.deltaY > 0 ? 1 : -1);
     };
     const onKey = (e: KeyboardEvent) => {
       if (menuOpen()) return;
@@ -155,8 +168,9 @@ export function HomePage() {
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchend", onTouchEnd);
+      clearTimeout(queued.current);
     };
-  }, [paged, go, goTo]);
+  }, [paged, go, goOrQueue, goTo]);
 
   // In normal scrolling the header takes its colour from the section beneath it.
   useEffect(() => {
