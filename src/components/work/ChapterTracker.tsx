@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 declare global {
   interface Window {
-    clarity?: (...args: string[]) => void;
+    clarity?: (command: string, ...args: (string | Record<string, string>)[]) => void;
   }
 }
 

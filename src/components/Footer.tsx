@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CookieSettingsLink } from "@/components/CookieChoice";
 import { site } from "@/content/home";
 import styles from "./Footer.module.css";
 
@@ -31,7 +32,8 @@ export function Footer() {
           ))}
         </ul>
         <p>
-          © {new Date().getFullYear()} {site.name} · <Link href="/privacy">Privacy</Link>
+          © {new Date().getFullYear()} {site.name} · <Link href="/privacy">Privacy</Link>{" · "}
+          <CookieSettingsLink />
         </p>
       </div>
     </footer>

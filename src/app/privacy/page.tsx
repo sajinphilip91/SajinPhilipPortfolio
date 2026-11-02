@@ -20,7 +20,12 @@ export default function Page() {
           scroll maps, heatmaps and session recordings. I use this only to improve the site.
         </p>
         <p>
-          Microsoft may use cookies to do this. Questions? Write to <a href={`mailto:${site.email}`}>{site.email}</a>.
+          Vercel Analytics uses no cookies. Clarity only sets cookies if you choose Allow. If you decline, it collects
+          limited data without cookies. You can change your choice any time with Cookie settings in the footer, and I
+          never use this data for advertising.
+        </p>
+        <p>
+          Questions? Write to <a href={`mailto:${site.email}`}>{site.email}</a>.
         </p>
       </main>
     </>
