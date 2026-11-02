@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { site } from "@/content/home";
 import styles from "./Footer.module.css";
 
@@ -30,7 +31,7 @@ export function Footer() {
           ))}
         </ul>
         <p>
-          © {new Date().getFullYear()} {site.name}
+          © {new Date().getFullYear()} {site.name} · <Link href="/privacy">Privacy</Link>
         </p>
       </div>
     </footer>

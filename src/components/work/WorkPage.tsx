@@ -23,7 +23,7 @@ export function WorkPage() {
                 <Link href={c.href} className={styles.card}>
                   <span className={styles.frame}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={c.cover} alt="" className={styles.cover} />
+                    <img src={c.cover} alt={`${c.title} case study cover`} className={styles.cover} />
                   </span>
                   <span>
                     <span className={styles.industry}>{c.industry}</span>

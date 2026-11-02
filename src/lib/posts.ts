@@ -36,9 +36,13 @@ export function getPosts(): PostMeta[] {
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 
+/** Images saved without a description take one from the page title. */
+export const describeImages = (html: string, label: string) =>
+  html.replaceAll('alt=""', `alt="${label.replace(/&/g, "&amp;").replace(/"/g, "&quot;")}"`);
+
 export function getPost(slug: string) {
   const { meta, body } = read(slug);
-  return { meta, html: marked.parse(body, { async: false }) };
+  return { meta, html: describeImages(marked.parse(body, { async: false }), meta.title) };
 }
 
 export function formatDate(date: string) {

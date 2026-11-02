@@ -2,6 +2,9 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import { ArrowCircle } from "@/components/Logo";
 import { PageHeader } from "@/components/leadership/PageHeader";
+import { JsonLd } from "@/components/JsonLd";
+import { ChapterTracker } from "@/components/work/ChapterTracker";
+import { articleData } from "@/lib/seo";
 import { getCase, getNextCase } from "@/lib/work";
 import styles from "./Case.module.css";
 
@@ -19,7 +22,7 @@ export function CasePage({ slug }: { slug: string }) {
             </Link>
             {cover && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={cover} alt="" className={styles.cover} />
+              <img src={cover} alt={`${meta.title} case study cover`} className={styles.cover} />
             )}
             <h1 className={styles.title}>{meta.title}</h1>
             <p className={styles.subtitle}>{meta.subtitle}</p>
@@ -35,11 +38,12 @@ export function CasePage({ slug }: { slug: string }) {
         </section>
         <section data-light aria-label="Case study" className={styles.paper}>
           <article
+            data-case-body
             className={`${styles.inner} ${styles.body}`}
             style={meta.accent ? ({ "--accent": meta.accent } as CSSProperties) : undefined}
             dangerouslySetInnerHTML={{ __html: html }}
           />
-          <div className={styles.inner}>
+          <div data-case-end className={styles.inner}>
             <Link href={next.href} className={`arrow-link ${styles.next}`}>
               Next: {next.title}
               <ArrowCircle />
@@ -47,6 +51,10 @@ export function CasePage({ slug }: { slug: string }) {
           </div>
         </section>
       </main>
+      <ChapterTracker slug={slug} />
+      <JsonLd
+        data={articleData({ type: "Article", title: meta.title, description: meta.subtitle, path: `/work/${slug}`, image: cover })}
+      />
     </>
   );
 }

@@ -87,7 +87,7 @@ export function Builds({ mode, active = false, introVisible = false, onShowcase 
           >
             {item.image && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={item.image} alt="" className={styles.bgImage} loading={mode === "flow" ? "lazy" : undefined} />
+              <img src={item.image} alt={`${item.name}: ${item.headline}`} className={styles.bgImage} loading={mode === "flow" ? "lazy" : undefined} />
             )}
           </div>
         ))}

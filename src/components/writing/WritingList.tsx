@@ -22,7 +22,7 @@ export function WritingList() {
                 <Link href={`/writing/${post.slug}`} className={styles.row}>
                   {post.cover ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={post.cover} alt="" loading="lazy" className={styles.thumb} />
+                    <img src={post.cover} alt={post.title} loading="lazy" className={styles.thumb} />
                   ) : (
                     <span aria-hidden="true" className={styles.thumb} />
                   )}

@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@/components/Analytics";
+import { JsonLd } from "@/components/JsonLd";
 import { SiteFooter } from "@/components/SiteFooter";
+import { personData, websiteData } from "@/lib/seo";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -27,6 +30,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
         <SiteFooter />
+        <JsonLd data={personData} />
+        <JsonLd data={websiteData} />
+        <Analytics />
       </body>
     </html>
   );

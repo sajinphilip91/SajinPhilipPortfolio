@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { marked } from "marked";
 import { caseStudies } from "@/content/home";
-import { readMarkdown } from "./posts";
+import { describeImages, readMarkdown } from "./posts";
 
 // Case studies are Markdown files in src/content/work, named after their /work/ URL.
 const WORK_DIR = path.join(process.cwd(), "src/content/work");
@@ -24,7 +24,7 @@ export const getCaseSlugs = () =>
 export function getCase(slug: string) {
   const { meta, body } = readMarkdown<CaseMeta>(WORK_DIR, slug);
   const cover = caseStudies.find((c) => c.href === `/work/${slug}`)?.cover;
-  return { meta, cover, html: marked.parse(body, { async: false }) };
+  return { meta, cover, html: describeImages(marked.parse(body, { async: false }), `${meta.title} case study`) };
 }
 
 /** The next case study in homepage order, wrapping round. */

@@ -1,0 +1,21 @@
+.page {
+  min-height: 70vh;
+  max-width: calc(720px + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: calc(var(--header-h) + 48px) var(--gutter) 96px;
+  color: var(--on-night);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.page h1 {
+  margin: 0 0 24px;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(38px, 5vw, 56px);
+}
+
+.page a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
