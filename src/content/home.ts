@@ -42,7 +42,7 @@ export const hero = {
     { label: "Teams built", value: "3" },
   ],
   comingSoon: {
-    label: "Coming soon",
+    label: "Coming Soon",
     image: "/media/robot-coming-soon.webp",
     alt: "Pencil sketch of a small wheeled robot with a smiling screen face. Building my first robot: industrial design, 3D CAD, electronics, PCB design, embedded systems, robotics and voice AI.",
   },

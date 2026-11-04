@@ -68,8 +68,8 @@ export function SiteHeader({ theme, solid, onNavigate }: Props) {
       <Link href="/" className={styles.logo} aria-label={`${site.name}, home`} onClick={(e) => follow(e, "top")}>
         <Logo />
       </Link>
-      <button type="button" className={styles.menuButton} aria-label="Open menu" aria-haspopup="dialog" onClick={open}>
-        <span aria-hidden="true" className={styles.bars} />
+      <button type="button" className={styles.menuPill} aria-haspopup="dialog" onClick={open}>
+        Menu
       </button>
 
       <dialog

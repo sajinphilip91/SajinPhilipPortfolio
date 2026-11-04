@@ -56,7 +56,26 @@
   opacity: 0.75;
 }
 
-.bars,
+/* Opens the menu: a labelled pill reads clearly beside the section dots and the robot poster. */
+.menuPill {
+  min-height: 40px;
+  padding: 0 20px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.menuPill:hover {
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+
 .cross {
   position: relative;
   display: block;
@@ -64,8 +83,6 @@
   height: 12px;
 }
 
-.bars::before,
-.bars::after,
 .cross::before,
 .cross::after {
   content: "";
@@ -74,14 +91,6 @@
   right: 0;
   height: 2px;
   background: currentColor;
-}
-
-.bars::before {
-  top: 0;
-}
-
-.bars::after {
-  bottom: 0;
 }
 
 .cross::before,
