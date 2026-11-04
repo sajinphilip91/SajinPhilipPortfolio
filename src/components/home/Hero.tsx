@@ -4,9 +4,7 @@ import { useEffect, useRef } from "react";
 import { hero } from "@/content/home";
 import styles from "./Hero.module.css";
 
-type Props = { onNavigate: (target: "builds") => void };
-
-export function Hero({ onNavigate }: Props) {
+export function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -39,6 +37,8 @@ export function Hero({ onNavigate }: Props) {
       <div className={styles.scrimSide} aria-hidden="true" />
       <div className={styles.scrimBottom} aria-hidden="true" />
 
+      <ComingSoon className={styles.comingSoon} />
+
       <div className={styles.content}>
         <h1 className={styles.title}>
           {hero.title[0]}
@@ -60,10 +60,32 @@ export function Hero({ onNavigate }: Props) {
             ))}
           </dl>
         </div>
-        <button type="button" className={`arrow-link ${styles.scrollCue}`} onClick={() => onNavigate("builds")}>
-          Scroll down
-        </button>
       </div>
+    </section>
+  );
+}
+
+function ComingSoon({ className, lazy = false }: { className: string; lazy?: boolean }) {
+  return (
+    <figure className={className}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={hero.comingSoon.image}
+        alt={hero.comingSoon.alt}
+        width={1200}
+        height={1502}
+        loading={lazy ? "lazy" : undefined}
+      />
+      <figcaption className={styles.comingSoonLabel}>{hero.comingSoon.label}</figcaption>
+    </figure>
+  );
+}
+
+/** Phones: the robot gets its own section straight after the banner. Desktop shows it inside the hero. */
+export function ComingSoonSection() {
+  return (
+    <section id="robot" aria-label="Coming soon" className={styles.robotSection}>
+      <ComingSoon className={styles.robotFigure} lazy />
     </section>
   );
 }

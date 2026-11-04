@@ -32,6 +32,56 @@
   background: linear-gradient(0deg, rgba(10, 14, 18, 0.6), rgba(10, 14, 18, 0));
 }
 
+/* The robot project fills the right of the hero on desktop: 40% wide, or less when the screen is too short for it. */
+.hero {
+  --robot-w: min(40vw, calc((100svh - var(--header-h) - 72px) * 0.8));
+}
+
+.comingSoon {
+  position: absolute;
+  z-index: 1;
+  top: calc(var(--header-h) + 8px);
+  right: var(--gutter);
+  width: var(--robot-w);
+  margin: 0;
+}
+
+.comingSoon img,
+.robotFigure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.comingSoon img {
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4);
+}
+
+.comingSoonLabel {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.robotSection {
+  display: none;
+}
+
+.robotFigure {
+  position: relative;
+  margin: 0;
+}
+
 .content {
   --detail-size: clamp(16px, 1.4vw, 20px);
   --detail-line: calc(var(--detail-size) * 1.6);
@@ -50,7 +100,8 @@
   margin: 0;
   font-family: var(--font-serif);
   font-weight: 500;
-  font-size: clamp(38px, 6.9vw, 102px);
+  /* Shrinks only as far as needed for its longest line (about 8em) to stay left of the robot. */
+  font-size: min(clamp(38px, 6.9vw, 102px), calc((100vw - 2 * var(--gutter) - var(--robot-w) - 40px) / 8));
   line-height: 1.16;
 }
 
@@ -63,14 +114,11 @@
 
 /* Values sit on the sub's first line and labels on its second. */
 .detailRow {
+  max-width: calc(100% - var(--robot-w) - 40px);
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   gap: 24px 64px;
-}
-
-.scrollCue {
-  align-self: flex-end;
 }
 
 .stats {
@@ -127,10 +175,43 @@
   .title {
     font-size: 34px;
   }
+
+  /* Too short for the robot beside the headline: it moves to its own section, as on phones. */
+  .hero {
+    --robot-w: 0px;
+  }
+
+  .comingSoon {
+    display: none;
+  }
+
+  .robotSection {
+    display: block;
+    padding: 48px var(--gutter);
+    background: var(--paper);
+  }
+
+  .robotFigure {
+    max-width: 560px;
+  }
 }
 
 @media (max-width: 900px) {
-  .scrollCue {
+  .hero {
+    --robot-w: 0px;
+  }
+
+  .comingSoon {
     display: none;
+  }
+
+  .robotSection {
+    display: block;
+    padding: 48px var(--gutter);
+    background: var(--paper);
+  }
+
+  .robotFigure {
+    max-width: 560px;
   }
 }

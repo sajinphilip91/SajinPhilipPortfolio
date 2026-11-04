@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SiteHeader, type HeaderTheme, type NavTarget } from "./SiteHeader";
-import { Hero } from "./Hero";
+import { ComingSoonSection, Hero } from "./Hero";
 import { Builds } from "./Builds";
 import { CaseStudies } from "./CaseStudies";
 import { Approach } from "./Approach";
@@ -47,7 +47,7 @@ function themeAt(y: number): HeaderTheme {
     return !!r && r.top <= y && r.bottom > y;
   };
   if (covers("top")) return "clear";
-  return covers("work") || covers("writing") ? "light" : "dark";
+  return covers("robot") || covers("work") || covers("writing") ? "light" : "dark";
 }
 
 /** On short windows a screen can be taller than the viewport; it scrolls before the page moves on. */
@@ -231,7 +231,8 @@ export function HomePage() {
         className={styles.track}
         style={paged ? { transform: `translateY(${-100 * screen}svh)` } : undefined}
       >
-        <Hero onNavigate={navigate} />
+        <Hero />
+        <ComingSoonSection />
         <div id="builds-intro" />
         <Builds
           mode={paged ? "paged" : "flow"}
