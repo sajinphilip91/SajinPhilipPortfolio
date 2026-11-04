@@ -31,6 +31,8 @@ const LOCK_MS = 900;
 /** A pause this long between wheel events means a new gesture, not trackpad momentum. */
 const GESTURE_GAP_MS = 140;
 const MIN_WHEEL = 12;
+/** A swipe ramps up, peaks and fades: only a jump after it has faded this far is a second swipe. */
+const FADED = 0.5;
 const SCROLL_ROOM = 48;
 /** Just below the header: in normal scrolling, the section here decides the header colour. */
 const FLOW_PROBE = 80;
@@ -65,7 +67,7 @@ export function HomePage() {
   const [dotsLight, setDotsLight] = useState(false);
   const lockUntil = useRef(0);
   const touchY = useRef<number | null>(null);
-  const wheel = useRef({ time: 0, size: 0 });
+  const wheel = useRef({ time: 0, size: 0, peak: 0, total: 0, dir: 0, fired: false });
   const queued = useRef<number | undefined>(undefined);
   const stepRef = useRef(0);
 
@@ -125,12 +127,19 @@ export function HomePage() {
         return;
       }
       e.preventDefault();
-      // Momentum fades steadily, so only a pause or a sudden push counts as a new scroll.
+      // One swipe is one move: a new one needs a pause, a reversal, or a push after the last has faded.
       const now = Date.now();
       const size = Math.abs(e.deltaY);
-      const fresh = now - wheel.current.time > GESTURE_GAP_MS || size > wheel.current.size * 1.6;
-      wheel.current = { time: now, size };
-      if (fresh && size >= MIN_WHEEL) goOrQueue(e.deltaY > 0 ? 1 : -1);
+      const dir = e.deltaY > 0 ? 1 : -1;
+      const last = wheel.current;
+      const pushed = size > last.size * 1.6 && last.size < last.peak * FADED;
+      const fresh = now - last.time > GESTURE_GAP_MS || dir !== last.dir || pushed;
+      const gesture = fresh
+        ? { peak: size, total: size, fired: false }
+        : { peak: Math.max(last.peak, size), total: last.total + size, fired: last.fired };
+      const fire = !gesture.fired && gesture.total >= MIN_WHEEL;
+      wheel.current = { ...gesture, time: now, size, dir, fired: gesture.fired || fire };
+      if (fire) goOrQueue(dir);
     };
     const onKey = (e: KeyboardEvent) => {
       if (menuOpen()) return;
