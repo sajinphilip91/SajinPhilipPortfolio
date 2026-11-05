@@ -58,6 +58,23 @@
   box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4);
 }
 
+/* The poster opens the LinkedIn post: it lifts a little on hover so it reads as clickable. */
+.comingSoonLink {
+  position: relative;
+  display: block;
+  border-radius: 12px;
+  transition: transform 300ms ease;
+}
+
+.comingSoonLink:hover {
+  transform: translateY(-4px);
+}
+
+.comingSoonLink:focus-visible {
+  outline: 2px solid var(--on-night);
+  outline-offset: 4px;
+}
+
 /* Sits where the poster's own wordmark was, kept faint so it doesn't pull focus from the poster. */
 .comingSoonLabel {
   position: absolute;

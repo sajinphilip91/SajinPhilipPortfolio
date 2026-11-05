@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@/components/Analytics";
+import { ExternalLinks } from "@/components/ExternalLinks";
 import { JsonLd } from "@/components/JsonLd";
 import { SiteFooter } from "@/components/SiteFooter";
 import { personData, websiteData } from "@/lib/seo";
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <JsonLd data={personData} />
         <JsonLd data={websiteData} />
         <Analytics />
+        <ExternalLinks />
       </body>
     </html>
   );

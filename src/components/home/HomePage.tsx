@@ -3,13 +3,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SiteHeader, type HeaderTheme, type NavTarget } from "./SiteHeader";
 import { ComingSoonSection, Hero } from "./Hero";
-import { Builds } from "./Builds";
+import { Builds, BuildsIntro } from "./Builds";
+import { BuildsBento } from "./BuildsBento";
 import { CaseStudies } from "./CaseStudies";
 import { Approach } from "./Approach";
 import { Writing } from "./Writing";
 import { Closing } from "./Closing";
-import { WorkBuilds } from "@/components/work/WorkBuilds";
 import { builds } from "@/content/home";
+import { countVisit, readBuildsVersion, tagBuildsVersion, type BuildsVersion } from "@/lib/buildsTest";
 import styles from "./HomePage.module.css";
 
 /**
@@ -33,6 +34,9 @@ const GESTURE_GAP_MS = 140;
 const MIN_WHEEL = 12;
 /** A swipe ramps up, peaks and fades: only a jump after it has faded this far is a second swipe. */
 const FADED = 0.5;
+/** A new swipe inside a fading one must be this strong, and three times the lowest point of the fade.
+ *  Momentum tails jitter (3, 6, 2, 5…): without this, that jitter fired extra moves. */
+const PUSH_MIN = 30;
 const SCROLL_ROOM = 48;
 /** Just below the header: in normal scrolling, the section here decides the header colour. */
 const FLOW_PROBE = 80;
@@ -40,6 +44,11 @@ const FLOW_PROBE = 80;
 const PAGED_PROBE = 38;
 const SLIDE_MS = 1100;
 const SCREEN_IDS = ["top", "builds", "work", "approach", "writing", "closing"];
+/** Version 2's large tile starts on StayAlt, then moves to the next build on every visit. */
+const FIRST_FEATURED = Math.max(
+  0,
+  builds.findIndex((b) => b.name === "StayAlt"),
+);
 
 function themeAt(y: number): HeaderTheme {
   const covers = (id: string) => {
@@ -67,9 +76,22 @@ export function HomePage() {
   const [dotsLight, setDotsLight] = useState(false);
   const lockUntil = useRef(0);
   const touchY = useRef<number | null>(null);
-  const wheel = useRef({ time: 0, size: 0, peak: 0, total: 0, dir: 0, fired: false });
+  const wheel = useRef({ time: 0, size: 0, peak: 0, floor: 0, total: 0, dir: 0, fired: false });
   const queued = useRef<number | undefined>(undefined);
   const stepRef = useRef(0);
+  const [buildsVersion, setBuildsVersion] = useState<BuildsVersion>(1);
+  const [featured, setFeatured] = useState(FIRST_FEATURED);
+  const visitCounted = useRef(false);
+
+  // The builds screen is off screen at load, so swapping in the visitor's version here is never seen.
+  useEffect(() => {
+    if (visitCounted.current) return;
+    visitCounted.current = true;
+    const version = readBuildsVersion();
+    setBuildsVersion(version);
+    tagBuildsVersion(version);
+    setFeatured((FIRST_FEATURED + countVisit()) % builds.length);
+  }, []);
 
   useEffect(() => {
     stepRef.current = step;
@@ -94,17 +116,14 @@ export function HomePage() {
     });
   }, []);
 
-  const go = useCallback(
-    (dir: 1 | -1) => {
-      if (Date.now() < lockUntil.current) return;
-      setStep((cur) => {
-        const n = Math.max(0, Math.min(STEPS.length - 1, cur + dir));
-        if (n !== cur) lockUntil.current = Date.now() + LOCK_MS;
-        return n;
-      });
-    },
-    [],
-  );
+  const go = useCallback((dir: 1 | -1) => {
+    if (Date.now() < lockUntil.current) return;
+    setStep((cur) => {
+      const n = Math.max(0, Math.min(STEPS.length - 1, cur + dir));
+      if (n !== cur) lockUntil.current = Date.now() + LOCK_MS;
+      return n;
+    });
+  }, []);
 
   /** A scroll made while a page is still sliding runs when the slide ends, so it is never lost. */
   const goOrQueue = useCallback(
@@ -132,11 +151,17 @@ export function HomePage() {
       const size = Math.abs(e.deltaY);
       const dir = e.deltaY > 0 ? 1 : -1;
       const last = wheel.current;
-      const pushed = size > last.size * 1.6 && last.size < last.peak * FADED;
+      const pushed = last.floor < last.peak * FADED && size >= Math.max(PUSH_MIN, last.floor * 3);
       const fresh = now - last.time > GESTURE_GAP_MS || dir !== last.dir || pushed;
       const gesture = fresh
-        ? { peak: size, total: size, fired: false }
-        : { peak: Math.max(last.peak, size), total: last.total + size, fired: last.fired };
+        ? { peak: size, floor: size, total: size, fired: false }
+        : {
+            peak: Math.max(last.peak, size),
+            // Lowest point since the peak: how far this swipe has faded.
+            floor: size >= last.peak ? size : Math.min(last.floor, size),
+            total: last.total + size,
+            fired: last.fired,
+          };
       const fire = !gesture.fired && gesture.total >= MIN_WHEEL;
       wheel.current = { ...gesture, time: now, size, dir, fired: gesture.fired || fire };
       if (fire) goOrQueue(dir);
@@ -227,10 +252,7 @@ export function HomePage() {
   return (
     <main className={paged ? styles.paged : styles.flow}>
       <SiteHeader theme={theme === "dark" && screen === 1 ? "clear" : theme} solid={paintBar} onNavigate={navigate} />
-      <div
-        className={styles.track}
-        style={paged ? { transform: `translateY(${-100 * screen}svh)` } : undefined}
-      >
+      <div className={styles.track} style={paged ? { transform: `translateY(${-100 * screen}svh)` } : undefined}>
         <Hero />
         <ComingSoonSection />
         <div id="builds-intro" />
@@ -239,9 +261,17 @@ export function HomePage() {
           active={paged && screen === 1}
           introVisible={paged && step === 1}
           onShowcase={() => goTo(2)}
+          version={buildsVersion}
+          featured={featured}
         />
+        {/* Phones: the same bento as desktop version 2, in two columns, for every visitor. */}
         <div className={styles.phoneBuilds}>
-          <WorkBuilds items={builds} />
+          <BuildsIntro
+            onShowcase={() => document.getElementById("phone-builds")?.scrollIntoView({ behavior: "smooth" })}
+          />
+          <section id="phone-builds" aria-label="AI builds">
+            <BuildsBento items={builds} featured={featured} phone />
+          </section>
         </div>
         <CaseStudies />
         <Approach />

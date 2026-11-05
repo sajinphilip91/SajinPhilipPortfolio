@@ -43,6 +43,7 @@ export const hero = {
   ],
   comingSoon: {
     label: "Coming Soon",
+    href: "https://lnkd.in/p/dUK-eR5t",
     image: "/media/robot-coming-soon-2.webp",
     alt: "Pencil sketch of a small wheeled robot with a smiling screen face. Building my first robot: industrial design, 3D CAD, electronics, PCB design, embedded systems, robotics and voice AI.",
   },
@@ -61,6 +62,8 @@ export type Build = {
   headline: string;
   body: string;
   image?: string;
+  /** Where to keep the image when a tile crops it (CSS object-position). Default: centre. */
+  focus?: string;
   tone: string;
   primary?: { label: string; href: string };
   secondary?: { label: string; href: string };
@@ -74,6 +77,7 @@ export const builds: Build[] = [
     headline: "Idea to App Store in ten days",
     body: "A football prediction app. Strategy, UX/UI, brand, frontend, backend, marketing and growth, built solo with AI.",
     image: "/media/matchbrain.webp",
+    focus: "62% 40%",
     tone: "#08080A",
     primary: { label: "App Store", href: "https://apps.apple.com/in/app/matchbrain-predict-football/id6777493741" },
     secondary: { label: "Google Play", href: "https://play.google.com/store/apps/details?id=com.matchbrain.matchbrain" },
@@ -85,6 +89,7 @@ export const builds: Build[] = [
     headline: "Live scores, right before your eyes",
     body: "Football and cricket scores for Meta Ray-Ban Display glasses, with voice control and real-time updates.",
     image: "/media/glassscore.webp",
+    focus: "50% 45%",
     tone: "#0C0D10",
     primary: { label: "Open the app", href: "https://meta-glass-scores.vercel.app" },
   },
@@ -95,6 +100,7 @@ export const builds: Build[] = [
     headline: "Experience the stay, not just the walls",
     body: "A booking site for unique stays: treehouses, domes, glamping tents, caves, cliffside rooms and castles.",
     image: "/media/stayalt.webp",
+    focus: "72% 55%",
     tone: "#0F1A12",
     primary: { label: "Visit stayalt.com", href: "https://stayalt.com/" },
   },
@@ -105,6 +111,7 @@ export const builds: Build[] = [
     headline: "Learning for designers in the AI era",
     body: "An interactive learning platform with AI-powered career and learning features.",
     image: "/media/the-new-designer.webp",
+    focus: "50% 50%",
     tone: "#221D30",
     primary: { label: "Visit thenewdesigner.com", href: "https://www.thenewdesigner.com/" },
   },
@@ -115,6 +122,7 @@ export const builds: Build[] = [
     headline: "A working web app in twelve hours",
     body: "Built end to end with AI tools, to help people improve their lives one breath at a time.",
     image: "/media/breathe-easy.webp",
+    focus: "62% 40%",
     tone: "#16303A",
     primary: { label: "Read the story", href: "/writing/i-just-built-a-fully-working-web-app-using-only-ai-tools-in-under-12-hours" },
   },
@@ -239,20 +247,32 @@ type LinkItem = { title: string; body?: string; href: string };
 export const approach = {
   kicker: "How I work",
   title: "How AI fits into my workflow",
-  sub: "Problem first, always. Speed only matters when it points the right way.",
+  sub: "AI changes how quickly and deeply we can explore, experiment and deliver. It doesn't change why we design.",
+  phases: [
+    {
+      name: "Discover & Define",
+      line: "Define the right problem.",
+      steps: ["Understand", "Align", "Define"],
+      ai: "Synthesises research, surfaces patterns and challenges assumptions.",
+    },
+    {
+      name: "Create & Design",
+      line: "Turn ideas into experiences.",
+      steps: ["Explore", "Ideate", "Design"],
+      ai: "Expands the solution space and turns ideas into prototypes at speed.",
+    },
+    {
+      name: "Validate & Evolve",
+      line: "Learn from evidence.",
+      steps: ["Validate", "Test", "Iterate", "Deliver"],
+      ai: "Analyses feedback, finds friction and supports handoff.",
+    },
+  ],
   governance: {
     title: "Trust, Safety and AI Governance",
-    line: "AI supports every stage. It never takes over: people make the decisions.",
-    items: ["Data protection", "Human review", "Safety checks", "Transparent AI use"],
+    line: "AI supports every stage. It never takes over. People make the decisions.",
+    items: ["Human judgement", "Data protection", "Transparency", "Safety and ethics", "Accountability"],
   },
-  stages: [
-    { name: "Problem", items: ["Organise findings", "Build narratives", "Prioritise opportunities", "Define problem spaces"] },
-    { name: "Research", items: ["Research exploration", "Summarise interviews", "Analyse competitors", "Extract insights"] },
-    { name: "Design", items: ["Explore concepts", "Generate alternatives", "Challenge assumptions", "Discover edge cases"] },
-    { name: "Build", items: ["Rapid concepts", "Design variations", "Validation", "Faster iterations"] },
-    { name: "Launch", items: ["UX writing", "Design narratives", "Workshop preparation", "Stakeholder alignment"] },
-    { name: "Iterate", items: ["Analyse feedback", "Spot usage patterns", "Prioritise fixes", "Improve the product"] },
-  ],
 };
 
 export const writing = {

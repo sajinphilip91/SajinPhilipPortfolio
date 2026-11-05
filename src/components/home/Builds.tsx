@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { builds, buildsIntro } from "@/content/home";
 import { ArrowCircle } from "@/components/Logo";
+import { trackBuildClick, type BuildsVersion } from "@/lib/buildsTest";
+import { BuildsBento } from "./BuildsBento";
 import styles from "./Builds.module.css";
 
 const SLIDE_SECONDS = 8;
@@ -15,9 +17,13 @@ type Props = {
   /** Paged mode: is the intro overlay showing. */
   introVisible?: boolean;
   onShowcase?: () => void;
+  /** A/B test: 1 is the slider, 2 the bento grid. */
+  version?: BuildsVersion;
+  /** Version 2: which build gets the large tile. */
+  featured?: number;
 };
 
-export function Builds({ mode, active = false, introVisible = false, onShowcase }: Props) {
+export function Builds({ mode, active = false, introVisible = false, onShowcase, version = 1, featured = 0 }: Props) {
   const [index, setIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -29,12 +35,14 @@ export function Builds({ mode, active = false, introVisible = false, onShowcase 
   // In flow mode, only run the slider while the section is on screen.
   useEffect(() => {
     if (mode !== "flow" || !sectionRef.current) return;
-    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.5 });
+    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), {
+      threshold: 0.5,
+    });
     io.observe(sectionRef.current);
     return () => io.disconnect();
   }, [mode]);
 
-  const running = (mode === "paged" ? active && !introVisible : inView) && !paused && !stopped;
+  const running = version === 1 && (mode === "paged" ? active && !introVisible : inView) && !paused && !stopped;
 
   useEffect(() => {
     if (!running) return;
@@ -72,83 +80,93 @@ export function Builds({ mode, active = false, introVisible = false, onShowcase 
         </div>
       )}
 
-      <section
-        ref={sectionRef}
-        id="builds"
-        aria-label="AI builds"
-        className={styles.builds}
-      >
-        {builds.map((item, i) => (
-          <div
-            key={item.name}
-            aria-hidden="true"
-            className={styles.bg}
-            style={{ background: item.tone, opacity: i === index ? 1 : 0 }}
-          >
-            {item.image && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={item.image} alt={`${item.name}: ${item.headline}`} className={styles.bgImage} loading="lazy" />
-            )}
+      <section ref={sectionRef} id="builds" aria-label="AI builds" className={styles.builds}>
+        {version === 2 ? (
+          <div className={styles.bentoFrame}>
+            <BuildsBento items={builds} featured={featured} />
           </div>
-        ))}
-        <div aria-hidden="true" className={b.image ? styles.scrimImage : styles.scrimPlain} />
-
-        <div className={styles.inner}>
-          <p className={`eyebrow ${styles.label}`}>Built with AI</p>
-          <div className={styles.stage}>
-            <div key={b.name} className={styles.copy}>
-              <p className={styles.question}>{b.question}</p>
-              <h2 className={styles.headline}>{b.headline}</h2>
-              <p className={styles.body}>{b.body}</p>
-              <div className={styles.actions}>
-                {b.primary && (
-                  <a href={b.primary.href} className={styles.primary}>
-                    {b.primary.label}
-                  </a>
-                )}
-                {b.secondary && (
-                  <a href={b.secondary.href} className={styles.secondary}>
-                    {b.secondary.label}
-                  </a>
+        ) : (
+          <>
+            {builds.map((item, i) => (
+              <div
+                key={item.name}
+                aria-hidden="true"
+                className={styles.bg}
+                style={{ background: item.tone, opacity: i === index ? 1 : 0 }}
+              >
+                {item.image && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={item.image}
+                    alt={`${item.name}: ${item.headline}`}
+                    className={styles.bgImage}
+                    loading="lazy"
+                  />
                 )}
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Only the tabs pause it: the section fills the screen, so the pointer is always over it. */}
-        <nav
-          aria-label="Choose a build"
-          className={styles.tabs}
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-          onFocus={() => setPaused(true)}
-          onBlur={() => setPaused(false)}
-        >
-          <div className={styles.tabRow}>
-            {builds.map((item, i) => (
-              <button
-                key={item.name}
-                type="button"
-                aria-pressed={i === index}
-                onClick={() => pick(i)}
-                className={styles.tab}
-                style={{ opacity: i === index ? 1 : 0.62 }}
-              >
-                <span aria-hidden="true" className={styles.track} />
-                <span
-                  aria-hidden="true"
-                  className={styles.bar}
-                  style={{ transform: `scaleX(${i === index ? (stopped ? 1 : progress) : 0})` }}
-                />
-                <span className={styles.tabMeta}>
-                  {String(i + 1).padStart(2, "0")} · {item.meta}
-                </span>
-                <span className={styles.tabName}>{item.name}</span>
-              </button>
             ))}
-          </div>
-        </nav>
+            <div aria-hidden="true" className={b.image ? styles.scrimImage : styles.scrimPlain} />
+
+            <div className={styles.inner}>
+              <p className={`eyebrow ${styles.label}`}>Built with AI</p>
+              <div className={styles.stage}>
+                <div key={b.name} className={styles.copy}>
+                  <p className={styles.question}>{b.question}</p>
+                  <h2 className={styles.headline}>{b.headline}</h2>
+                  <p className={styles.body}>{b.body}</p>
+                  <div className={styles.actions} onClick={() => trackBuildClick("v1", b.name)}>
+                    {b.primary && (
+                      <a href={b.primary.href} className={styles.primary}>
+                        {b.primary.label}
+                      </a>
+                    )}
+                    {b.secondary && (
+                      <a href={b.secondary.href} className={styles.secondary}>
+                        {b.secondary.label}
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Only the tabs pause it: the section fills the screen, so the pointer is always over it. */}
+            <nav
+              aria-label="Choose a build"
+              className={styles.tabs}
+              onMouseEnter={() => setPaused(true)}
+              onMouseLeave={() => setPaused(false)}
+              onFocus={() => setPaused(true)}
+              onBlur={() => setPaused(false)}
+            >
+              <div className={styles.tabRow}>
+                {builds.map((item, i) => (
+                  <button
+                    key={item.name}
+                    type="button"
+                    aria-pressed={i === index}
+                    onClick={() => pick(i)}
+                    className={styles.tab}
+                    style={{ opacity: i === index ? 1 : 0.62 }}
+                  >
+                    <span aria-hidden="true" className={styles.track} />
+                    <span
+                      aria-hidden="true"
+                      className={styles.bar}
+                      style={{
+                        transform: `scaleX(${i === index ? (stopped ? 1 : progress) : 0})`,
+                      }}
+                    />
+                    <span className={styles.tabMeta}>
+                      {String(i + 1).padStart(2, "0")} · {item.meta}
+                    </span>
+                    <span className={styles.tabName}>{item.name}</span>
+                  </button>
+                ))}
+              </div>
+            </nav>
+          </>
+        )}
 
         {mode === "paged" && (
           <div
@@ -163,7 +181,12 @@ export function Builds({ mode, active = false, introVisible = false, onShowcase 
             }}
           >
             <IntroCopy shift={introVisible ? 0 : -40} />
-            <button type="button" className={`arrow-link ${styles.overlayCta}`} onClick={onShowcase} tabIndex={introVisible ? 0 : -1}>
+            <button
+              type="button"
+              className={`arrow-link ${styles.overlayCta}`}
+              onClick={onShowcase}
+              tabIndex={introVisible ? 0 : -1}
+            >
               See the builds
               <ArrowCircle direction="down" />
             </button>

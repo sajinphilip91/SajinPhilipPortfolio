@@ -12,14 +12,19 @@
   width: 100%;
   max-width: var(--content-max);
   margin: 0 auto;
-  padding: clamp(28px, 6vh, 64px) var(--gutter) clamp(40px, 9vh, 88px);
+  padding: clamp(24px, 5vh, 56px) var(--gutter) clamp(32px, 7vh, 72px);
   display: flex;
   flex-direction: column;
-  gap: clamp(24px, 4vh, 44px);
+  gap: clamp(20px, 3.5vh, 40px);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
 }
 
 .kicker {
-  margin-bottom: 16px;
+  margin: 0 0 14px;
   color: var(--on-night-muted);
 }
 
@@ -27,36 +32,134 @@
   margin: 0;
   font-family: var(--font-serif);
   font-weight: 500;
-  font-size: clamp(34px, 4.2vw, 68px);
+  font-size: clamp(36px, 4vw, 64px);
   line-height: 1.1;
   text-wrap: balance;
 }
 
 .sub {
-  margin: 16px 0 0;
+  margin: 14px 0 0;
   max-width: 640px;
-  font-size: 18px;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.55;
   color: var(--on-night-muted);
 }
 
 .process {
+  margin-top: clamp(12px, 3vh, 32px);
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
+/* One box, three columns: the 1px gaps show the background as the lines between phases. */
+.phases {
+  flex: 1 1 auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--on-night-line);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--on-night-line);
+}
+
+.phase {
+  padding: clamp(20px, 2.2vw, 36px);
+  background: var(--night);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+  transition: background 300ms ease;
+}
+
+.phase:hover {
+  background: var(--night-soft);
+}
+
+.num {
+  font-family: var(--font-serif);
+  font-size: clamp(40px, 4vw, 64px);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.3);
+  transition: color 300ms ease;
+}
+
+.phase:hover .num {
+  color: var(--on-night);
+}
+
+.name {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 2vw, 32px);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.line {
+  margin: 6px 0 0;
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--on-night-muted);
+}
+
+.steps {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.steps li {
+  padding: 3px 12px;
+  border: 1px solid var(--on-night-line);
+  border-radius: 999px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.ai {
+  margin: 18px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--on-night-line);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--on-night-muted);
+}
+
+.aiTag {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 0 6px;
+  border-radius: 4px;
+  background: var(--on-night);
+  color: var(--night);
+  font-size: 0.8em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* Full-width bar under the columns: the base every phase stands on. */
 .governance {
-  padding: 18px clamp(20px, 1.8vw, 28px);
-  border-radius: 14px;
-  background: var(--paper);
-  color: var(--ink);
+  padding: 20px clamp(20px, 2.2vw, 36px);
+  border: 1px solid var(--on-night-line);
+  border-radius: 16px;
+  background: #000;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 12px 32px;
+  gap: 12px 40px;
 }
 
 .governanceTitle {
@@ -70,7 +173,7 @@
   margin: 4px 0 0;
   font-size: 15px;
   line-height: 1.45;
-  color: var(--ink-soft);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .governanceItems {
@@ -79,110 +182,57 @@
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 32px;
+  gap: 4px 0;
   font-size: 15px;
   font-weight: 600;
-  color: var(--ink);
-}
-
-/* The 1px gaps show the background as the lines between stages. */
-.stages {
-  flex: 1 1 auto;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 1px;
-  border: 1px solid var(--on-night-line);
-  border-radius: 14px;
-  overflow: hidden;
-  background: var(--on-night-line);
-}
-
-.stage {
-  min-height: 200px;
-  padding: 20px clamp(16px, 1.4vw, 22px) 22px;
-  background: var(--night);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 24px;
-  transition: background 300ms ease;
-}
-
-.stage:hover {
-  background: var(--night-soft);
-}
-
-.num {
-  font-family: var(--font-serif);
-  font-size: clamp(36px, 3.2vw, 56px);
-  line-height: 1;
-  color: rgba(255, 255, 255, 0.35);
-  transition: color 300ms ease;
-}
-
-.stage:hover .num {
-  color: var(--on-night);
-}
-
-.name {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: clamp(22px, 1.7vw, 28px);
-  font-weight: 500;
-}
-
-.items {
-  list-style: none;
-  margin: 10px 0 0;
-  padding: 0;
-  display: grid;
-  gap: 6px;
-  font-size: 15px;
-  line-height: 1.4;
   color: var(--on-night-muted);
 }
 
-@media (max-width: 1100px) {
-  .stages {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+.governanceItems li + li::before {
+  content: "·";
+  margin: 0 14px;
+  color: rgba(255, 255, 255, 0.35);
 }
 
-@media (max-width: 720px) {
-  .stages {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .stage {
-    min-height: 0;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 20px;
-  }
-
-  .num {
-    font-size: 32px;
-  }
-}
-
-@media (min-width: 901px) and (max-height: 780px) {
+/* Short laptop screens: tighten so the section stays on one screen. */
+@media (min-width: 901px) and (max-height: 820px) {
   .inner {
     padding-top: 12px;
-    padding-bottom: 24px;
+    padding-bottom: 16px;
     gap: 16px;
   }
 
-  .sub {
-    margin-top: 8px;
+  .num {
+    font-size: clamp(36px, 3.4vw, 52px);
   }
 
-  .stage {
-    min-height: 0;
+  .phase {
+    padding-top: 18px;
+    padding-bottom: 20px;
+    gap: 16px;
+  }
+
+  .governance {
     padding-top: 14px;
     padding-bottom: 14px;
-    gap: 12px;
+  }
+}
+
+/* Phones and tablets scroll normally: the columns stack. */
+@media (max-width: 900px) {
+  .phases {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .num {
+    font-size: 44px;
+  }
+
+  .governanceItems {
+    gap: 6px 18px;
+  }
+
+  .governanceItems li + li::before {
+    content: none;
   }
 }

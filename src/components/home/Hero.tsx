@@ -68,15 +68,17 @@ export function Hero() {
 function ComingSoon({ className, lazy = false }: { className: string; lazy?: boolean }) {
   return (
     <figure className={className}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={hero.comingSoon.image}
-        alt={hero.comingSoon.alt}
-        width={1200}
-        height={1502}
-        loading={lazy ? "lazy" : undefined}
-      />
-      <figcaption className={styles.comingSoonLabel}>{hero.comingSoon.label}</figcaption>
+      <a href={hero.comingSoon.href} target="_blank" rel="noopener noreferrer" className={styles.comingSoonLink}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={hero.comingSoon.image}
+          alt={`${hero.comingSoon.alt} Opens the LinkedIn post in a new tab.`}
+          width={1200}
+          height={1502}
+          loading={lazy ? "lazy" : undefined}
+        />
+        <span className={styles.comingSoonLabel}>{hero.comingSoon.label}</span>
+      </a>
     </figure>
   );
 }

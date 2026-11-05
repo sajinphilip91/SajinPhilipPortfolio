@@ -11,17 +11,24 @@ export function Approach() {
           <p className={styles.sub}>{approach.sub}</p>
         </header>
         <div className={styles.process}>
-          <ol className={styles.stages}>
-            {approach.stages.map((s, i) => (
-              <li key={s.name} className={styles.stage}>
-                <span className={styles.num}>{String(i + 1).padStart(2, "0")}</span>
+          <ol className={styles.phases}>
+            {approach.phases.map((p, i) => (
+              <li key={p.name} className={styles.phase}>
+                <span className={styles.num} aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
                 <div>
-                  <h3 className={styles.name}>{s.name}</h3>
-                  <ul className={styles.items}>
-                    {s.items.map((item) => (
-                      <li key={item}>{item}</li>
+                  <h3 className={styles.name}>{p.name}</h3>
+                  <p className={styles.line}>{p.line}</p>
+                  <ul className={styles.steps}>
+                    {p.steps.map((step) => (
+                      <li key={step}>{step}</li>
                     ))}
                   </ul>
+                  <p className={styles.ai}>
+                    <span className={styles.aiTag}>AI</span>
+                    {p.ai}
+                  </p>
                 </div>
               </li>
             ))}
