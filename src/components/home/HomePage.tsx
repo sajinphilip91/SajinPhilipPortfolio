@@ -79,7 +79,7 @@ export function HomePage() {
   const wheel = useRef({ time: 0, size: 0, peak: 0, floor: 0, total: 0, dir: 0, fired: false });
   const queued = useRef<number | undefined>(undefined);
   const stepRef = useRef(0);
-  const [buildsVersion, setBuildsVersion] = useState<BuildsVersion>(1);
+  const [buildsVersion, setBuildsVersion] = useState<BuildsVersion>(2);
   const [featured, setFeatured] = useState(FIRST_FEATURED);
   const visitCounted = useRef(false);
 

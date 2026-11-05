@@ -1,29 +1,18 @@
-// A/B test of the homepage Built with AI section.
-// Version 1: the full-screen slider. Version 2: a bento grid whose large tile changes on every visit.
-// Each visitor keeps one version (kept in their browser); ?builds=1 or ?builds=2 picks one and keeps it.
+// Homepage Built with AI section.
+// Version 1: the full-screen slider. Version 2: a bento grid whose placement changes on every visit.
+// The A/B test is paused: everyone gets version 2. ?builds=1 still shows version 1 for that visit only.
 
 export type BuildsVersion = 1 | 2;
 
-const VERSION_KEY = "builds-version";
-const VISITS_KEY = "builds-visits";
-
 export function readBuildsVersion(): BuildsVersion {
   try {
-    const asked = new URLSearchParams(window.location.search).get("builds");
-    if (asked === "1" || asked === "2") {
-      localStorage.setItem(VERSION_KEY, asked);
-      return Number(asked) as BuildsVersion;
-    }
-    const saved = localStorage.getItem(VERSION_KEY);
-    if (saved === "1" || saved === "2") return Number(saved) as BuildsVersion;
-    const picked: BuildsVersion = Math.random() < 0.5 ? 1 : 2;
-    localStorage.setItem(VERSION_KEY, String(picked));
-    return picked;
+    return new URLSearchParams(window.location.search).get("builds") === "1" ? 1 : 2;
   } catch {
-    // Storage blocked (some private windows): show the current design.
-    return 1;
+    return 2;
   }
 }
+
+const VISITS_KEY = "builds-visits";
 
 /** How many times this visitor has opened the homepage before now; counts this visit. */
 export function countVisit(): number {
